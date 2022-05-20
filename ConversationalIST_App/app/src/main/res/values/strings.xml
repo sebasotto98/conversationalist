@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">ConversationalIST</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="conversationalist">ConversationalIST</string>
+    <string name="login">Login</string>
+    <string name="ist_logo">IST Logo</string>
+    <string name="password">Password</string>
+    <string name="attempts_left">Attempts Left:</string>
+    <string name="quit">Quit</string>
+    <string name="register">Register</string>
+    <string name="chatrooms">Chatrooms</string>
+    <string name="_3">3</string>
+    <string name="enter_host">Enter Host</string>
+    <string name="enter_port">Enter Port</string>
+    <string name="enter_message_to_send">Enter message to send</string>
+    <string name="send_grpc_request">Send Grpc Request</string>
+    <string name="response">Response:</string>
+    <string name="cmu_chat">CMU Chat</string>
+</resources>
