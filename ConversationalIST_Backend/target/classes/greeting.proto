@@ -1,12 +1,24 @@
 syntax = "proto3";
-option java_package = "com.tp.greeting";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.helloworld";
+option java_outer_classname = "HelloWorldProto";
+option objc_class_prefix = "HLW";
+
+package helloworld;
+
+// The greeting service definition.
 service Greeter {
-rpc greet (ClientInput) returns (ServerOutput) {}
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
 }
-message ClientInput {
-string greeting = 1;
-string name = 2;
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
 }
-message ServerOutput {
-string message = 1;
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
 }

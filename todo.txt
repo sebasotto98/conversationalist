@@ -1,0 +1,11 @@
+mandatory:
+	- login activity
+	- chatroom selection activity
+	- chat activity
+	- media
+		- simple text
+		- photos
+		- geolocation
+	- notifications
+aditional:
+	

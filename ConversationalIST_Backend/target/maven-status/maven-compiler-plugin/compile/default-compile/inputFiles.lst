@@ -1,3 +1,6 @@
-C:\Users\sebas\Downloads\cmu\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\grpc-java\com\tp\greeting\GreeterGrpc.java
-C:\Users\sebas\Downloads\cmu\CMU_Project\ConversationalIST_Backend\src\main\java\org\example\cmu_project\ConversationalISTServer.java
-C:\Users\sebas\Downloads\cmu\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\com\tp\greeting\Greeting.java
+C:\Users\sebas\Downloads\cmu\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\helloworld\HelloWorldProto.java
+C:\Users\sebas\Downloads\cmu\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\helloworld\HelloReplyOrBuilder.java
+C:\Users\sebas\Downloads\cmu\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\helloworld\HelloReply.java
+C:\Users\sebas\Downloads\cmu\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\helloworld\HelloRequestOrBuilder.java
+C:\Users\sebas\Downloads\cmu\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\helloworld\HelloRequest.java
+C:\Users\sebas\Downloads\cmu\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\grpc-java\io\grpc\examples\helloworld\GreeterGrpc.java

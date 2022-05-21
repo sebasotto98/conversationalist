@@ -20,8 +20,17 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.examples.helloworld.GreeterGrpc;
+import io.grpc.examples.helloworld.HelloReply;
+import io.grpc.examples.helloworld.HelloRequest;
 
 public class ChatActivity extends AppCompatActivity {
+
+    private static final Logger logger = Logger.getLogger(ChatActivity.class.getName());
 
     private Button sendButton;
     private EditText hostEdit;
@@ -55,10 +64,10 @@ public class ChatActivity extends AppCompatActivity {
 
     private static class GrpcTask extends AsyncTask<String, Void, String> {
         private final WeakReference<Activity> activityReference;
-        //private ManagedChannel channel;
+        private ManagedChannel channel;
 
         private GrpcTask(Activity activity) {
-            this.activityReference = new WeakReference<Activity>(activity);
+            this.activityReference = new WeakReference<>(activity);
         }
 
         @Override
@@ -68,33 +77,29 @@ public class ChatActivity extends AppCompatActivity {
             String portStr = params[2];
             int port = TextUtils.isEmpty(portStr) ? 0 : Integer.valueOf(portStr);
             try {
-                /*
                 channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
                 GreeterGrpc.GreeterBlockingStub stub = GreeterGrpc.newBlockingStub(channel);
                 HelloRequest request = HelloRequest.newBuilder().setName(message).build();
                 HelloReply reply = stub.sayHello(request);
 
                 return reply.getMessage();
-                 */
-                return null;
             } catch (Exception e) {
                 StringWriter sw = new StringWriter();
                 PrintWriter pw = new PrintWriter(sw);
                 e.printStackTrace(pw);
                 pw.flush();
+                logger.info(sw.toString());
                 return String.format("Failed... : %n%s", sw);
             }
         }
 
         @Override
         protected void onPostExecute(String result) {
-            /*
             try {
                 channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-             */
             Activity activity = activityReference.get();
             if (activity == null) {
                 return;
