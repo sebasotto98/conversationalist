@@ -1,11 +1,24 @@
 mandatory:
 	- login activity
 	- chatroom selection activity
+		- unread messages
+		- new chat
 	- chat activity
 	- media
 		- simple text
 		- photos
 		- geolocation
 	- notifications
+	- resource frugality
+		- eager loading when on chat/lazy loading when off chat
+		- photo placeholder when on mobdata/immediate display when on wifi
+		- only load latest messages when chat opens and load more dynamically on scroll
+	- context awareness
+		- public
+		- private
+		- geo-fenced
+	- caching
 aditional:
-	
+	- secure comms
+	- user accounts (almost done)
+	- recommendations

@@ -14,17 +14,18 @@ import java.util.logging.Logger;
 public class ConversationalISTServer {
 
     private static final Logger logger = Logger.getLogger(ConversationalISTServer.class.getName());
+    private static final int TIMEOUT = 30;
+    private static final int PORT_NUM = 50051;
 
     private Server server;
 
     private void start() throws IOException {
         /* The port on which the server should run */
-        int port = 50051;
-        server = ServerBuilder.forPort(port)
+        server = ServerBuilder.forPort(PORT_NUM)
                 .addService(new GreeterImpl())
                 .build()
                 .start();
-        logger.info("Server started, listening on " + port);
+        logger.info("Server started, listening on " + PORT_NUM);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             // Use stderr here since the logger may have been reset by its JVM shutdown hook.
             System.err.println("*** shutting down gRPC server since JVM is shutting down");
@@ -39,7 +40,7 @@ public class ConversationalISTServer {
 
     private void stop() throws InterruptedException {
         if (server != null) {
-            server.shutdown().awaitTermination(30, TimeUnit.SECONDS);
+            server.shutdown().awaitTermination(TIMEOUT, TimeUnit.SECONDS);
         }
     }
 

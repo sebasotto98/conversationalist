@@ -1,7 +1,8 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <RelativeLayout xmlns:android = "http://schemas.android.com/apk/res/android"
     xmlns:tools = "http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height = "match_parent" tools:context = ".activities.ChatroomActivity">
+    android:layout_height = "match_parent" tools:context = ".activities.ChatroomActivity"
+    android:id="@+id/relativeLayout">
 
     <TextView android:text = "@string/chatrooms" android:layout_width="wrap_content"
         android:layout_height = "wrap_content"
@@ -36,5 +37,13 @@
         android:onClick="enterChat"
         android:layout_below="@+id/username"
         android:text="@string/cmu_chat" />
+
+    <Button
+        android:id="@+id/create_chatroom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="create_chatroom"
+        android:layout_alignParentBottom="true"
+        android:text="@string/create_new_chatroom" />
 
 </RelativeLayout>

@@ -16,4 +16,5 @@
     <string name="send_grpc_request">Send Grpc Request</string>
     <string name="response">Response:</string>
     <string name="cmu_chat">CMU Chat</string>
+    <string name="create_new_chatroom">Create New Chatroom</string>
 </resources>
