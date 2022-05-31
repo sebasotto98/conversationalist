@@ -1,1 +1,4 @@
-data, sent_at
+data, from, sent_at
+text[sample_text], sample_user_1, sample_timestamp_1
+image[sample_image], sample_user_1, sample_timestamp_2
+geoloc[sample_geoloc], sample_user_1, sample_timestamp_3

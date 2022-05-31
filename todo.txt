@@ -1,10 +1,11 @@
 mandatory:
 	- login activity
 	- chatroom selection activity
-		- unread messages
+		- unread message badge
+		- joined chats
+		- unjoined chats
 		- new chat
 	- chat activity
-	- media
 		- simple text
 		- photos
 		- geolocation

@@ -3,12 +3,12 @@ package org.example.cmu_project.helpers;
 public class ChatroomFileHelper extends FileHelper {
 
     @Override
-    public void store() {
-
+    public String parseToClient(String data) {
+        return null;
     }
 
     @Override
-    public void retrieve() {
+    public void parseFromClient(String data) {
 
     }
 }
