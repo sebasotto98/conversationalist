@@ -9,6 +9,8 @@ mandatory:
 		- simple text
 		- photos
 		- geolocation
+		- message stack with images and geolocation
+		- difference between message sent and received
 	- notifications
 	- resource frugality
 		- eager loading when on chat/lazy loading when off chat

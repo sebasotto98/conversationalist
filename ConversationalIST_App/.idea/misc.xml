@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/activity_chat.xml" value="0.264" />
+        <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/message.xml" value="0.264" />
+        <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/message_Image.xml" value="0.21487603305785125" />
+        <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/message_image.xml" value="0.4" />
+        <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/message_text.xml" value="0.25" />
         <entry key="..\:/Users/sebas/Downloads/cmu/CMU_Project/ConversationalIST_App/app/src/main/res/layout/activity_chat.xml" value="0.264" />
         <entry key="..\:/Users/sebas/Downloads/cmu/CMU_Project/ConversationalIST_App/app/src/main/res/layout/activity_login.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/sebas/Downloads/cmu/CMU_Project/ConversationalIST_App/app/src/main/res/layout/activity_main.xml" value="0.21784420289855072" />

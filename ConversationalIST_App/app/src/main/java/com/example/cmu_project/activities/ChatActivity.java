@@ -10,15 +10,23 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmu_project.R;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -36,26 +44,36 @@ public class ChatActivity extends AppCompatActivity {
     private EditText hostEdit;
     private EditText portEdit;
     private EditText messageEdit;
-    private TextView resultText;
+    private RecyclerView messageRecycler;
+    private MessageAdapter messageAdapter;
+
+    private List<String> messageList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        //load messages from cache to messageList
+        messageList.add("default message 1");
+        messageList.add("default message 2");
+
         sendButton = (Button) findViewById(R.id.send_button);
         hostEdit = (EditText) findViewById(R.id.host_edit_text);
         portEdit = (EditText) findViewById(R.id.port_edit_text);
         messageEdit = (EditText) findViewById(R.id.message_edit_text);
-        resultText = (TextView) findViewById(R.id.grpc_response_text);
-        resultText.setMovementMethod(new ScrollingMovementMethod());
+        messageRecycler = (RecyclerView) findViewById(R.id.recyclerView);
+        messageAdapter = new MessageAdapter(this, messageList);
+        messageRecycler.setLayoutManager(new LinearLayoutManager(this));
+        messageRecycler.setAdapter(messageAdapter);
     }
 
     public void sendMessage(View view) {
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
                 .hideSoftInputFromWindow(hostEdit.getWindowToken(), 0);
         sendButton.setEnabled(false);
-        resultText.setText("");
-        new GrpcTask(this)
+
+        new GrpcTask(this, messageRecycler)
                 .execute(
                         hostEdit.getText().toString(),
                         messageEdit.getText().toString(),
@@ -65,9 +83,13 @@ public class ChatActivity extends AppCompatActivity {
     private static class GrpcTask extends AsyncTask<String, Void, String> {
         private final WeakReference<Activity> activityReference;
         private ManagedChannel channel;
+        private MessageAdapter messageAdapter;
+        private RecyclerView recyclerView;
 
-        private GrpcTask(Activity activity) {
+        private GrpcTask(Activity activity, RecyclerView messageRecycler) {
             this.activityReference = new WeakReference<>(activity);
+            this.messageAdapter = (MessageAdapter) messageRecycler.getAdapter();
+            this.recyclerView = messageRecycler;
         }
 
         @Override
@@ -104,9 +126,16 @@ public class ChatActivity extends AppCompatActivity {
             if (activity == null) {
                 return;
             }
-            TextView resultText = (TextView) activity.findViewById(R.id.grpc_response_text);
             Button sendButton = (Button) activity.findViewById(R.id.send_button);
-            resultText.setText(result);
+
+            messageAdapter.addToMessageList(result);
+            int position = messageAdapter.getItemCount() - 1;
+            messageAdapter.notifyItemInserted(position);
+            recyclerView.post(() -> {
+                // Call smooth scroll
+                recyclerView.smoothScrollToPosition(position);
+            });
+
             sendButton.setEnabled(true);
         }
     }
