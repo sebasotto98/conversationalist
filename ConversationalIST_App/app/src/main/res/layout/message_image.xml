@@ -43,7 +43,7 @@
                 android:contentDescription=""
                 android:maxWidth="260dp"
                 android:maxHeight="260dp"
-                android:src="" />
+                android:src="@null" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

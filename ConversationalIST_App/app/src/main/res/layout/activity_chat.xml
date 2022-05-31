@@ -37,11 +37,25 @@
         android:minHeight="48dp" />
 
     <Button
+        android:id="@+id/camera_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="showCamera"
+        android:text="Send Photo" />
+
+    <Button
+        android:id="@+id/map_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="showMap"
+        android:text="Send Geolocation" />
+
+    <Button
         android:id="@+id/send_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="sendMessage"
-        android:text="@string/send_grpc_request" />
+        android:text="Send Message" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
