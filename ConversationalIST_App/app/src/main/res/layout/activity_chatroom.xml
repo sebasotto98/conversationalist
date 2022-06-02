@@ -34,8 +34,8 @@
         android:id="@+id/chat_icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="enterChat"
         android:layout_below="@+id/username"
+        android:onClick="enterChat"
         android:text="@string/cmu_chat" />
 
     <Button

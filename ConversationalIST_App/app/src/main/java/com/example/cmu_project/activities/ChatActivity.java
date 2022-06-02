@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.adevinta.leku.LocationPickerActivity;
+import com.example.cmu_project.GlobalVariables;
 import com.example.cmu_project.R;
 
 import java.io.ByteArrayOutputStream;
@@ -90,11 +91,11 @@ public class ChatActivity extends AppCompatActivity {
                         portEdit.getText().toString());
     }
 
-    private static class GrpcTask extends AsyncTask<String, Void, String> {
+    private class GrpcTask extends AsyncTask<String, Void, String> {
         private final WeakReference<Activity> activityReference;
         private ManagedChannel channel;
-        private MessageAdapter messageAdapter;
-        private RecyclerView recyclerView;
+        private final MessageAdapter messageAdapter;
+        private final RecyclerView recyclerView;
 
         private GrpcTask(Activity activity, RecyclerView messageRecycler) {
             this.activityReference = new WeakReference<>(activity);
@@ -146,6 +147,9 @@ public class ChatActivity extends AppCompatActivity {
                 recyclerView.smoothScrollToPosition(position);
             });
 
+            //testing global vars
+            /* String chatName = ((GlobalVariables) getApplication()).getCurrentChatroomName();
+            Log.d("CHAT_NAME: ", chatName);*/
             sendButton.setEnabled(true);
         }
     }

@@ -41,21 +41,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="showCamera"
-        android:text="Send Photo" />
+        android:text="@string/send_photo" />
 
     <Button
         android:id="@+id/map_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="showMap"
-        android:text="Send Geolocation" />
+        android:text="@string/send_geolocation" />
 
     <Button
         android:id="@+id/send_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="sendMessage"
-        android:text="Send Message" />
+        android:text="@string/send_message" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

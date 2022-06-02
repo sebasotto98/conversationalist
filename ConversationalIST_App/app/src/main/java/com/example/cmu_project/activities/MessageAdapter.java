@@ -81,7 +81,7 @@ public class MessageAdapter extends RecyclerView.Adapter{
     }
 
     //add more private classes to support location and image
-    private class MessageTextHolder extends RecyclerView.ViewHolder {
+    private static class MessageTextHolder extends RecyclerView.ViewHolder {
         TextView messageText, timeText, nameText;
 
         MessageTextHolder(View itemView) {

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cmu_project.GlobalVariables;
 import com.example.cmu_project.R;
 
 public class ChatroomActivity extends AppCompatActivity {
@@ -30,6 +31,9 @@ public class ChatroomActivity extends AppCompatActivity {
     }
 
     public void enterChat(View view) {
+
+        ((GlobalVariables) this.getApplication()).setCurrentChatroomName(chatIcon.getText().toString());
+
         Intent myIntent = new Intent(ChatroomActivity.this, ChatActivity.class);
         ChatroomActivity.this.startActivity(myIntent);
     }

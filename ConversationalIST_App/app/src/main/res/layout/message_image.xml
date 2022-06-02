@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="name_default"
+        android:text="@string/name_default"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:contentDescription=""
+                android:contentDescription="@string/image"
                 android:maxWidth="260dp"
                 android:maxHeight="260dp"
                 android:src="@null" />
@@ -51,7 +51,7 @@
         android:id="@+id/text_timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="default_timestamp"
+        android:text="@string/default_timestamp"
         android:textColor="#C0C0C0"
         android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="@+id/card_message"
