@@ -13,20 +13,22 @@ import com.example.cmu_project.R;
 
 import java.util.List;
 
+import io.grpc.examples.backendserver.messageResponse;
+
 public class MessageAdapter extends RecyclerView.Adapter{
 
     private Context context;
-    private List<String> messageList;
+    private List<messageResponse> messageList;
 
     private final int MESSAGE_TEXT = 1;
     
     //change messageList from List<String> to List<Message> that can support text, image or location
-    public MessageAdapter(Context context, List<String> messageList) {
+    public MessageAdapter(Context context, List<messageResponse> messageList) {
         this.context = context;
         this.messageList = messageList;
     }
 
-    public void addToMessageList(String message){
+    public void addToMessageList(messageResponse message){
         messageList.add(message);
         Log.d("MessageAdapter", "added message: " + message);
 
@@ -71,7 +73,7 @@ public class MessageAdapter extends RecyclerView.Adapter{
     //complete for other message types
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        String message = messageList.get(position);
+        messageResponse message = messageList.get(position);
 
         switch (holder.getItemViewType()) {
             case MESSAGE_TEXT:
@@ -92,8 +94,10 @@ public class MessageAdapter extends RecyclerView.Adapter{
         }
 
         //extend for username and timestamp
-        void bind(String message) {
-            messageText.setText(message);
+        void bind(messageResponse message) {
+            messageText.setText(message.getData());
+            timeText.setText(message.getTimestamp());
+            nameText.setText(message.getUsername());
         }
     }
 

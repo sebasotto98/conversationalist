@@ -2,12 +2,14 @@ package org.example.cmu_project;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import io.grpc.examples.helloworld.GreeterGrpc;
-import io.grpc.examples.helloworld.HelloReply;
-import io.grpc.examples.helloworld.HelloRequest;
+import io.grpc.examples.backendserver.ServerGrpc;
+import io.grpc.examples.backendserver.messageResponse;
+import io.grpc.examples.backendserver.sendingMessage;
 import io.grpc.stub.StreamObserver;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -22,7 +24,7 @@ public class ConversationalISTServer {
     private void start() throws IOException {
         /* The port on which the server should run */
         server = ServerBuilder.forPort(PORT_NUM)
-                .addService(new GreeterImpl())
+                .addService(new ServerImpl())
                 .build()
                 .start();
         logger.info("Server started, listening on " + PORT_NUM);
@@ -62,14 +64,16 @@ public class ConversationalISTServer {
         conversationalISTServer.blockUntilShutdown();
     }
 
-    static class GreeterImpl extends GreeterGrpc.GreeterImplBase {
+    static class ServerImpl extends ServerGrpc.ServerImplBase {
 
         @Override
-        public void sayHello(HelloRequest req, StreamObserver<HelloReply> responseObserver) {
+        public void sendMessage(sendingMessage req, StreamObserver<messageResponse> responseObserver) {
             logger.info("Got request from client: " + req);
-            HelloReply reply = HelloReply.newBuilder().setMessage(
-                    "Server says " + "\"" + req.getName() + "\""
-            ).build();
+            messageResponse reply = messageResponse.newBuilder()
+                    .setData(req.getData())
+                    .setTimestamp(String.valueOf(Timestamp.from(Instant.now())))
+                    .setUsername(req.getUsername())
+                    .build();
             responseObserver.onNext(reply);
             responseObserver.onCompleted();
         }

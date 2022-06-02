@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.backendserver";
+option java_outer_classname = "BackEndServerProto";
+option objc_class_prefix = "HLW";
+
+package helloworld;
+
+// The greeting service definition.
+service Server {
+
+  rpc sendMessage (sendingMessage) returns (messageResponse) {}
+}
+
+message sendingMessage {
+  string username = 1;
+  string timestamp = 2;
+  string chatroom = 3;
+  string data = 4;
+}
+
+message messageResponse {
+  string username = 1;
+  string timestamp = 2;
+  string chatroom = 3;
+  string data = 4;
+}

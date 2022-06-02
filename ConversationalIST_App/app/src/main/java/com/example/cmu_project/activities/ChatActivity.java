@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -17,8 +16,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,18 +29,15 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import io.grpc.examples.helloworld.GreeterGrpc;
-import io.grpc.examples.helloworld.HelloReply;
-import io.grpc.examples.helloworld.HelloRequest;
+import io.grpc.examples.backendserver.ServerGrpc;
+import io.grpc.examples.backendserver.messageResponse;
+import io.grpc.examples.backendserver.sendingMessage;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -58,16 +52,12 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView messageRecycler;
     private MessageAdapter messageAdapter;
 
-    private List<String> messageList = new ArrayList<>();
+    private List<messageResponse> messageList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
-        //load messages from cache to messageList
-        messageList.add("default message 1");
-        messageList.add("default message 2");
 
         sendButton = (Button) findViewById(R.id.send_button);
         hostEdit = (EditText) findViewById(R.id.host_edit_text);
@@ -91,7 +81,7 @@ public class ChatActivity extends AppCompatActivity {
                         portEdit.getText().toString());
     }
 
-    private class GrpcTask extends AsyncTask<String, Void, String> {
+    private class GrpcTask extends AsyncTask<String, Void, messageResponse> {
         private final WeakReference<Activity> activityReference;
         private ManagedChannel channel;
         private final MessageAdapter messageAdapter;
@@ -104,53 +94,61 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected messageResponse doInBackground(String... params) {
             String host = params[0];
             String message = params[1];
             String portStr = params[2];
             int port = TextUtils.isEmpty(portStr) ? 0 : Integer.valueOf(portStr);
             try {
                 channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
-                GreeterGrpc.GreeterBlockingStub stub = GreeterGrpc.newBlockingStub(channel);
-                HelloRequest request = HelloRequest.newBuilder().setName(message).build();
-                HelloReply reply = stub.sayHello(request);
+                ServerGrpc.ServerBlockingStub stub = ServerGrpc.newBlockingStub(channel);
 
-                return reply.getMessage();
+                sendingMessage request = sendingMessage.newBuilder()
+                        .setData(message)
+                        .setUsername(((GlobalVariables) getApplication()).getUsername())
+                        .setChatroom(((GlobalVariables) getApplication()).getCurrentChatroomName())
+                        .build();
+
+                return stub.sendMessage(request);
+
             } catch (Exception e) {
                 StringWriter sw = new StringWriter();
                 PrintWriter pw = new PrintWriter(sw);
                 e.printStackTrace(pw);
                 pw.flush();
                 logger.info(sw.toString());
-                return String.format("Failed... : %n%s", sw);
+                return null;
             }
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            try {
-                channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-            Activity activity = activityReference.get();
-            if (activity == null) {
-                return;
-            }
-            Button sendButton = (Button) activity.findViewById(R.id.send_button);
+        protected void onPostExecute(messageResponse result) {
+            if(result != null){
+                try {
+                    channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                Activity activity = activityReference.get();
+                if (activity == null) {
+                    return;
+                }
 
-            messageAdapter.addToMessageList(result);
-            int position = messageAdapter.getItemCount() - 1;
-            messageAdapter.notifyItemInserted(position);
-            recyclerView.post(() -> {
-                // Call smooth scroll
-                recyclerView.smoothScrollToPosition(position);
-            });
+                messageAdapter.addToMessageList(result);
+                int position = messageAdapter.getItemCount() - 1;
+                messageAdapter.notifyItemInserted(position);
+                recyclerView.post(() -> {
+                    // Call smooth scroll
+                    recyclerView.smoothScrollToPosition(position);
+                });
 
-            //testing global vars
+                //testing global vars
             /* String chatName = ((GlobalVariables) getApplication()).getCurrentChatroomName();
             Log.d("CHAT_NAME: ", chatName);*/
-            sendButton.setEnabled(true);
+
+                Button sendButton = (Button) activity.findViewById(R.id.send_button);
+                sendButton.setEnabled(true);
+            }
         }
     }
 

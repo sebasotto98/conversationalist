@@ -28,6 +28,9 @@ public class ChatroomActivity extends AppCompatActivity {
         String welcomeMessage = "Welcome " + username + "!";
         tx1.setText(welcomeMessage);
         tx1.setVisibility(View.VISIBLE);
+
+        ((GlobalVariables) this.getApplication()).setUsername(username);
+
     }
 
     public void enterChat(View view) {
