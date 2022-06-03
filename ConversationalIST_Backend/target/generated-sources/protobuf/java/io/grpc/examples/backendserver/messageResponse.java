@@ -76,6 +76,11 @@ private static final long serialVersionUID = 0L;
             data_ = s;
             break;
           }
+          case 40: {
+
+            type_ = input.readInt32();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -260,6 +265,17 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int TYPE_FIELD_NUMBER = 5;
+  private int type_;
+  /**
+   * <code>int32 type = 5;</code>
+   * @return The type.
+   */
+  @java.lang.Override
+  public int getType() {
+    return type_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -286,6 +302,9 @@ private static final long serialVersionUID = 0L;
     if (!getDataBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 4, data_);
     }
+    if (type_ != 0) {
+      output.writeInt32(5, type_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -306,6 +325,10 @@ private static final long serialVersionUID = 0L;
     }
     if (!getDataBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, data_);
+    }
+    if (type_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(5, type_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -330,6 +353,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getChatroom())) return false;
     if (!getData()
         .equals(other.getData())) return false;
+    if (getType()
+        != other.getType()) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -349,6 +374,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getChatroom().hashCode();
     hash = (37 * hash) + DATA_FIELD_NUMBER;
     hash = (53 * hash) + getData().hashCode();
+    hash = (37 * hash) + TYPE_FIELD_NUMBER;
+    hash = (53 * hash) + getType();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -490,6 +517,8 @@ private static final long serialVersionUID = 0L;
 
       data_ = "";
 
+      type_ = 0;
+
       return this;
     }
 
@@ -520,6 +549,7 @@ private static final long serialVersionUID = 0L;
       result.timestamp_ = timestamp_;
       result.chatroom_ = chatroom_;
       result.data_ = data_;
+      result.type_ = type_;
       onBuilt();
       return result;
     }
@@ -583,6 +613,9 @@ private static final long serialVersionUID = 0L;
       if (!other.getData().isEmpty()) {
         data_ = other.data_;
         onChanged();
+      }
+      if (other.getType() != 0) {
+        setType(other.getType());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -913,6 +946,37 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       data_ = value;
+      onChanged();
+      return this;
+    }
+
+    private int type_ ;
+    /**
+     * <code>int32 type = 5;</code>
+     * @return The type.
+     */
+    @java.lang.Override
+    public int getType() {
+      return type_;
+    }
+    /**
+     * <code>int32 type = 5;</code>
+     * @param value The type to set.
+     * @return This builder for chaining.
+     */
+    public Builder setType(int value) {
+      
+      type_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 type = 5;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearType() {
+      
+      type_ = 0;
       onChanged();
       return this;
     }

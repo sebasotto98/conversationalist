@@ -33,16 +33,16 @@ public final class BackEndServerProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\023backendServer.proto\022\nhelloworld\"U\n\016sen" +
+      "\n\023backendServer.proto\022\nhelloworld\"c\n\016sen" +
       "dingMessage\022\020\n\010username\030\001 \001(\t\022\021\n\ttimesta" +
       "mp\030\002 \001(\t\022\020\n\010chatroom\030\003 \001(\t\022\014\n\004data\030\004 \001(\t" +
-      "\"V\n\017messageResponse\022\020\n\010username\030\001 \001(\t\022\021\n" +
-      "\ttimestamp\030\002 \001(\t\022\020\n\010chatroom\030\003 \001(\t\022\014\n\004da" +
-      "ta\030\004 \001(\t2R\n\006Server\022H\n\013sendMessage\022\032.hell" +
-      "oworld.sendingMessage\032\033.helloworld.messa" +
-      "geResponse\"\000B<\n\036io.grpc.examples.backend" +
-      "serverB\022BackEndServerProtoP\001\242\002\003HLWb\006prot" +
-      "o3"
+      "\022\014\n\004type\030\005 \001(\005\"d\n\017messageResponse\022\020\n\010use" +
+      "rname\030\001 \001(\t\022\021\n\ttimestamp\030\002 \001(\t\022\020\n\010chatro" +
+      "om\030\003 \001(\t\022\014\n\004data\030\004 \001(\t\022\014\n\004type\030\005 \001(\0052R\n\006" +
+      "Server\022H\n\013sendMessage\022\032.helloworld.sendi" +
+      "ngMessage\032\033.helloworld.messageResponse\"\000" +
+      "B<\n\036io.grpc.examples.backendserverB\022Back" +
+      "EndServerProtoP\001\242\002\003HLWb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -53,13 +53,13 @@ public final class BackEndServerProto {
     internal_static_helloworld_sendingMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helloworld_sendingMessage_descriptor,
-        new java.lang.String[] { "Username", "Timestamp", "Chatroom", "Data", });
+        new java.lang.String[] { "Username", "Timestamp", "Chatroom", "Data", "Type", });
     internal_static_helloworld_messageResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_helloworld_messageResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helloworld_messageResponse_descriptor,
-        new java.lang.String[] { "Username", "Timestamp", "Chatroom", "Data", });
+        new java.lang.String[] { "Username", "Timestamp", "Chatroom", "Data", "Type", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

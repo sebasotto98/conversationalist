@@ -54,4 +54,10 @@ public interface sendingMessageOrBuilder extends
    */
   com.google.protobuf.ByteString
       getDataBytes();
+
+  /**
+   * <code>int32 type = 5;</code>
+   * @return The type.
+   */
+  int getType();
 }

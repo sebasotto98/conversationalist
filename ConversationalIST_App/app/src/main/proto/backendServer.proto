@@ -18,6 +18,7 @@ message sendingMessage {
   string timestamp = 2;
   string chatroom = 3;
   string data = 4;
+  int32 type = 5;
 }
 
 message messageResponse {
@@ -25,4 +26,5 @@ message messageResponse {
   string timestamp = 2;
   string chatroom = 3;
   string data = 4;
+  int32 type = 5;
 }

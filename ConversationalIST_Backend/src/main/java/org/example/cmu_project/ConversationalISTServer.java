@@ -79,8 +79,9 @@ public class ConversationalISTServer {
             String data = req.getData();
             String username = req.getUsername();
             String chatroom = req.getChatroom();
+            String type = String.valueOf(req.getType());
 
-            chatroomFileHelper.writeToFile(data, username, timestamp, chatroom);
+            chatroomFileHelper.writeToFile(data, username, timestamp, type, chatroom);
 
             messageResponse reply = messageResponse.newBuilder()
                     .setData(req.getData())

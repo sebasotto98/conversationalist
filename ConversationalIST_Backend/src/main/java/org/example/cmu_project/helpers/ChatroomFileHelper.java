@@ -9,10 +9,12 @@ public class ChatroomFileHelper extends FileHelper {
         String data = args[0];
         String username = args[1];
         String timestamp = args[2];
-        String fileName = args[3];
+        String type = args[3];
+        String fileName = args[4];
         String finalString =    data + "," +
                                 username + "," +
-                                timestamp + "\n";
+                                timestamp + ","+
+                                type + "\n";
 
         super.write(finalString, CHATROOM_FILE_BEGIN + fileName);
     }
