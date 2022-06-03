@@ -6,8 +6,11 @@ import io.grpc.examples.backendserver.ServerGrpc;
 import io.grpc.examples.backendserver.messageResponse;
 import io.grpc.examples.backendserver.sendingMessage;
 import io.grpc.stub.StreamObserver;
+import org.example.cmu_project.helpers.ChatroomFileHelper;
+import org.example.cmu_project.helpers.FileHelper;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
@@ -66,17 +69,26 @@ public class ConversationalISTServer {
 
     static class ServerImpl extends ServerGrpc.ServerImplBase {
 
+        ChatroomFileHelper chatroomFileHelper = new ChatroomFileHelper();
+
         @Override
         public void sendMessage(sendingMessage req, StreamObserver<messageResponse> responseObserver) {
             logger.info("Got request from client: " + req);
+
+            String timestamp = String.valueOf(Timestamp.from(Instant.now()));
+            String data = req.getData();
+            String username = req.getUsername();
+            String chatroom = req.getChatroom();
+
+            chatroomFileHelper.writeToFile(data, username, timestamp, chatroom);
+
             messageResponse reply = messageResponse.newBuilder()
                     .setData(req.getData())
-                    .setTimestamp(String.valueOf(Timestamp.from(Instant.now())))
+                    .setTimestamp(timestamp)
                     .setUsername(req.getUsername())
                     .build();
             responseObserver.onNext(reply);
             responseObserver.onCompleted();
         }
     }
-
 }

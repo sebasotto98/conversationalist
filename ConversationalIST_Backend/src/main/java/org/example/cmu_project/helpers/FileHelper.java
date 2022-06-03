@@ -21,9 +21,13 @@ public class FileHelper {
 
     }
 
-    private void write(String data, String fileId) {
+    public void writeToFile(String... args){
+
+    }
+
+    protected void write(String data, String fileId) {
         try {
-            FileWriter myWriter = new FileWriter(fileId + FILE_FORMAT);
+            FileWriter myWriter = new FileWriter(fileId + FILE_FORMAT, true);
             myWriter.write(data);
             myWriter.close();
             logger.info("Successfully wrote to the file.");
@@ -32,7 +36,7 @@ public class FileHelper {
         }
     }
 
-    private String read(String fileId) {
+    protected String read(String fileId) {
         String data = "";
         try {
             File myObj = new File(fileId + FILE_FORMAT);
