@@ -31,13 +31,16 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.examples.backendserver.ServerGrpc;
+import io.grpc.examples.backendserver.chatMessageRequest;
 import io.grpc.examples.backendserver.messageResponse;
 import io.grpc.examples.backendserver.sendingMessage;
 
@@ -69,15 +72,90 @@ public class ChatActivity extends AppCompatActivity {
         messageAdapter = new MessageAdapter(this, messageList);
         messageRecycler.setLayoutManager(new LinearLayoutManager(this));
         messageRecycler.setAdapter(messageAdapter);
+
+
+        //change IP for this to work
+        //after load IP and port from file or whatever just use those vars
+        new getAllMessagesFromChatGrpcTask(this, messageRecycler)
+                .execute(
+                        "192.168.1.135",
+                        "50051",
+                        ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
     }
 
-    private class GrpcTask extends AsyncTask<Object, Void, messageResponse> {
+    private class getAllMessagesFromChatGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
         private final WeakReference<Activity> activityReference;
         private ManagedChannel channel;
         private final MessageAdapter messageAdapter;
         private final RecyclerView recyclerView;
 
-        private GrpcTask(Activity activity, RecyclerView messageRecycler) {
+        private getAllMessagesFromChatGrpcTask(Activity activity, RecyclerView messageRecycler) {
+            this.activityReference = new WeakReference<>(activity);
+            this.messageAdapter = (MessageAdapter) messageRecycler.getAdapter();
+            this.recyclerView = messageRecycler;
+        }
+
+        @Override
+        protected Iterator<messageResponse> doInBackground(Object... params) {
+            String host = (String) params[0];
+            String portStr = (String) params[1];
+            String chatroom = (String) params[2];
+            int port = TextUtils.isEmpty(portStr) ? 0 : Integer.parseInt(portStr);
+            try {
+                channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
+                ServerGrpc.ServerBlockingStub stub = ServerGrpc.newBlockingStub(channel);
+
+                chatMessageRequest request = chatMessageRequest.newBuilder()
+                        .setChatroom(chatroom)
+                        .build();
+
+                return stub.getAllChatMessages(request);
+            } catch (Exception e) {
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+                e.printStackTrace(pw);
+                pw.flush();
+                logger.info(sw.toString());
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Iterator<messageResponse> messages) {
+            if(messages != null) {
+
+                Activity activity = activityReference.get();
+                if (activity == null) {
+                    return;
+                }
+
+                while (messages.hasNext()) {
+                    messageAdapter.addToMessageList(messages.next());
+                }
+
+                int position = messageAdapter.getItemCount() - 1;
+                messageAdapter.notifyItemInserted(position);
+                recyclerView.post(() -> {
+                    // Call smooth scroll
+                    recyclerView.smoothScrollToPosition(position);
+                });
+
+                try {
+                    channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+    }
+
+    private class sendMessageGrpcTask extends AsyncTask<Object, Void, messageResponse> {
+        private final WeakReference<Activity> activityReference;
+        private ManagedChannel channel;
+        private final MessageAdapter messageAdapter;
+        private final RecyclerView recyclerView;
+
+        private sendMessageGrpcTask(Activity activity, RecyclerView messageRecycler) {
             this.activityReference = new WeakReference<>(activity);
             this.messageAdapter = (MessageAdapter) messageRecycler.getAdapter();
             this.recyclerView = messageRecycler;
@@ -115,11 +193,7 @@ public class ChatActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(messageResponse result) {
             if(result != null) {
-                try {
-                    channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+
                 Activity activity = activityReference.get();
                 if (activity == null) {
                     return;
@@ -133,12 +207,14 @@ public class ChatActivity extends AppCompatActivity {
                     recyclerView.smoothScrollToPosition(position);
                 });
 
-                //testing global vars
-            /* String chatName = ((GlobalVariables) getApplication()).getCurrentChatroomName();
-            Log.d("CHAT_NAME: ", chatName);*/
-
                 Button sendButton = (Button) activity.findViewById(R.id.send_button);
                 sendButton.setEnabled(true);
+
+                try {
+                    channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
         }
     }
@@ -183,7 +259,7 @@ public class ChatActivity extends AppCompatActivity {
                 .hideSoftInputFromWindow(hostEdit.getWindowToken(), 0);
         sendButton.setEnabled(false);
 
-        new GrpcTask(this, messageRecycler)
+        new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
                         hostEdit.getText().toString(),
                         messageEdit.getText().toString(),
@@ -223,7 +299,7 @@ public class ChatActivity extends AppCompatActivity {
                 .hideSoftInputFromWindow(hostEdit.getWindowToken(), 0);
         sendButton.setEnabled(false);
 
-        new GrpcTask(this, messageRecycler)
+        new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
                         hostEdit.getText().toString(),
                         geolocation,
@@ -245,7 +321,7 @@ public class ChatActivity extends AppCompatActivity {
                 .hideSoftInputFromWindow(hostEdit.getWindowToken(), 0);
         sendButton.setEnabled(false);
 
-        new GrpcTask(this, messageRecycler)
+        new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
                         hostEdit.getText().toString(),
                         bitMapToString(imageBitmap),

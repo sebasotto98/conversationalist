@@ -49,6 +49,37 @@ public final class ServerGrpc {
     return getSendMessageMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.chatMessageRequest,
+      io.grpc.examples.backendserver.messageResponse> getGetAllChatMessagesMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getAllChatMessages",
+      requestType = io.grpc.examples.backendserver.chatMessageRequest.class,
+      responseType = io.grpc.examples.backendserver.messageResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+  public static io.grpc.MethodDescriptor<io.grpc.examples.backendserver.chatMessageRequest,
+      io.grpc.examples.backendserver.messageResponse> getGetAllChatMessagesMethod() {
+    io.grpc.MethodDescriptor<io.grpc.examples.backendserver.chatMessageRequest, io.grpc.examples.backendserver.messageResponse> getGetAllChatMessagesMethod;
+    if ((getGetAllChatMessagesMethod = ServerGrpc.getGetAllChatMessagesMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getGetAllChatMessagesMethod = ServerGrpc.getGetAllChatMessagesMethod) == null) {
+          ServerGrpc.getGetAllChatMessagesMethod = getGetAllChatMessagesMethod =
+              io.grpc.MethodDescriptor.<io.grpc.examples.backendserver.chatMessageRequest, io.grpc.examples.backendserver.messageResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getAllChatMessages"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.chatMessageRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.messageResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("getAllChatMessages"))
+              .build();
+        }
+      }
+    }
+    return getGetAllChatMessagesMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -107,6 +138,13 @@ public final class ServerGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getSendMessageMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void getAllChatMessages(io.grpc.examples.backendserver.chatMessageRequest request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetAllChatMessagesMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -116,6 +154,13 @@ public final class ServerGrpc {
                 io.grpc.examples.backendserver.sendingMessage,
                 io.grpc.examples.backendserver.messageResponse>(
                   this, METHODID_SEND_MESSAGE)))
+          .addMethod(
+            getGetAllChatMessagesMethod(),
+            io.grpc.stub.ServerCalls.asyncServerStreamingCall(
+              new MethodHandlers<
+                io.grpc.examples.backendserver.chatMessageRequest,
+                io.grpc.examples.backendserver.messageResponse>(
+                  this, METHODID_GET_ALL_CHAT_MESSAGES)))
           .build();
     }
   }
@@ -144,6 +189,14 @@ public final class ServerGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getSendMessageMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getAllChatMessages(io.grpc.examples.backendserver.chatMessageRequest request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncServerStreamingCall(
+          getChannel().newCall(getGetAllChatMessagesMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -168,6 +221,14 @@ public final class ServerGrpc {
     public io.grpc.examples.backendserver.messageResponse sendMessage(io.grpc.examples.backendserver.sendingMessage request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getSendMessageMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public java.util.Iterator<io.grpc.examples.backendserver.messageResponse> getAllChatMessages(
+        io.grpc.examples.backendserver.chatMessageRequest request) {
+      return io.grpc.stub.ClientCalls.blockingServerStreamingCall(
+          getChannel(), getGetAllChatMessagesMethod(), getCallOptions(), request);
     }
   }
 
@@ -198,6 +259,7 @@ public final class ServerGrpc {
   }
 
   private static final int METHODID_SEND_MESSAGE = 0;
+  private static final int METHODID_GET_ALL_CHAT_MESSAGES = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -218,6 +280,10 @@ public final class ServerGrpc {
       switch (methodId) {
         case METHODID_SEND_MESSAGE:
           serviceImpl.sendMessage((io.grpc.examples.backendserver.sendingMessage) request,
+              (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse>) responseObserver);
+          break;
+        case METHODID_GET_ALL_CHAT_MESSAGES:
+          serviceImpl.getAllChatMessages((io.grpc.examples.backendserver.chatMessageRequest) request,
               (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse>) responseObserver);
           break;
         default:
@@ -282,6 +348,7 @@ public final class ServerGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new ServerFileDescriptorSupplier())
               .addMethod(getSendMessageMethod())
+              .addMethod(getGetAllChatMessagesMethod())
               .build();
         }
       }

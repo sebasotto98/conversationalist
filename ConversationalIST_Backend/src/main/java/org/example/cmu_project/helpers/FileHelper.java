@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -13,7 +15,7 @@ public class FileHelper {
 
     protected String FILE_FORMAT = ".csv";
 
-    public String parseToClient(String fileId) {
+    public List<String> parseToClient(List<String> fileId) {
         return null;
     }
 
@@ -36,13 +38,13 @@ public class FileHelper {
         }
     }
 
-    protected String read(String fileId) {
-        String data = "";
+    protected List<String> read(String fileId) {
+        List<String> data = new ArrayList<>();
         try {
             File myObj = new File(fileId + FILE_FORMAT);
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
-                data += myReader.nextLine();
+                data.add(myReader.nextLine());
             }
             myReader.close();
         } catch (FileNotFoundException e) {
@@ -73,12 +75,12 @@ public class FileHelper {
         write(data, fileId);
     }
 
-    protected String retrieve(String fileId) {
+    protected List<String> retrieve(String fileId) {
         return retrieve(fileId, false);
     }
 
-    protected String retrieve(String fileId, boolean isSensitive) {
-        String data = read(fileId);
+    protected List<String> retrieve(String fileId, boolean isSensitive) {
+        List<String> data = read(fileId);
         if (!isSensitive) {
             return parseToClient(data);
         } else {

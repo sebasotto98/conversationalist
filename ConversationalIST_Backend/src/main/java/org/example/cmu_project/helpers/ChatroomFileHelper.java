@@ -1,5 +1,12 @@
 package org.example.cmu_project.helpers;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Stack;
+
 public class ChatroomFileHelper extends FileHelper {
 
     private static final String CHATROOM_FILE_BEGIN = "app-data-files/chatrooms/";
@@ -17,5 +24,13 @@ public class ChatroomFileHelper extends FileHelper {
                                 type + "\n";
 
         super.write(finalString, CHATROOM_FILE_BEGIN + fileName);
+    }
+
+    public List<String> readFile(String fileName){
+        List<String> data;
+
+        data = super.read(CHATROOM_FILE_BEGIN + fileName);
+
+        return data;
     }
 }

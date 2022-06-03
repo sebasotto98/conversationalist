@@ -11,6 +11,11 @@ package helloworld;
 service Server {
 
   rpc sendMessage (sendingMessage) returns (messageResponse) {}
+  rpc getAllChatMessages (chatMessageRequest) returns (stream messageResponse) {}
+}
+
+message chatMessageRequest {
+  string chatroom = 1;
 }
 
 message sendingMessage {

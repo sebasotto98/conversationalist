@@ -5,6 +5,7 @@ import io.grpc.ServerBuilder;
 import io.grpc.examples.backendserver.ServerGrpc;
 import io.grpc.examples.backendserver.messageResponse;
 import io.grpc.examples.backendserver.sendingMessage;
+import io.grpc.examples.backendserver.chatMessageRequest;
 import io.grpc.stub.StreamObserver;
 import org.example.cmu_project.helpers.ChatroomFileHelper;
 import org.example.cmu_project.helpers.FileHelper;
@@ -13,6 +14,8 @@ import java.io.IOException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -89,6 +92,33 @@ public class ConversationalISTServer {
                     .setUsername(req.getUsername())
                     .build();
             responseObserver.onNext(reply);
+            responseObserver.onCompleted();
+        }
+
+        @Override
+        public void getAllChatMessages(chatMessageRequest req, StreamObserver<messageResponse> responseObserver){
+            logger.info("Got request from client: " + req);
+
+            String data, username, timestamp, type;
+            String chatroom = req.getChatroom();
+
+            List<String> messages = chatroomFileHelper.readFile(chatroom);
+
+            for (String m: messages) {
+                String[] aux = m.split(",");
+                data = aux[0];
+                username = aux[1];
+                timestamp = aux[2];
+                type = aux[3];
+                messageResponse message = messageResponse.newBuilder()
+                        .setUsername(username)
+                        .setTimestamp(timestamp)
+                        .setData(data)
+                        .setType(Integer.parseInt(type))
+                        .build();
+                responseObserver.onNext(message);
+            }
+
             responseObserver.onCompleted();
         }
     }
