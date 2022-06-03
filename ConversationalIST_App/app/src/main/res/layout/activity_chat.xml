@@ -37,6 +37,13 @@
         android:minHeight="48dp" />
 
     <Button
+        android:id="@+id/send_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="sendText"
+        android:text="@string/send_text" />
+
+    <Button
         android:id="@+id/camera_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,13 +56,6 @@
         android:layout_height="wrap_content"
         android:onClick="showMap"
         android:text="@string/send_geolocation" />
-
-    <Button
-        android:id="@+id/send_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="sendMessage"
-        android:text="@string/send_message" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

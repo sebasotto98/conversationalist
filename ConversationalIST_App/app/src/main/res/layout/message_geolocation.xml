@@ -7,13 +7,12 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="16dp">
 
-
     <TextView
-        android:id="@+id/text_user"
+        android:id="@+id/geolocation_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="@string/name_default"
+        android:text="name_default"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -27,20 +26,20 @@
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true"
-        app:layout_constraintStart_toStartOf="@+id/text_user"
-        app:layout_constraintTop_toBottomOf="@+id/text_user">
+        app:layout_constraintStart_toStartOf="@+id/geolocation_user"
+        app:layout_constraintTop_toBottomOf="@+id/geolocation_user">
         <LinearLayout
             android:id="@+id/layout_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/text_message"
+            <TextView
+                android:id="@+id/geolocation_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:contentDescription="@string/image"
+                android:contentDescription=""
                 android:maxWidth="260dp"
                 android:maxHeight="260dp"
                 android:src="@null" />
@@ -48,14 +47,13 @@
 
     </androidx.cardview.widget.CardView>
     <TextView
-        android:id="@+id/text_timestamp"
+        android:id="@+id/geolocation_timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/default_timestamp"
+        android:text="default_timestamp"
         android:textColor="#C0C0C0"
         android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="@+id/card_message"
         app:layout_constraintStart_toEndOf="@+id/card_message" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

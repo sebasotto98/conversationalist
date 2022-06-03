@@ -1,5 +1,6 @@
 package com.example.cmu_project.activities;
 
+import com.example.cmu_project.GlobalVariables;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -21,8 +22,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.adevinta.leku.LocationPickerActivity;
-import com.example.cmu_project.GlobalVariables;
 import com.example.cmu_project.R;
+import com.example.cmu_project.adapters.MessageAdapter;
+import com.example.cmu_project.enums.MessageType;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
@@ -69,19 +71,7 @@ public class ChatActivity extends AppCompatActivity {
         messageRecycler.setAdapter(messageAdapter);
     }
 
-    public void sendMessage(View view) {
-        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(hostEdit.getWindowToken(), 0);
-        sendButton.setEnabled(false);
-
-        new GrpcTask(this, messageRecycler)
-                .execute(
-                        hostEdit.getText().toString(),
-                        messageEdit.getText().toString(),
-                        portEdit.getText().toString());
-    }
-
-    private class GrpcTask extends AsyncTask<String, Void, messageResponse> {
+    private class GrpcTask extends AsyncTask<Object, Void, messageResponse> {
         private final WeakReference<Activity> activityReference;
         private ManagedChannel channel;
         private final MessageAdapter messageAdapter;
@@ -94,23 +84,24 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         @Override
-        protected messageResponse doInBackground(String... params) {
-            String host = params[0];
-            String message = params[1];
-            String portStr = params[2];
-            int port = TextUtils.isEmpty(portStr) ? 0 : Integer.valueOf(portStr);
+        protected messageResponse doInBackground(Object... params) {
+            String host = (String) params[0];
+            String message = (String) params[1];
+            String portStr = (String) params[2];
+            int type = (int) params[3];
+            int port = TextUtils.isEmpty(portStr) ? 0 : Integer.parseInt(portStr);
             try {
                 channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
                 ServerGrpc.ServerBlockingStub stub = ServerGrpc.newBlockingStub(channel);
 
                 sendingMessage request = sendingMessage.newBuilder()
+                        .setType(type)
                         .setData(message)
                         .setUsername(((GlobalVariables) getApplication()).getUsername())
                         .setChatroom(((GlobalVariables) getApplication()).getCurrentChatroomName())
                         .build();
 
                 return stub.sendMessage(request);
-
             } catch (Exception e) {
                 StringWriter sw = new StringWriter();
                 PrintWriter pw = new PrintWriter(sw);
@@ -123,7 +114,7 @@ public class ChatActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(messageResponse result) {
-            if(result != null){
+            if(result != null) {
                 try {
                     channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
                 } catch (InterruptedException e) {
@@ -150,6 +141,54 @@ public class ChatActivity extends AppCompatActivity {
                 sendButton.setEnabled(true);
             }
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            sendPhoto(imageBitmap);
+        } else if (requestCode == REQUEST_LOCATION_PICKER && resultCode == RESULT_OK) {
+            for (String c:
+                data.getCategories()) {
+                Log.d("!!!!!!!!!!!!!!!!!!", c);
+            }
+
+            Double latitude = data.getDoubleExtra("LATITUDE", 0.0);
+            Log.d("LATITUDE****", latitude.toString());
+            Double longitude = data.getDoubleExtra("LONGITUDE", 0.0);
+            Log.d("LONGITUDE****", longitude.toString());
+            /*
+            String address = data.getStringExtra("");
+            Log.d("ADDRESS****", address != null ? address : "");
+            String postalcode = data.getStringExtra("");
+            Log.d("POSTALCODE****", postalcode != null ? postalcode : "");
+            String timeZoneId = data.getStringExtra("");
+            Log.d("TIME ZONE ID****", timeZoneId != null ? timeZoneId : "");
+            String timeZoneDisplayName = data.getStringExtra("");
+            Log.d("TIME ZONE NAME****", timeZoneDisplayName != null ? timeZoneDisplayName : "");
+             */
+            String geolocation = latitude + "/" + longitude;
+            sendGeolocation(geolocation);
+        }
+        if (resultCode == Activity.RESULT_CANCELED) {
+            Log.d("RESULT****", "CANCELLED");
+        }
+    }
+
+    public void sendText(View view) {
+        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(hostEdit.getWindowToken(), 0);
+        sendButton.setEnabled(false);
+
+        new GrpcTask(this, messageRecycler)
+                .execute(
+                        hostEdit.getText().toString(),
+                        messageEdit.getText().toString(),
+                        portEdit.getText().toString(),
+                        MessageType.TEXT.getValue());
     }
 
     public void showMap(View view) {
@@ -188,7 +227,8 @@ public class ChatActivity extends AppCompatActivity {
                 .execute(
                         hostEdit.getText().toString(),
                         geolocation,
-                        portEdit.getText().toString());
+                        portEdit.getText().toString(),
+                        MessageType.GEOLOCATION.getValue());
     }
 
     public void showCamera(View view) {
@@ -197,36 +237,6 @@ public class ChatActivity extends AppCompatActivity {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         } catch (ActivityNotFoundException e) {
             logger.warning(e.getMessage());
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            sendPhoto(imageBitmap);
-        } else if (requestCode == REQUEST_LOCATION_PICKER && resultCode == RESULT_OK) {
-            Double latitude = data.getDoubleExtra("", 0.0);
-            Log.d("LATITUDE****", latitude.toString());
-            Double longitude = data.getDoubleExtra("", 0.0);
-            Log.d("LONGITUDE****", longitude.toString());
-            /*
-            String address = data.getStringExtra("");
-            Log.d("ADDRESS****", address != null ? address : "");
-            String postalcode = data.getStringExtra("");
-            Log.d("POSTALCODE****", postalcode != null ? postalcode : "");
-            String timeZoneId = data.getStringExtra("");
-            Log.d("TIME ZONE ID****", timeZoneId != null ? timeZoneId : "");
-            String timeZoneDisplayName = data.getStringExtra("");
-            Log.d("TIME ZONE NAME****", timeZoneDisplayName != null ? timeZoneDisplayName : "");
-             */
-            String geolocation = latitude + "/" + longitude;
-            sendGeolocation(geolocation);
-        }
-        if (resultCode == Activity.RESULT_CANCELED) {
-            Log.d("RESULT****", "CANCELLED");
         }
     }
 
@@ -239,7 +249,8 @@ public class ChatActivity extends AppCompatActivity {
                 .execute(
                         hostEdit.getText().toString(),
                         bitMapToString(imageBitmap),
-                        portEdit.getText().toString());
+                        portEdit.getText().toString(),
+                        MessageType.TEXT.getValue());
     }
 
     private String bitMapToString(Bitmap bitmap){

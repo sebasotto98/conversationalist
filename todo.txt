@@ -25,3 +25,5 @@ aditional:
 	- secure comms
 	- user accounts (almost done)
 	- recommendations
+extras:
+	- get proto file from outside project directory

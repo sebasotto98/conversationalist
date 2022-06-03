@@ -21,6 +21,7 @@
     <string name="default_timestamp">default_timestamp</string>
     <string name="image">Image</string>
     <string name="message_default">message_default</string>
+    <string name="send_text">Send Text</string>
     <string name="send_photo">Send Photo</string>
     <string name="send_geolocation">Send Geolocation</string>
     <string name="send_message">Send Message</string>
