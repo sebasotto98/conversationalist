@@ -1,12 +1,14 @@
 package com.example.cmu_project;
 
 import android.app.Application;
+import android.content.Context;
 
 public class GlobalVariables extends Application {
 
     private String currentChatroomName = null;
     private String username = null;
 
+    private final DBHelper db = new DBHelper(this);
 
     public String getCurrentChatroomName() {
         return currentChatroomName;
@@ -23,4 +25,9 @@ public class GlobalVariables extends Application {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public DBHelper getDb() {
+        return db;
+    }
+
 }

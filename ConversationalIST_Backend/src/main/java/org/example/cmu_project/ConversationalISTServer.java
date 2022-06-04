@@ -87,9 +87,11 @@ public class ConversationalISTServer {
             chatroomFileHelper.writeToFile(data, username, timestamp, type, chatroom);
 
             messageResponse reply = messageResponse.newBuilder()
-                    .setData(req.getData())
+                    .setData(data)
                     .setTimestamp(timestamp)
-                    .setUsername(req.getUsername())
+                    .setUsername(username)
+                    .setChatroom(chatroom)
+                    .setType(Integer.parseInt(type))
                     .build();
             responseObserver.onNext(reply);
             responseObserver.onCompleted();

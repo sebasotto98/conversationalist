@@ -1,10 +1,12 @@
 package com.example.cmu_project.activities;
 
+import com.example.cmu_project.DBHelper;
 import com.example.cmu_project.GlobalVariables;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,8 +36,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
+
+import javax.microedition.khronos.opengles.GL;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -69,18 +72,56 @@ public class ChatActivity extends AppCompatActivity {
         portEdit = (EditText) findViewById(R.id.port_edit_text);
         messageEdit = (EditText) findViewById(R.id.message_edit_text);
         messageRecycler = (RecyclerView) findViewById(R.id.recyclerView);
+
+        retrieveMessagesFromCache();
+
         messageAdapter = new MessageAdapter(this, messageList);
         messageRecycler.setLayoutManager(new LinearLayoutManager(this));
         messageRecycler.setAdapter(messageAdapter);
 
 
-        //change IP for this to work
-        //after load IP and port from file or whatever just use those vars
-        new getAllMessagesFromChatGrpcTask(this, messageRecycler)
-                .execute(
-                        "192.168.1.135",
-                        "50051",
-                        ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
+        if(messageList.isEmpty()) {
+            Log.d("ChatActivity", "messageList is Empty");
+            //change IP for this to work
+            //after load IP and port from file or whatever just use those vars
+            new getAllMessagesFromChatGrpcTask(this, messageRecycler)
+                    .execute(
+                            "192.168.1.135",
+                            "50051",
+                            ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
+        } else {
+            Log.d("ChatActivity", "Loaded some messages from cache. Now contact server.");
+            //TODO: get remaining messages from server (could or not exist)
+        }
+
+        messageRecycler.post(() -> {
+            // Call smooth scroll
+            messageRecycler.smoothScrollToPosition(messageAdapter.getItemCount());
+        });
+    }
+
+    private void retrieveMessagesFromCache() {
+        String chatroom = ((GlobalVariables) this.getApplication()).getCurrentChatroomName();
+
+        Cursor messagesCursor = ((GlobalVariables) this.getApplication()).getDb()
+                                                    .getAllChatroomMessages(chatroom);
+        messagesCursor.moveToFirst();
+        Log.d("CHAT ACTIVITY", String.valueOf(messagesCursor.getCount()));
+        messageResponse message;
+        while(!messagesCursor.isAfterLast()){
+
+            message = messageResponse.newBuilder()
+                    .setChatroom(messagesCursor.getString(messagesCursor.getColumnIndexOrThrow(DBHelper.MESSAGES_COLUMN_CHATROOM)))
+                    .setData(messagesCursor.getString(messagesCursor.getColumnIndexOrThrow(DBHelper.MESSAGES_COLUMN_DATA)))
+                    .setUsername(messagesCursor.getString(messagesCursor.getColumnIndexOrThrow(DBHelper.MESSAGES_COLUMN_USERNAME)))
+                    .setType(Integer.parseInt(messagesCursor.getString(messagesCursor.getColumnIndexOrThrow(DBHelper.MESSAGES_COLUMN_TYPE))))
+                    .setTimestamp(messagesCursor.getString(messagesCursor.getColumnIndexOrThrow(DBHelper.MESSAGES_COLUMN_TIMESTAMP)))
+                    .build();
+            Log.d("CHAT ACTIVITY", String.valueOf(message));
+            messageList.add(message);
+
+            messagesCursor.moveToNext();
+        }
     }
 
     private class getAllMessagesFromChatGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
@@ -130,15 +171,30 @@ public class ChatActivity extends AppCompatActivity {
                 }
 
                 while (messages.hasNext()) {
-                    messageAdapter.addToMessageList(messages.next());
-                }
+                    messageResponse nextMessage = messages.next();
+                    messageAdapter.addToMessageList(nextMessage);
+                    int position = messageAdapter.getItemCount() - 1;
+                    messageAdapter.notifyItemInserted(position);
+                    recyclerView.post(() -> {
+                        // Call smooth scroll
+                        recyclerView.smoothScrollToPosition(position);
+                    });
 
-                int position = messageAdapter.getItemCount() - 1;
-                messageAdapter.notifyItemInserted(position);
-                recyclerView.post(() -> {
-                    // Call smooth scroll
-                    recyclerView.smoothScrollToPosition(position);
-                });
+                    //save message in cache
+                    boolean r = ((GlobalVariables) getApplication()).getDb().insertMessage(
+                            nextMessage.getData(),
+                            nextMessage.getUsername(),
+                            nextMessage.getTimestamp(),
+                            String.valueOf(nextMessage.getType()),
+                            ((GlobalVariables) getApplication()).getCurrentChatroomName()
+                    );
+
+                    if(r) {
+                        Log.d("ChatActivity", "Message response inserted in cache.");
+                    } else {
+                        Log.d("ChatActivity", "Couldn't insert message in cache.");
+                    }
+                }
 
                 try {
                     channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
@@ -207,6 +263,21 @@ public class ChatActivity extends AppCompatActivity {
                     recyclerView.smoothScrollToPosition(position);
                 });
 
+                //save message in cache
+                boolean r = ((GlobalVariables) getApplication()).getDb().insertMessage(
+                        result.getData(),
+                        result.getUsername(),
+                        result.getTimestamp(),
+                        String.valueOf(result.getType()),
+                        result.getChatroom()
+                );
+
+                if(r) {
+                    Log.d("ChatActivity", "Message response inserted in cache.");
+                } else {
+                    Log.d("ChatActivity", "Couldn't insert message in cache.");
+                }
+
                 Button sendButton = (Button) activity.findViewById(R.id.send_button);
                 sendButton.setEnabled(true);
 
@@ -261,9 +332,9 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        hostEdit.getText().toString(),
+                        "192.168.1.135",
                         messageEdit.getText().toString(),
-                        portEdit.getText().toString(),
+                        "50051",
                         MessageType.TEXT.getValue());
     }
 
