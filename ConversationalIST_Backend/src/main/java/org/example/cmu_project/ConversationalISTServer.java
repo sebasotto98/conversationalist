@@ -2,10 +2,7 @@ package org.example.cmu_project;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import io.grpc.examples.backendserver.ServerGrpc;
-import io.grpc.examples.backendserver.messageResponse;
-import io.grpc.examples.backendserver.sendingMessage;
-import io.grpc.examples.backendserver.chatMessageRequest;
+import io.grpc.examples.backendserver.*;
 import io.grpc.stub.StreamObserver;
 import org.example.cmu_project.helpers.ChatroomFileHelper;
 import org.example.cmu_project.helpers.FileHelper;
@@ -101,11 +98,30 @@ public class ConversationalISTServer {
         public void getAllChatMessages(chatMessageRequest req, StreamObserver<messageResponse> responseObserver){
             logger.info("Got request from client: " + req);
 
-            String data, username, timestamp, type;
             String chatroom = req.getChatroom();
 
             List<String> messages = chatroomFileHelper.readFile(chatroom);
 
+            sendMessageStreamToClient(responseObserver, messages);
+        }
+
+        @Override
+        public void getChatMessagesSincePosition(chatMessageFromPosition req, StreamObserver<messageResponse> responseObserver){
+            logger.info("Got request from client: " + req);
+
+            int position = req.getPositionOfLastMessage();
+            String chatroom = req.getChatroom();
+
+            List<String> messages = chatroomFileHelper.readFile(chatroom);
+
+            List<String> remainMessages = messages.subList(position, messages.size());
+
+            sendMessageStreamToClient(responseObserver, remainMessages);
+
+        }
+
+        private void sendMessageStreamToClient(StreamObserver<messageResponse> responseObserver, List<String> messages) {
+            String data, username, timestamp, type;
             for (String m: messages) {
                 String[] aux = m.split(",");
                 data = aux[0];

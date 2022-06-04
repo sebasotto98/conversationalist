@@ -12,6 +12,12 @@ service Server {
 
   rpc sendMessage (sendingMessage) returns (messageResponse) {}
   rpc getAllChatMessages (chatMessageRequest) returns (stream messageResponse) {}
+  rpc getChatMessagesSincePosition (chatMessageFromPosition) returns (stream messageResponse) {}
+}
+
+message chatMessageFromPosition {
+	string chatroom = 1;
+	int32 positionOfLastMessage = 2;
 }
 
 message chatMessageRequest {

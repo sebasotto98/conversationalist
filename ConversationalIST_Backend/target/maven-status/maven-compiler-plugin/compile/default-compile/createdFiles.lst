@@ -4,6 +4,8 @@ io\grpc\examples\backendserver\chatMessageRequest$1.class
 io\grpc\examples\backendserver\ServerGrpc$ServerImplBase.class
 io\grpc\examples\backendserver\chatMessageRequest.class
 io\grpc\examples\backendserver\sendingMessage$Builder.class
+io\grpc\examples\backendserver\chatMessageFromPosition.class
+io\grpc\examples\backendserver\chatMessageFromPositionOrBuilder.class
 io\grpc\examples\backendserver\ServerGrpc$3.class
 io\grpc\examples\backendserver\BackEndServerProto.class
 io\grpc\examples\backendserver\ServerGrpc$ServerBlockingStub.class
@@ -13,6 +15,7 @@ org\example\cmu_project\helpers\UserFileHelper.class
 io\grpc\examples\backendserver\chatMessageRequest$Builder.class
 io\grpc\examples\backendserver\ServerGrpc.class
 io\grpc\examples\backendserver\sendingMessageOrBuilder.class
+io\grpc\examples\backendserver\chatMessageFromPosition$Builder.class
 io\grpc\examples\backendserver\ServerGrpc$MethodHandlers.class
 org\example\cmu_project\ConversationalISTServer.class
 io\grpc\examples\backendserver\messageResponse.class
@@ -26,6 +29,7 @@ io\grpc\examples\backendserver\ServerGrpc$ServerFutureStub.class
 org\example\cmu_project\helpers\ChatroomFileHelper.class
 io\grpc\examples\backendserver\ServerGrpc$ServerFileDescriptorSupplier.class
 org\example\cmu_project\Message.class
+io\grpc\examples\backendserver\chatMessageFromPosition$1.class
 io\grpc\examples\backendserver\sendingMessage.class
 io\grpc\examples\backendserver\ServerGrpc$ServerStub.class
 org\example\cmu_project\helpers\FileHelper.class

@@ -38,14 +38,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import javax.microedition.khronos.opengles.GL;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import io.grpc.examples.backendserver.ServerGrpc;
-import io.grpc.examples.backendserver.chatMessageRequest;
-import io.grpc.examples.backendserver.messageResponse;
-import io.grpc.examples.backendserver.sendingMessage;
+import io.grpc.examples.backendserver.*;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -91,7 +87,15 @@ public class ChatActivity extends AppCompatActivity {
                             ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
         } else {
             Log.d("ChatActivity", "Loaded some messages from cache. Now contact server.");
-            //TODO: get remaining messages from server (could or not exist)
+
+            int position = messageList.size() - 1;
+
+            new getRemainingMessagesGrpcTask(this, messageRecycler)
+                    .execute(
+                            "192.168.1.135",
+                            "50051",
+                            position,
+                            ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
         }
 
         messageRecycler.post(() -> {
@@ -280,6 +284,89 @@ public class ChatActivity extends AppCompatActivity {
 
                 Button sendButton = (Button) activity.findViewById(R.id.send_button);
                 sendButton.setEnabled(true);
+
+                try {
+                    channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+    }
+
+    private class getRemainingMessagesGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
+        private final WeakReference<Activity> activityReference;
+        private ManagedChannel channel;
+        private final MessageAdapter messageAdapter;
+        private final RecyclerView recyclerView;
+
+        private getRemainingMessagesGrpcTask(Activity activity, RecyclerView messageRecycler) {
+            this.activityReference = new WeakReference<>(activity);
+            this.messageAdapter = (MessageAdapter) messageRecycler.getAdapter();
+            this.recyclerView = messageRecycler;
+        }
+
+        @Override
+        protected Iterator<messageResponse> doInBackground(Object... params) {
+            String host = (String) params[0];
+            String portStr = (String) params[1];
+            int position = (int) params[2];
+            String chatroom = (String) params[3];
+            int port = TextUtils.isEmpty(portStr) ? 0 : Integer.parseInt(portStr);
+            try {
+                channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
+                ServerGrpc.ServerBlockingStub stub = ServerGrpc.newBlockingStub(channel);
+
+                chatMessageFromPosition request = chatMessageFromPosition.newBuilder()
+                        .setChatroom(chatroom)
+                        .setPositionOfLastMessage(position)
+                        .build();
+
+                return stub.getChatMessagesSincePosition(request);
+            } catch (Exception e) {
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+                e.printStackTrace(pw);
+                pw.flush();
+                logger.info(sw.toString());
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Iterator<messageResponse> messages) {
+            if(messages != null) {
+
+                Activity activity = activityReference.get();
+                if (activity == null) {
+                    return;
+                }
+
+                while (messages.hasNext()) {
+                    messageResponse nextMessage = messages.next();
+                    messageAdapter.addToMessageList(nextMessage);
+                    int position = messageAdapter.getItemCount() - 1;
+                    messageAdapter.notifyItemInserted(position);
+                    recyclerView.post(() -> {
+                        // Call smooth scroll
+                        recyclerView.smoothScrollToPosition(position);
+                    });
+
+                    //save message in cache
+                    boolean r = ((GlobalVariables) getApplication()).getDb().insertMessage(
+                            nextMessage.getData(),
+                            nextMessage.getUsername(),
+                            nextMessage.getTimestamp(),
+                            String.valueOf(nextMessage.getType()),
+                            ((GlobalVariables) getApplication()).getCurrentChatroomName()
+                    );
+
+                    if(r) {
+                        Log.d("ChatActivity", "Message response inserted in cache.");
+                    } else {
+                        Log.d("ChatActivity", "Couldn't insert message in cache.");
+                    }
+                }
 
                 try {
                     channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);

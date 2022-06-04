@@ -80,6 +80,37 @@ public final class ServerGrpc {
     return getGetAllChatMessagesMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.chatMessageFromPosition,
+      io.grpc.examples.backendserver.messageResponse> getGetChatMessagesSincePositionMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getChatMessagesSincePosition",
+      requestType = io.grpc.examples.backendserver.chatMessageFromPosition.class,
+      responseType = io.grpc.examples.backendserver.messageResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+  public static io.grpc.MethodDescriptor<io.grpc.examples.backendserver.chatMessageFromPosition,
+      io.grpc.examples.backendserver.messageResponse> getGetChatMessagesSincePositionMethod() {
+    io.grpc.MethodDescriptor<io.grpc.examples.backendserver.chatMessageFromPosition, io.grpc.examples.backendserver.messageResponse> getGetChatMessagesSincePositionMethod;
+    if ((getGetChatMessagesSincePositionMethod = ServerGrpc.getGetChatMessagesSincePositionMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getGetChatMessagesSincePositionMethod = ServerGrpc.getGetChatMessagesSincePositionMethod) == null) {
+          ServerGrpc.getGetChatMessagesSincePositionMethod = getGetChatMessagesSincePositionMethod =
+              io.grpc.MethodDescriptor.<io.grpc.examples.backendserver.chatMessageFromPosition, io.grpc.examples.backendserver.messageResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getChatMessagesSincePosition"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.chatMessageFromPosition.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.messageResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("getChatMessagesSincePosition"))
+              .build();
+        }
+      }
+    }
+    return getGetChatMessagesSincePositionMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -145,6 +176,13 @@ public final class ServerGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetAllChatMessagesMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void getChatMessagesSincePosition(io.grpc.examples.backendserver.chatMessageFromPosition request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetChatMessagesSincePositionMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -161,6 +199,13 @@ public final class ServerGrpc {
                 io.grpc.examples.backendserver.chatMessageRequest,
                 io.grpc.examples.backendserver.messageResponse>(
                   this, METHODID_GET_ALL_CHAT_MESSAGES)))
+          .addMethod(
+            getGetChatMessagesSincePositionMethod(),
+            io.grpc.stub.ServerCalls.asyncServerStreamingCall(
+              new MethodHandlers<
+                io.grpc.examples.backendserver.chatMessageFromPosition,
+                io.grpc.examples.backendserver.messageResponse>(
+                  this, METHODID_GET_CHAT_MESSAGES_SINCE_POSITION)))
           .build();
     }
   }
@@ -197,6 +242,14 @@ public final class ServerGrpc {
       io.grpc.stub.ClientCalls.asyncServerStreamingCall(
           getChannel().newCall(getGetAllChatMessagesMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getChatMessagesSincePosition(io.grpc.examples.backendserver.chatMessageFromPosition request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncServerStreamingCall(
+          getChannel().newCall(getGetChatMessagesSincePositionMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -230,6 +283,14 @@ public final class ServerGrpc {
       return io.grpc.stub.ClientCalls.blockingServerStreamingCall(
           getChannel(), getGetAllChatMessagesMethod(), getCallOptions(), request);
     }
+
+    /**
+     */
+    public java.util.Iterator<io.grpc.examples.backendserver.messageResponse> getChatMessagesSincePosition(
+        io.grpc.examples.backendserver.chatMessageFromPosition request) {
+      return io.grpc.stub.ClientCalls.blockingServerStreamingCall(
+          getChannel(), getGetChatMessagesSincePositionMethod(), getCallOptions(), request);
+    }
   }
 
   /**
@@ -260,6 +321,7 @@ public final class ServerGrpc {
 
   private static final int METHODID_SEND_MESSAGE = 0;
   private static final int METHODID_GET_ALL_CHAT_MESSAGES = 1;
+  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION = 2;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -284,6 +346,10 @@ public final class ServerGrpc {
           break;
         case METHODID_GET_ALL_CHAT_MESSAGES:
           serviceImpl.getAllChatMessages((io.grpc.examples.backendserver.chatMessageRequest) request,
+              (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse>) responseObserver);
+          break;
+        case METHODID_GET_CHAT_MESSAGES_SINCE_POSITION:
+          serviceImpl.getChatMessagesSincePosition((io.grpc.examples.backendserver.chatMessageFromPosition) request,
               (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse>) responseObserver);
           break;
         default:
@@ -349,6 +415,7 @@ public final class ServerGrpc {
               .setSchemaDescriptor(new ServerFileDescriptorSupplier())
               .addMethod(getSendMessageMethod())
               .addMethod(getGetAllChatMessagesMethod())
+              .addMethod(getGetChatMessagesSincePositionMethod())
               .build();
         }
       }
