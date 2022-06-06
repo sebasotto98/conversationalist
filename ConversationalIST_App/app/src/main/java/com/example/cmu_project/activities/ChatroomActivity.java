@@ -35,7 +35,7 @@ public class ChatroomActivity extends AppCompatActivity {
     }
 
     public void create_chatroom(View view) {
-        Intent myIntent = new Intent(ChatroomActivity.this, ChatActivity.class);
+        Intent myIntent = new Intent(ChatroomActivity.this, CreateChatActivity.class);
         ChatroomActivity.this.startActivity(myIntent);
     }
 }
