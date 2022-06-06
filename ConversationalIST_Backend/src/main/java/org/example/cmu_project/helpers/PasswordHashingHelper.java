@@ -16,7 +16,7 @@ public class PasswordHashingHelper {
     }
 
     public static boolean verifyHash(String password, String userId) {
-        String hash = fileHelper.retrieve(userId, true);
+        String hash = String.valueOf(fileHelper.retrieve(userId, true));
         if (BCrypt.checkpw(password, hash)) {
             logger.info("Password correct!");
             return true;

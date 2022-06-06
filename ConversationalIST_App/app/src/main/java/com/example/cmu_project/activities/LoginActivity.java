@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
             Intent myIntent = new Intent(LoginActivity.this, ChatroomActivity.class);
             myIntent.putExtra("username", ed1.getText().toString());
-            LoginActivity.this.startActivity(myIntent);
+            startActivity(myIntent);
         }
     }
 }

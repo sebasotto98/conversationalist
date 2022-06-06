@@ -2,12 +2,17 @@ package org.example.cmu_project;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import io.grpc.examples.helloworld.GreeterGrpc;
-import io.grpc.examples.helloworld.HelloReply;
-import io.grpc.examples.helloworld.HelloRequest;
+import io.grpc.examples.backendserver.*;
 import io.grpc.stub.StreamObserver;
+import org.example.cmu_project.helpers.ChatroomFileHelper;
+import org.example.cmu_project.helpers.FileHelper;
 
 import java.io.IOException;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -22,7 +27,7 @@ public class ConversationalISTServer {
     private void start() throws IOException {
         /* The port on which the server should run */
         server = ServerBuilder.forPort(PORT_NUM)
-                .addService(new GreeterImpl())
+                .addService(new ServerImpl())
                 .build()
                 .start();
         logger.info("Server started, listening on " + PORT_NUM);
@@ -62,17 +67,77 @@ public class ConversationalISTServer {
         conversationalISTServer.blockUntilShutdown();
     }
 
-    static class GreeterImpl extends GreeterGrpc.GreeterImplBase {
+    static class ServerImpl extends ServerGrpc.ServerImplBase {
+
+        ChatroomFileHelper chatroomFileHelper = new ChatroomFileHelper();
 
         @Override
-        public void sayHello(HelloRequest req, StreamObserver<HelloReply> responseObserver) {
+        public void sendMessage(sendingMessage req, StreamObserver<messageResponse> responseObserver) {
             logger.info("Got request from client: " + req);
-            HelloReply reply = HelloReply.newBuilder().setMessage(
-                    "Server says " + "\"" + req.getName() + "\""
-            ).build();
+
+            String timestamp = String.valueOf(Timestamp.from(Instant.now()));
+            String data = req.getData();
+            String username = req.getUsername();
+            String chatroom = req.getChatroom();
+            String type = String.valueOf(req.getType());
+
+            chatroomFileHelper.writeToFile(data, username, timestamp, type, chatroom);
+
+            messageResponse reply = messageResponse.newBuilder()
+                    .setData(data)
+                    .setTimestamp(timestamp)
+                    .setUsername(username)
+                    .setChatroom(chatroom)
+                    .setType(Integer.parseInt(type))
+                    .build();
             responseObserver.onNext(reply);
             responseObserver.onCompleted();
         }
-    }
 
+        @Override
+        public void getAllChatMessages(chatMessageRequest req, StreamObserver<messageResponse> responseObserver){
+            logger.info("Got request from client: " + req);
+
+            String chatroom = req.getChatroom();
+
+            List<String> messages = chatroomFileHelper.readFile(chatroom);
+
+            sendMessageStreamToClient(responseObserver, messages);
+        }
+
+        @Override
+        public void getChatMessagesSincePosition(chatMessageFromPosition req, StreamObserver<messageResponse> responseObserver){
+            logger.info("Got request from client: " + req);
+
+            int position = req.getPositionOfLastMessage();
+            String chatroom = req.getChatroom();
+
+            List<String> messages = chatroomFileHelper.readFile(chatroom);
+
+            List<String> remainMessages = messages.subList(position, messages.size());
+
+            sendMessageStreamToClient(responseObserver, remainMessages);
+
+        }
+
+        private void sendMessageStreamToClient(StreamObserver<messageResponse> responseObserver, List<String> messages) {
+            String data, username, timestamp, type;
+            for (String m: messages) {
+                String[] aux = m.split(",");
+                data = aux[0];
+                username = aux[1];
+                timestamp = aux[2];
+                type = aux[3];
+                messageResponse message = messageResponse.newBuilder()
+                        .setUsername(username)
+                        .setTimestamp(timestamp)
+                        .setData(data)
+                        .setType(Integer.parseInt(type))
+                        .build();
+                responseObserver.onNext(message);
+            }
+
+            responseObserver.onCompleted();
+        }
+    }
 }

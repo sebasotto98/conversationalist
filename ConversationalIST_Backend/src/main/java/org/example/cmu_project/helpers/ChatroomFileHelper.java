@@ -1,14 +1,36 @@
 package org.example.cmu_project.helpers;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Stack;
+
 public class ChatroomFileHelper extends FileHelper {
 
+    private static final String CHATROOM_FILE_BEGIN = "app-data-files/chatrooms/";
+
     @Override
-    public String parseToClient(String data) {
-        return null;
+    public void writeToFile(String... args){
+        String data = args[0];
+        String username = args[1];
+        String timestamp = args[2];
+        String type = args[3];
+        String fileName = args[4];
+        String finalString =    data + "," +
+                                username + "," +
+                                timestamp + ","+
+                                type + "\n";
+
+        super.write(finalString, CHATROOM_FILE_BEGIN + fileName);
     }
 
-    @Override
-    public void parseFromClient(String data) {
+    public List<String> readFile(String fileName){
+        List<String> data;
 
+        data = super.read(CHATROOM_FILE_BEGIN + fileName);
+
+        return data;
     }
 }

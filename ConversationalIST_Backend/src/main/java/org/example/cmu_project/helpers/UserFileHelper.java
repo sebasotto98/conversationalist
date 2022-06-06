@@ -1,9 +1,11 @@
 package org.example.cmu_project.helpers;
 
+import java.util.List;
+
 public class UserFileHelper extends FileHelper {
 
     @Override
-    public String parseToClient(String fileId) {
+    public List<String> parseToClient(List<String> fileId) {
         return null;
     }
 
