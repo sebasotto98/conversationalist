@@ -17,7 +17,7 @@ public class MobDataContext extends BandwidthContext{
 
             //isActiveNetworkMetered returns true if connected to data/metered connection
             //                               false if connected to wifi
-            return !ConnectivityManagerCompat.isActiveNetworkMetered(cm);
+            return ConnectivityManagerCompat.isActiveNetworkMetered(cm);
         }
         return false;
     }

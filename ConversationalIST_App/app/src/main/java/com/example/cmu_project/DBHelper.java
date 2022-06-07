@@ -19,7 +19,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String MESSAGES_COLUMN_CHATROOM = "chatroom";
 
     //change this and onUpgrade will be called
-    private static final int VERSION = 15;
+    private static final int VERSION = 19;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME , null, VERSION);

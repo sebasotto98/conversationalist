@@ -165,5 +165,39 @@ public class ConversationalISTServer {
 
 
         }
+
+        @Override
+        public void getLastNMessagesFromChat(NMessagesFromChat request, StreamObserver<messageResponse> responseObserver){
+            String chatroom = request.getChatroom();
+            int numberOfMsg = request.getNumberOfMessages();
+
+            List<String> messages = chatroomFileHelper.readFile(chatroom);
+
+            List<String> messagesToSend = messages.subList(messages.size() - numberOfMsg, messages.size());
+
+            List<String> messagesToSendModified = modifyMessagesToSendForMobileData(messagesToSend);
+
+            sendMessageStreamToClient(responseObserver, messagesToSendModified);
+        }
+
+        private List<String> modifyMessagesToSendForMobileData(List<String> messagesToSend){
+
+            String data, username, timestamp, type, finalMessage;
+            for(int i = 0; i < messagesToSend.size(); i++){
+                String[] msg = messagesToSend.get(i).split(",");
+                data = msg[0];
+                username = msg[1];
+                timestamp = msg[2];
+                type = msg[3];
+                //if image then put default image, don't transmit
+                if(type.equals("1")){
+                    msg[0] = "";
+                }
+                finalMessage = data + "," + username + "," + timestamp + "," + type;
+                messagesToSend.set(i, finalMessage);
+            }
+
+            return messagesToSend;
+        }
     }
 }

@@ -142,6 +142,37 @@ public final class ServerGrpc {
     return getCreateChatMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.NMessagesFromChat,
+      io.grpc.examples.backendserver.messageResponse> getGetLastNMessagesFromChatMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getLastNMessagesFromChat",
+      requestType = io.grpc.examples.backendserver.NMessagesFromChat.class,
+      responseType = io.grpc.examples.backendserver.messageResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+  public static io.grpc.MethodDescriptor<io.grpc.examples.backendserver.NMessagesFromChat,
+      io.grpc.examples.backendserver.messageResponse> getGetLastNMessagesFromChatMethod() {
+    io.grpc.MethodDescriptor<io.grpc.examples.backendserver.NMessagesFromChat, io.grpc.examples.backendserver.messageResponse> getGetLastNMessagesFromChatMethod;
+    if ((getGetLastNMessagesFromChatMethod = ServerGrpc.getGetLastNMessagesFromChatMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getGetLastNMessagesFromChatMethod = ServerGrpc.getGetLastNMessagesFromChatMethod) == null) {
+          ServerGrpc.getGetLastNMessagesFromChatMethod = getGetLastNMessagesFromChatMethod =
+              io.grpc.MethodDescriptor.<io.grpc.examples.backendserver.NMessagesFromChat, io.grpc.examples.backendserver.messageResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getLastNMessagesFromChat"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.NMessagesFromChat.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.messageResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("getLastNMessagesFromChat"))
+              .build();
+        }
+      }
+    }
+    return getGetLastNMessagesFromChatMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -221,6 +252,13 @@ public final class ServerGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreateChatMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void getLastNMessagesFromChat(io.grpc.examples.backendserver.NMessagesFromChat request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetLastNMessagesFromChatMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -251,6 +289,13 @@ public final class ServerGrpc {
                 io.grpc.examples.backendserver.CreateChatRequest,
                 io.grpc.examples.backendserver.CreateChatReply>(
                   this, METHODID_CREATE_CHAT)))
+          .addMethod(
+            getGetLastNMessagesFromChatMethod(),
+            io.grpc.stub.ServerCalls.asyncServerStreamingCall(
+              new MethodHandlers<
+                io.grpc.examples.backendserver.NMessagesFromChat,
+                io.grpc.examples.backendserver.messageResponse>(
+                  this, METHODID_GET_LAST_NMESSAGES_FROM_CHAT)))
           .build();
     }
   }
@@ -303,6 +348,14 @@ public final class ServerGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getCreateChatMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getLastNMessagesFromChat(io.grpc.examples.backendserver.NMessagesFromChat request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncServerStreamingCall(
+          getChannel().newCall(getGetLastNMessagesFromChatMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -351,6 +404,14 @@ public final class ServerGrpc {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getCreateChatMethod(), getCallOptions(), request);
     }
+
+    /**
+     */
+    public java.util.Iterator<io.grpc.examples.backendserver.messageResponse> getLastNMessagesFromChat(
+        io.grpc.examples.backendserver.NMessagesFromChat request) {
+      return io.grpc.stub.ClientCalls.blockingServerStreamingCall(
+          getChannel(), getGetLastNMessagesFromChatMethod(), getCallOptions(), request);
+    }
   }
 
   /**
@@ -391,6 +452,7 @@ public final class ServerGrpc {
   private static final int METHODID_GET_ALL_CHAT_MESSAGES = 1;
   private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION = 2;
   private static final int METHODID_CREATE_CHAT = 3;
+  private static final int METHODID_GET_LAST_NMESSAGES_FROM_CHAT = 4;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -424,6 +486,10 @@ public final class ServerGrpc {
         case METHODID_CREATE_CHAT:
           serviceImpl.createChat((io.grpc.examples.backendserver.CreateChatRequest) request,
               (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.CreateChatReply>) responseObserver);
+          break;
+        case METHODID_GET_LAST_NMESSAGES_FROM_CHAT:
+          serviceImpl.getLastNMessagesFromChat((io.grpc.examples.backendserver.NMessagesFromChat) request,
+              (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -490,6 +556,7 @@ public final class ServerGrpc {
               .addMethod(getGetAllChatMessagesMethod())
               .addMethod(getGetChatMessagesSincePositionMethod())
               .addMethod(getCreateChatMethod())
+              .addMethod(getGetLastNMessagesFromChatMethod())
               .build();
         }
       }

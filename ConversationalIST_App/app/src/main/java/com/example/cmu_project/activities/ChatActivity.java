@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmu_project.R;
 import com.example.cmu_project.adapters.MessageAdapter;
+import com.example.cmu_project.contexts.MobDataContext;
+import com.example.cmu_project.contexts.WifiContext;
 import com.example.cmu_project.enums.MessageType;
 
 import java.io.ByteArrayOutputStream;
@@ -76,27 +79,46 @@ public class ChatActivity extends AppCompatActivity {
         messageRecycler.setLayoutManager(new LinearLayoutManager(this));
         messageRecycler.setAdapter(messageAdapter);
 
+        WifiContext wifiContext = new WifiContext();
+        MobDataContext MDContext = new MobDataContext();
+        if(wifiContext.conforms(this)){
+            //Toast.makeText(getApplicationContext(),"Connected to wifi.", Toast.LENGTH_SHORT).show();
+            if(messageList.isEmpty()) {
+                Log.d("ChatActivity", "messageList is Empty");
+                //change IP for this to work
+                //after load IP and port from file or whatever just use those vars
+                new getAllMessagesFromChatGrpcTask(this, messageRecycler)
+                        .execute(
+                                "192.168.1.135",
+                                "50051",
+                                ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
+            } else {
+                Log.d("ChatActivity", "Loaded some messages from cache. Now contact server.");
 
-        if(messageList.isEmpty()) {
+                int position = messageList.size() - 1;
+                new getRemainingMessagesGrpcTask(this, messageRecycler)
+                        .execute(
+                                "192.168.1.135",
+                                "50051",
+                                position,
+                                ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
+            }
+        } else if(MDContext.conforms(this)){
+            //Toast.makeText(getApplicationContext(),"Connected to mobile data.", Toast.LENGTH_SHORT).show();
             Log.d("ChatActivity", "messageList is Empty");
-            //change IP for this to work
-            //after load IP and port from file or whatever just use those vars
-            new getAllMessagesFromChatGrpcTask(this, messageRecycler)
-                    .execute(
-                            "192.168.56.1",
-                            "50051",
-                            ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
+
+            if(messageList.isEmpty()) {
+                new getLastNMessagesFromChatGrpcTask(this, messageRecycler)
+                        .execute(
+                                "192.168.1.135",
+                                "50051",
+                                ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
+            } else {
+                //TODO
+            }
         } else {
-            Log.d("ChatActivity", "Loaded some messages from cache. Now contact server.");
-
-            int position = messageList.size() - 1;
-
-            new getRemainingMessagesGrpcTask(this, messageRecycler)
-                    .execute(
-                            "192.168.56.1",
-                            "50051",
-                            position,
-                            ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
+            Toast.makeText(getApplicationContext(),
+                    "No connection available.", Toast.LENGTH_SHORT).show();
         }
 
         messageRecycler.post(() -> {
@@ -378,6 +400,88 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    private class getLastNMessagesFromChatGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
+        private final WeakReference<Activity> activityReference;
+        private ManagedChannel channel;
+        private final MessageAdapter messageAdapter;
+        private final RecyclerView recyclerView;
+
+        private getLastNMessagesFromChatGrpcTask(Activity activity, RecyclerView messageRecycler) {
+            this.activityReference = new WeakReference<>(activity);
+            this.messageAdapter = (MessageAdapter) messageRecycler.getAdapter();
+            this.recyclerView = messageRecycler;
+        }
+
+        @Override
+        protected Iterator<messageResponse> doInBackground(Object... params) {
+            String host = (String) params[0];
+            String portStr = (String) params[1];
+            String chatroom = (String) params[2];
+            int port = TextUtils.isEmpty(portStr) ? 0 : Integer.parseInt(portStr);
+            try {
+                channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
+                ServerGrpc.ServerBlockingStub stub = ServerGrpc.newBlockingStub(channel);
+
+                NMessagesFromChat request = NMessagesFromChat.newBuilder()
+                        .setChatroom(chatroom)
+                        .setNumberOfMessages(10) //10 but this can be variable
+                        .build();
+
+                return stub.getLastNMessagesFromChat(request);
+            } catch (Exception e) {
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+                e.printStackTrace(pw);
+                pw.flush();
+                logger.info(sw.toString());
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Iterator<messageResponse> messages) {
+            if(messages != null) {
+
+                Activity activity = activityReference.get();
+                if (activity == null) {
+                    return;
+                }
+
+                while (messages.hasNext()) {
+                    messageResponse nextMessage = messages.next();
+                    messageAdapter.addToMessageList(nextMessage);
+                    int position = messageAdapter.getItemCount() - 1;
+                    messageAdapter.notifyItemInserted(position);
+                    recyclerView.post(() -> {
+                        // Call smooth scroll
+                        recyclerView.smoothScrollToPosition(position);
+                    });
+
+                    //save message in cache
+                    boolean r = ((GlobalVariables) getApplication()).getDb().insertMessage(
+                            nextMessage.getData(),
+                            nextMessage.getUsername(),
+                            nextMessage.getTimestamp(),
+                            String.valueOf(nextMessage.getType()),
+                            ((GlobalVariables) getApplication()).getCurrentChatroomName()
+                    );
+
+                    if(r) {
+                        Log.d("ChatActivity", "Message response inserted in cache.");
+                    } else {
+                        Log.d("ChatActivity", "Couldn't insert message in cache.");
+                    }
+                }
+
+                try {
+                    channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -406,7 +510,7 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        "192.168.56.1",
+                        "192.168.1.135",
                         messageEdit.getText().toString(),
                         "50051",
                         MessageType.TEXT.getValue());
@@ -446,7 +550,7 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        "192.168.56.1",
+                        "192.168.1.135",
                         geolocation,
                         "50051",
                         MessageType.GEOLOCATION.getValue());
@@ -468,7 +572,7 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        "192.168.56.1",
+                        "192.168.1.135",
                         bitMapToString(imageBitmap),
                         "50051",
                         MessageType.PHOTO.getValue());
