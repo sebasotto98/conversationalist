@@ -1,6 +1,6 @@
 package com.example.cmu_project.contexts;
 
-public class PrivateContext implements ContextAwareness {
+public class PrivateContext extends LocationContext {
 
     @Override
     public boolean conforms() {

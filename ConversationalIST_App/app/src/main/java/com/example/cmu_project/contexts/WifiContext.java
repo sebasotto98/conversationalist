@@ -1,10 +1,8 @@
 package com.example.cmu_project.contexts;
 
-public class PublicContext extends LocationContext {
-
+public class WifiContext extends BandwidthContext {
     @Override
     public boolean conforms() {
-        return true;
+        return false;
     }
-
 }

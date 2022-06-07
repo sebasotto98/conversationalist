@@ -2,14 +2,12 @@ mandatory:
 	- login activity
 	- chatroom selection activity
 		- unread message badge
-		- joined chats
-		- unjoined chats
+		- difference between joined and unjoined chats
 		- new chat
 	- chat activity
 		- simple text
 		- photos
 		- geolocation
-		- message stack with images and geolocation
 		- difference between message sent and received
 	- notifications
 	- resource frugality
@@ -20,7 +18,6 @@ mandatory:
 		- public
 		- private
 		- geo-fenced
-	- caching
 aditional:
 	- secure comms
 	- user accounts (almost done)

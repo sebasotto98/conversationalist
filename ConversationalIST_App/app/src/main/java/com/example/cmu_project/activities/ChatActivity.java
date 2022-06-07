@@ -5,14 +5,19 @@ import com.example.cmu_project.GlobalVariables;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -29,6 +34,9 @@ import com.example.cmu_project.adapters.MessageAdapter;
 import com.example.cmu_project.enums.MessageType;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
@@ -82,7 +90,7 @@ public class ChatActivity extends AppCompatActivity {
             //after load IP and port from file or whatever just use those vars
             new getAllMessagesFromChatGrpcTask(this, messageRecycler)
                     .execute(
-                            "192.168.1.135",
+                            "192.168.56.1",
                             "50051",
                             ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
         } else {
@@ -92,7 +100,7 @@ public class ChatActivity extends AppCompatActivity {
 
             new getRemainingMessagesGrpcTask(this, messageRecycler)
                     .execute(
-                            "192.168.1.135",
+                            "192.168.56.1",
                             "50051",
                             position,
                             ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
@@ -383,16 +391,19 @@ public class ChatActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            saveToInternalStorage(imageBitmap, "BLABLA");
             sendPhoto(imageBitmap);
         } else if (requestCode == REQUEST_LOCATION_PICKER && resultCode == RESULT_OK) {
-            for (String c:
-                data.getCategories()) {
-                Log.d("!!!!!!!!!!!!!!!!!!", c);
+            Bundle bundle = data.getExtras();
+            if (bundle != null) {
+                for (String key : bundle.keySet()) {
+                    Log.d("!!!!!!!!!!!", key + " : " + (bundle.get(key) != null ? bundle.get(key) : "NULL"));
+                }
             }
 
-            Double latitude = data.getDoubleExtra("LATITUDE", 0.0);
+            Double latitude = data.getDoubleExtra("latitude", 0.0);
             Log.d("LATITUDE****", latitude.toString());
-            Double longitude = data.getDoubleExtra("LONGITUDE", 0.0);
+            Double longitude = data.getDoubleExtra("longitude", 0.0);
             Log.d("LONGITUDE****", longitude.toString());
             /*
             String address = data.getStringExtra("");
@@ -405,6 +416,7 @@ public class ChatActivity extends AppCompatActivity {
             Log.d("TIME ZONE NAME****", timeZoneDisplayName != null ? timeZoneDisplayName : "");
              */
             String geolocation = latitude + "/" + longitude;
+
             sendGeolocation(geolocation);
         }
         if (resultCode == Activity.RESULT_CANCELED) {
@@ -419,7 +431,7 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        "192.168.1.135",
+                        "192.168.56.1",
                         messageEdit.getText().toString(),
                         "50051",
                         MessageType.TEXT.getValue());
@@ -444,12 +456,25 @@ public class ChatActivity extends AppCompatActivity {
                 //.withSearchBarHidden()
                 .build(getApplicationContext());
 
+
         try {
             startActivityForResult(locationPickerIntent, REQUEST_LOCATION_PICKER);
+
         } catch (ActivityNotFoundException e) {
             logger.warning(e.getMessage());
         }
 
+
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int i) {
+        super.startActivityForResult(intent, i, null);
+        View rootView = getWindow().getDecorView();
+
+        Bitmap b = screenShot(rootView);
+
+        saveToInternalStorage(b, "/BLABLA");
     }
 
     private void sendGeolocation(String geolocation) {
@@ -459,9 +484,9 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        hostEdit.getText().toString(),
+                        "192.168.56.1",
                         geolocation,
-                        portEdit.getText().toString(),
+                        "50051",
                         MessageType.GEOLOCATION.getValue());
     }
 
@@ -481,17 +506,51 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        hostEdit.getText().toString(),
+                        "192.168.56.1",
                         bitMapToString(imageBitmap),
-                        portEdit.getText().toString(),
-                        MessageType.TEXT.getValue());
+                        "50051",
+                        MessageType.PHOTO.getValue());
     }
 
-    private String bitMapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-        byte [] b=baos.toByteArray();
-        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+    private void saveToInternalStorage(Bitmap bitmapImage, String path) {
+        // Create imageDir
+        String directoryPath = this.getCacheDir() + path;
+        File directory = new File(directoryPath);
+        if(!directory.exists()) {
+            directory.mkdir();
+        }
+        File mypath=new File(directory,"profile.jpg");
+        if(!mypath.exists()) {
+            try {
+                mypath.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Bitmap screenShot(View view) {
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(),view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap;
+    }
+
+    private String bitMapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String temp = Base64.encodeToString(b, Base64.DEFAULT);
         return temp;
     }
 
