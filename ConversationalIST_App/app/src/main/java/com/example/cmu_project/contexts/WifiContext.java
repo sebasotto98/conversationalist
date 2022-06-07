@@ -1,8 +1,27 @@
 package com.example.cmu_project.contexts;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+
+import androidx.core.net.ConnectivityManagerCompat;
+
 public class WifiContext extends BandwidthContext {
     @Override
-    public boolean conforms() {
+    public boolean conforms(Object... args) {
+        Context context = (Context) args[0];
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if(cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected()) {
+
+
+            //isActiveNetworkMetered returns true if connected to data/metered connection
+            //                               false if connected to wifi
+            return !ConnectivityManagerCompat.isActiveNetworkMetered(cm);
+        }
         return false;
     }
 }
