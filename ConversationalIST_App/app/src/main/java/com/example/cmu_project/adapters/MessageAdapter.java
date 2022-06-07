@@ -154,7 +154,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
             String y = coordinates[1];
 
             Picasso.with(context)
-                    .load("http://[abc].tile.openstreetmap.org/10/" + x + "/" + y + ".png")
+                    .load("https://maps.google.com/maps/api/staticmap?center=" + x + "," + y + "&zoom=15&size=640x480&scale=2&maptype=hybrid&key=AIzaSyBVHoyrgJOlu_Zla_PLsWFXb8XMhVzCxDU")
                     .into(messageGeolocation);
 
             timeGeolocation.setText(message.getTimestamp());
