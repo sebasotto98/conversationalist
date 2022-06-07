@@ -19,7 +19,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String MESSAGES_COLUMN_CHATROOM = "chatroom";
 
     //change this and onUpgrade will be called
-    private static final int VERSION = 9;
+    private static final int VERSION = 11;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME , null, VERSION);
@@ -39,8 +39,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS messages");
         onCreate(db);
     }
-
-
 
     public boolean insertMessage (String data, String username, String timestamp, String type, String chatroom) {
         SQLiteDatabase db = this.getWritableDatabase();

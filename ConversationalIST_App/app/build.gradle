@@ -71,6 +71,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
 
     implementation 'com.adevinta.android:leku:9.1.4'
+    implementation group: 'com.squareup.picasso', name: 'picasso', version: '2.5.2'
 
     testImplementation group: 'junit', name: 'junit', version: '4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

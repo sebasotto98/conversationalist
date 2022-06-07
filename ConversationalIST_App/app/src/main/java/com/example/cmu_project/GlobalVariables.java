@@ -1,7 +1,6 @@
 package com.example.cmu_project;
 
 import android.app.Application;
-import android.content.Context;
 
 public class GlobalVariables extends Application {
 

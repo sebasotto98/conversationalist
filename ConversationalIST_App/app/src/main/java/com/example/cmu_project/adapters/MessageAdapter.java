@@ -1,39 +1,33 @@
 package com.example.cmu_project.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.os.Bundle;
-import android.os.Environment;
+
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.adevinta.leku.LocationPicker;
-import com.adevinta.leku.LocationPickerActivity;
 import com.example.cmu_project.R;
+import com.example.cmu_project.activities.ChatActivity;
+import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
+
 import io.grpc.examples.backendserver.messageResponse;
 
 public class MessageAdapter extends RecyclerView.Adapter {
+
+    private static final Logger logger = Logger.getLogger(ChatActivity.class.getName());
 
     private List<messageResponse> messageList;
     private Context context;
@@ -42,7 +36,6 @@ public class MessageAdapter extends RecyclerView.Adapter {
     private final int MESSAGE_PHOTO = 1;
     private final int MESSAGE_GEOLOCATION = 2;
 
-    //change messageList from List<String> to List<Message> that can support text, image or location
     public MessageAdapter(Context context, List<messageResponse> messageList) {
         this.context = context;
         this.messageList = messageList;
@@ -59,14 +52,6 @@ public class MessageAdapter extends RecyclerView.Adapter {
         messageResponse message = messageList.get(position);
 
         return message.getType();
-
-        /*if (message.getSender().getUserId().equals(SendBird.getCurrentUser().getUserId())) {
-            // If the current user is the sender of the message
-            return VIEW_TYPE_MESSAGE_SENT;
-        } else {
-            // If some other user sent the message
-            return VIEW_TYPE_MESSAGE_RECEIVED;
-        }*/
     }
 
     @Override
@@ -74,7 +59,6 @@ public class MessageAdapter extends RecyclerView.Adapter {
         return messageList.size();
     }
 
-    //complete for other message types
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -97,7 +81,6 @@ public class MessageAdapter extends RecyclerView.Adapter {
         }
     }
 
-    //complete for other message types
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         messageResponse message = messageList.get(position);
@@ -117,7 +100,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private static class MessageTextHolder extends RecyclerView.ViewHolder {
+    private class MessageTextHolder extends RecyclerView.ViewHolder {
         TextView messageText, timeText, nameText;
 
         MessageTextHolder(View itemView) {
@@ -146,7 +129,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
         }
 
         void bind(messageResponse message) {
-            messagePhoto.setImageBitmap(loadImageFromStorage("/BLABLA"));
+            messagePhoto.setImageBitmap(stringToBitMap(message.getData()));
             timePhoto.setText(message.getTimestamp());
             namePhoto.setText(message.getUsername());
         }
@@ -165,28 +148,29 @@ public class MessageAdapter extends RecyclerView.Adapter {
         }
 
         void bind(messageResponse message) {
-            messageGeolocation.setImageBitmap(loadImageFromStorage("/BLABLA"));
+
+            String[] coordinates = message.getData().split("/");
+            String x = coordinates[0];
+            String y = coordinates[1];
+
+            Picasso.with(context)
+                    .load("http://[abc].tile.openstreetmap.org/10/" + x + "/" + y + ".png")
+                    .into(messageGeolocation);
+
             timeGeolocation.setText(message.getTimestamp());
             nameGeolocation.setText(message.getUsername());
         }
 
     }
 
-    private Bitmap loadImageFromStorage(String path) {
-
+    public Bitmap stringToBitMap(String encodedString) {
         try {
-            File f = new File(context.getCacheDir() + path, "profile.jpg");
-            FileInputStream fis = new FileInputStream(f);
-            Bitmap b = BitmapFactory.decodeStream(fis);
-            fis.close();
-            return b;
-        } catch (IOException e) {
-            e.printStackTrace();
+            byte [] encodeByte = Base64.decode(encodedString,Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        }
+        catch(Exception e) {
+            logger.warning(e.getMessage());
             return null;
         }
-
     }
-
 }
-
-
