@@ -6,6 +6,8 @@ import io.grpc.examples.backendserver.*;
 import io.grpc.stub.StreamObserver;
 import org.example.cmu_project.helpers.ChatroomFileHelper;
 import org.example.cmu_project.helpers.FileHelper;
+import org.example.cmu_project.helpers.GeneralHelper;
+import org.example.cmu_project.helpers.UserFileHelper;
 
 import java.io.IOException;
 import java.sql.Time;
@@ -70,6 +72,8 @@ public class ConversationalISTServer {
     static class ServerImpl extends ServerGrpc.ServerImplBase {
 
         ChatroomFileHelper chatroomFileHelper = new ChatroomFileHelper();
+        UserFileHelper userFileHelper = new UserFileHelper();
+        GeneralHelper generalHelper = new GeneralHelper();
 
         @Override
         public void sendMessage(sendingMessage req, StreamObserver<messageResponse> responseObserver) {
@@ -138,6 +142,28 @@ public class ConversationalISTServer {
             }
 
             responseObserver.onCompleted();
+        }
+
+        @Override
+        public void createChat(CreateChatRequest request, StreamObserver<CreateChatReply> responseObserver) {
+
+            String chatName = request.getChatroomName();
+            String user_name = request.getUser();
+
+            if(generalHelper.userExists(user_name)) {
+                if(!generalHelper.chatAlreadyExists(chatName)) {
+                        userFileHelper.store(chatName,user_name);
+                        chatroomFileHelper.store("",chatroomFileHelper.CHATROOM_FILE_BEGIN+chatName);
+                        chatroomFileHelper.store(chatName+","+user_name,chatroomFileHelper.CHATROOM_FILE_INFO);
+                }
+            }
+
+            CreateChatReply response = CreateChatReply.newBuilder().setAck("OK").build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+
+
+
         }
     }
 }

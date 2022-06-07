@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="\app-data-files\chatrooms\AndroidRoom.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\app-data-files\chatrooms\CMU Chat.csv">
           <value>
             <Attribute>
@@ -10,7 +17,28 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\app-data-files\chatrooms\sala1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\app-data-files\chatrooms\sample_chat.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\chatrooms_info.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\chatrooms_info_sample.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -25,6 +53,20 @@
           </value>
         </entry>
         <entry key="\app-data-files\users\sample_user.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\users\tester.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\users\testerAndroid.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

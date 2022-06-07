@@ -9,7 +9,8 @@ import java.util.Stack;
 
 public class ChatroomFileHelper extends FileHelper {
 
-    private static final String CHATROOM_FILE_BEGIN = "app-data-files/chatrooms/";
+    public static final String CHATROOM_FILE_BEGIN = "app-data-files/chatrooms/";
+    public static final String CHATROOM_FILE_INFO = "app-data-files/chatrooms_info";
 
     @Override
     public void writeToFile(String... args){
@@ -32,5 +33,11 @@ public class ChatroomFileHelper extends FileHelper {
         data = super.read(CHATROOM_FILE_BEGIN + fileName);
 
         return data;
+    }
+
+
+    @Override
+    public void store(String data, String fileId) {
+        super.store(data,fileId);
     }
 }

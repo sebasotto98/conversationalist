@@ -1,9 +1,6 @@
 package org.example.cmu_project.helpers;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -29,8 +26,10 @@ public class FileHelper {
 
     protected void write(String data, String fileId) {
         try {
-            FileWriter myWriter = new FileWriter(fileId + FILE_FORMAT, true);
+
+            BufferedWriter myWriter = new BufferedWriter(new FileWriter(fileId + FILE_FORMAT, true));
             myWriter.write(data);
+            myWriter.newLine();
             myWriter.close();
             logger.info("Successfully wrote to the file.");
         } catch (IOException e) {
@@ -53,7 +52,7 @@ public class FileHelper {
         return data;
     }
 
-    protected void store(String data, String fileId) {
+    public void store(String data, String fileId) {
         this.store(data, fileId, false);
     }
 

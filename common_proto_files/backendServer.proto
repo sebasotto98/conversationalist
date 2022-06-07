@@ -13,6 +13,8 @@ service Server {
   rpc sendMessage (sendingMessage) returns (messageResponse) {}
   rpc getAllChatMessages (chatMessageRequest) returns (stream messageResponse) {}
   rpc getChatMessagesSincePosition (chatMessageFromPosition) returns (stream messageResponse) {}
+  rpc createChat (CreateChatRequest) returns (CreateChatReply) {}
+
 }
 
 message chatMessageFromPosition {
@@ -38,4 +40,13 @@ message messageResponse {
   string chatroom = 3;
   string data = 4;
   int32 type = 5;
+}
+
+message CreateChatRequest {
+  string user = 1;
+  string chatroom_name = 2;
+}
+
+message CreateChatReply {
+  string ack = 1;
 }

@@ -111,6 +111,37 @@ public final class ServerGrpc {
     return getGetChatMessagesSincePositionMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.CreateChatRequest,
+      io.grpc.examples.backendserver.CreateChatReply> getCreateChatMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "createChat",
+      requestType = io.grpc.examples.backendserver.CreateChatRequest.class,
+      responseType = io.grpc.examples.backendserver.CreateChatReply.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<io.grpc.examples.backendserver.CreateChatRequest,
+      io.grpc.examples.backendserver.CreateChatReply> getCreateChatMethod() {
+    io.grpc.MethodDescriptor<io.grpc.examples.backendserver.CreateChatRequest, io.grpc.examples.backendserver.CreateChatReply> getCreateChatMethod;
+    if ((getCreateChatMethod = ServerGrpc.getCreateChatMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getCreateChatMethod = ServerGrpc.getCreateChatMethod) == null) {
+          ServerGrpc.getCreateChatMethod = getCreateChatMethod =
+              io.grpc.MethodDescriptor.<io.grpc.examples.backendserver.CreateChatRequest, io.grpc.examples.backendserver.CreateChatReply>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "createChat"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.CreateChatRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.CreateChatReply.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("createChat"))
+              .build();
+        }
+      }
+    }
+    return getCreateChatMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -183,6 +214,13 @@ public final class ServerGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetChatMessagesSincePositionMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void createChat(io.grpc.examples.backendserver.CreateChatRequest request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.CreateChatReply> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreateChatMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -206,6 +244,13 @@ public final class ServerGrpc {
                 io.grpc.examples.backendserver.chatMessageFromPosition,
                 io.grpc.examples.backendserver.messageResponse>(
                   this, METHODID_GET_CHAT_MESSAGES_SINCE_POSITION)))
+          .addMethod(
+            getCreateChatMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                io.grpc.examples.backendserver.CreateChatRequest,
+                io.grpc.examples.backendserver.CreateChatReply>(
+                  this, METHODID_CREATE_CHAT)))
           .build();
     }
   }
@@ -250,6 +295,14 @@ public final class ServerGrpc {
       io.grpc.stub.ClientCalls.asyncServerStreamingCall(
           getChannel().newCall(getGetChatMessagesSincePositionMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void createChat(io.grpc.examples.backendserver.CreateChatRequest request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.CreateChatReply> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getCreateChatMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -291,6 +344,13 @@ public final class ServerGrpc {
       return io.grpc.stub.ClientCalls.blockingServerStreamingCall(
           getChannel(), getGetChatMessagesSincePositionMethod(), getCallOptions(), request);
     }
+
+    /**
+     */
+    public io.grpc.examples.backendserver.CreateChatReply createChat(io.grpc.examples.backendserver.CreateChatRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getCreateChatMethod(), getCallOptions(), request);
+    }
   }
 
   /**
@@ -317,11 +377,20 @@ public final class ServerGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getSendMessageMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<io.grpc.examples.backendserver.CreateChatReply> createChat(
+        io.grpc.examples.backendserver.CreateChatRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getCreateChatMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_SEND_MESSAGE = 0;
   private static final int METHODID_GET_ALL_CHAT_MESSAGES = 1;
   private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION = 2;
+  private static final int METHODID_CREATE_CHAT = 3;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -351,6 +420,10 @@ public final class ServerGrpc {
         case METHODID_GET_CHAT_MESSAGES_SINCE_POSITION:
           serviceImpl.getChatMessagesSincePosition((io.grpc.examples.backendserver.chatMessageFromPosition) request,
               (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse>) responseObserver);
+          break;
+        case METHODID_CREATE_CHAT:
+          serviceImpl.createChat((io.grpc.examples.backendserver.CreateChatRequest) request,
+              (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.CreateChatReply>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -416,6 +489,7 @@ public final class ServerGrpc {
               .addMethod(getSendMessageMethod())
               .addMethod(getGetAllChatMessagesMethod())
               .addMethod(getGetChatMessagesSincePositionMethod())
+              .addMethod(getCreateChatMethod())
               .build();
         }
       }
