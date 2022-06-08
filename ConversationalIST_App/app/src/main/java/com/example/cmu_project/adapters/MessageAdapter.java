@@ -25,16 +25,18 @@ import java.util.logging.Logger;
 
 import io.grpc.examples.backendserver.messageResponse;
 
-public class MessageAdapter extends RecyclerView.Adapter {
+public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final Logger logger = Logger.getLogger(ChatActivity.class.getName());
 
-    private List<messageResponse> messageList;
-    private Context context;
+    private final List<messageResponse> messageList;
+    private final Context context;
 
     private final int MESSAGE_TEXT = 0;
     private final int MESSAGE_PHOTO = 1;
     private final int MESSAGE_GEOLOCATION = 2;
+
+    private RecyclerView myRecyclerView;
 
     public MessageAdapter(Context context, List<messageResponse> messageList) {
         this.context = context;
@@ -45,12 +47,23 @@ public class MessageAdapter extends RecyclerView.Adapter {
         messageList.add(message);
         Log.d("MessageAdapter", "added message: " + message);
 
+        myRecyclerView.post(() -> {
+            // Call smooth scroll
+            myRecyclerView.smoothScrollToPosition(getItemCount());
+        });
+
+
+    }
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+
+        myRecyclerView = recyclerView;
     }
 
     @Override
     public int getItemViewType(int position) {
         messageResponse message = messageList.get(position);
-
         return message.getType();
     }
 
@@ -100,7 +113,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private class MessageTextHolder extends RecyclerView.ViewHolder {
+    private static class MessageTextHolder extends RecyclerView.ViewHolder {
         TextView messageText, timeText, nameText;
 
         MessageTextHolder(View itemView) {

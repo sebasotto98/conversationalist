@@ -151,16 +151,14 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private class getAllMessagesFromChatGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
+    private static class getAllMessagesFromChatGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
         private final WeakReference<Activity> activityReference;
         private ManagedChannel channel;
         private final MessageAdapter messageAdapter;
-        private final RecyclerView recyclerView;
 
         private getAllMessagesFromChatGrpcTask(Activity activity, RecyclerView messageRecycler) {
             this.activityReference = new WeakReference<>(activity);
             this.messageAdapter = (MessageAdapter) messageRecycler.getAdapter();
-            this.recyclerView = messageRecycler;
         }
 
         @Override
@@ -202,18 +200,14 @@ public class ChatActivity extends AppCompatActivity {
                     messageAdapter.addToMessageList(nextMessage);
                     int position = messageAdapter.getItemCount() - 1;
                     messageAdapter.notifyItemInserted(position);
-                    recyclerView.post(() -> {
-                        // Call smooth scroll
-                        recyclerView.smoothScrollToPosition(position);
-                    });
 
                     //save message in cache
-                    boolean r = ((GlobalVariables) getApplication()).getDb().insertMessage(
+                    boolean r = ((GlobalVariables) activityReference.get().getApplication()).getDb().insertMessage(
                             nextMessage.getData(),
                             nextMessage.getUsername(),
                             nextMessage.getTimestamp(),
                             String.valueOf(nextMessage.getType()),
-                            ((GlobalVariables) getApplication()).getCurrentChatroomName()
+                            ((GlobalVariables) activityReference.get().getApplication()).getCurrentChatroomName()
                     );
 
                     if(r) {
@@ -232,16 +226,14 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private class sendMessageGrpcTask extends AsyncTask<Object, Void, messageResponse> {
+    private static class sendMessageGrpcTask extends AsyncTask<Object, Void, messageResponse> {
         private final WeakReference<Activity> activityReference;
         private ManagedChannel channel;
         private final MessageAdapter messageAdapter;
-        private final RecyclerView recyclerView;
 
         private sendMessageGrpcTask(Activity activity, RecyclerView messageRecycler) {
             this.activityReference = new WeakReference<>(activity);
             this.messageAdapter = (MessageAdapter) messageRecycler.getAdapter();
-            this.recyclerView = messageRecycler;
         }
 
         @Override
@@ -258,8 +250,8 @@ public class ChatActivity extends AppCompatActivity {
                 sendingMessage request = sendingMessage.newBuilder()
                         .setType(type)
                         .setData(message)
-                        .setUsername(((GlobalVariables) getApplication()).getUsername())
-                        .setChatroom(((GlobalVariables) getApplication()).getCurrentChatroomName())
+                        .setUsername(((GlobalVariables) activityReference.get().getApplication()).getUsername())
+                        .setChatroom(((GlobalVariables) activityReference.get().getApplication()).getCurrentChatroomName())
                         .build();
 
                 return stub.sendMessage(request);
@@ -285,13 +277,9 @@ public class ChatActivity extends AppCompatActivity {
                 messageAdapter.addToMessageList(result);
                 int position = messageAdapter.getItemCount() - 1;
                 messageAdapter.notifyItemInserted(position);
-                recyclerView.post(() -> {
-                    // Call smooth scroll
-                    recyclerView.smoothScrollToPosition(position);
-                });
 
                 //save message in cache
-                boolean r = ((GlobalVariables) getApplication()).getDb().insertMessage(
+                boolean r = ((GlobalVariables) activityReference.get().getApplication()).getDb().insertMessage(
                         result.getData(),
                         result.getUsername(),
                         result.getTimestamp(),
@@ -317,16 +305,14 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private class getRemainingMessagesGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
+    private static class getRemainingMessagesGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
         private final WeakReference<Activity> activityReference;
         private ManagedChannel channel;
         private final MessageAdapter messageAdapter;
-        private final RecyclerView recyclerView;
 
         private getRemainingMessagesGrpcTask(Activity activity, RecyclerView messageRecycler) {
             this.activityReference = new WeakReference<>(activity);
             this.messageAdapter = (MessageAdapter) messageRecycler.getAdapter();
-            this.recyclerView = messageRecycler;
         }
 
         @Override
@@ -370,18 +356,15 @@ public class ChatActivity extends AppCompatActivity {
                     messageAdapter.addToMessageList(nextMessage);
                     int position = messageAdapter.getItemCount() - 1;
                     messageAdapter.notifyItemInserted(position);
-                    recyclerView.post(() -> {
-                        // Call smooth scroll
-                        recyclerView.smoothScrollToPosition(position);
-                    });
+
 
                     //save message in cache
-                    boolean r = ((GlobalVariables) getApplication()).getDb().insertMessage(
+                    boolean r = ((GlobalVariables) activityReference.get().getApplication()).getDb().insertMessage(
                             nextMessage.getData(),
                             nextMessage.getUsername(),
                             nextMessage.getTimestamp(),
                             String.valueOf(nextMessage.getType()),
-                            ((GlobalVariables) getApplication()).getCurrentChatroomName()
+                            ((GlobalVariables) activityReference.get().getApplication()).getCurrentChatroomName()
                     );
 
                     if(r) {
@@ -400,16 +383,14 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private class getLastNMessagesFromChatGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
+    private static class getLastNMessagesFromChatGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
         private final WeakReference<Activity> activityReference;
         private ManagedChannel channel;
         private final MessageAdapter messageAdapter;
-        private final RecyclerView recyclerView;
 
         private getLastNMessagesFromChatGrpcTask(Activity activity, RecyclerView messageRecycler) {
             this.activityReference = new WeakReference<>(activity);
             this.messageAdapter = (MessageAdapter) messageRecycler.getAdapter();
-            this.recyclerView = messageRecycler;
         }
 
         @Override
@@ -452,18 +433,15 @@ public class ChatActivity extends AppCompatActivity {
                     messageAdapter.addToMessageList(nextMessage);
                     int position = messageAdapter.getItemCount() - 1;
                     messageAdapter.notifyItemInserted(position);
-                    recyclerView.post(() -> {
-                        // Call smooth scroll
-                        recyclerView.smoothScrollToPosition(position);
-                    });
+
 
                     //save message in cache
-                    boolean r = ((GlobalVariables) getApplication()).getDb().insertMessage(
+                    boolean r = ((GlobalVariables) activityReference.get().getApplication()).getDb().insertMessage(
                             nextMessage.getData(),
                             nextMessage.getUsername(),
                             nextMessage.getTimestamp(),
                             String.valueOf(nextMessage.getType()),
-                            ((GlobalVariables) getApplication()).getCurrentChatroomName()
+                            ((GlobalVariables) activityReference.get().getApplication()).getCurrentChatroomName()
                     );
 
                     if(r) {

@@ -36,12 +36,12 @@
 
             <ImageView
                 android:id="@+id/geolocation_message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_margin="8dp"
                 android:contentDescription=""
-                android:maxWidth="260dp"
-                android:maxHeight="260dp"
+                android:maxWidth="200dp"
+                android:maxHeight="200dp"
                 android:src="@null" />
         </LinearLayout>
 
