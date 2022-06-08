@@ -85,7 +85,9 @@ public class ConversationalISTServer {
             String chatroom = req.getChatroom();
             String type = String.valueOf(req.getType());
 
-            chatroomFileHelper.writeToFile(data, username, timestamp, type, chatroom);
+            int position = chatroomFileHelper.readFile(chatroom).size() + 1;
+
+            chatroomFileHelper.writeToFile(data, username, timestamp, type, chatroom, String.valueOf(position));
 
             messageResponse reply = messageResponse.newBuilder()
                     .setData(data)
@@ -93,6 +95,7 @@ public class ConversationalISTServer {
                     .setUsername(username)
                     .setChatroom(chatroom)
                     .setType(Integer.parseInt(type))
+                    .setPosition(position)
                     .build();
             responseObserver.onNext(reply);
             responseObserver.onCompleted();
@@ -124,26 +127,6 @@ public class ConversationalISTServer {
 
         }
 
-        private void sendMessageStreamToClient(StreamObserver<messageResponse> responseObserver, List<String> messages) {
-            String data, username, timestamp, type;
-            for (String m: messages) {
-                String[] aux = m.split(",");
-                data = aux[0];
-                username = aux[1];
-                timestamp = aux[2];
-                type = aux[3];
-                messageResponse message = messageResponse.newBuilder()
-                        .setUsername(username)
-                        .setTimestamp(timestamp)
-                        .setData(data)
-                        .setType(Integer.parseInt(type))
-                        .build();
-                responseObserver.onNext(message);
-            }
-
-            responseObserver.onCompleted();
-        }
-
         @Override
         public void createChat(CreateChatRequest request, StreamObserver<CreateChatReply> responseObserver) {
 
@@ -167,33 +150,81 @@ public class ConversationalISTServer {
         }
 
         @Override
-        public void getLastNMessagesFromChat(NMessagesFromChat request, StreamObserver<messageResponse> responseObserver){
-            String chatroom = request.getChatroom();
-            int numberOfMsg = request.getNumberOfMessages();
+        public void getLastNMessagesFromChat(NMessagesFromChat req, StreamObserver<messageResponse> responseObserver){
+            logger.info("Got request from client: " + req);
+            String chatroom = req.getChatroom();
+            int numberOfMsg = req.getNumberOfMessages();
 
             List<String> messages = chatroomFileHelper.readFile(chatroom);
 
-            List<String> messagesToSend = messages.subList(messages.size() - numberOfMsg, messages.size());
+            int beginning = messages.size() - numberOfMsg;
+            if(beginning < 0){
+                beginning = 0;
+            }
+
+            List<String> messagesToSend = messages.subList(beginning, messages.size());
 
             List<String> messagesToSendModified = modifyMessagesToSendForMobileData(messagesToSend);
 
             sendMessageStreamToClient(responseObserver, messagesToSendModified);
         }
 
+        @Override
+        public void getChatMessagesSincePositionMobileData(chatMessageFromPosition req, StreamObserver<messageResponse> responseObserver){
+            logger.info("Got request from client: " + req);
+
+            int position = req.getPositionOfLastMessage();
+            String chatroom = req.getChatroom();
+
+            List<String> messages = chatroomFileHelper.readFile(chatroom);
+
+            List<String> remainMessages = messages.subList(position, messages.size());
+
+            List<String> messagesToSend = modifyMessagesToSendForMobileData(remainMessages);
+
+            sendMessageStreamToClient(responseObserver, messagesToSend);
+
+        }
+
+        private void sendMessageStreamToClient(StreamObserver<messageResponse> responseObserver, List<String> messages) {
+            String data, username, timestamp, type;
+            int position;
+            for (String m: messages) {
+                String[] aux = m.split(",");
+                data = aux[0];
+                username = aux[1];
+                timestamp = aux[2];
+                type = aux[3];
+                position = Integer.parseInt(aux[4]);
+                messageResponse message = messageResponse.newBuilder()
+                        .setUsername(username)
+                        .setTimestamp(timestamp)
+                        .setData(data)
+                        .setType(Integer.parseInt(type))
+                        .setPosition(position)
+                        .build();
+                responseObserver.onNext(message);
+            }
+
+            responseObserver.onCompleted();
+        }
+
+        //removes the image data
         private List<String> modifyMessagesToSendForMobileData(List<String> messagesToSend){
 
-            String data, username, timestamp, type, finalMessage;
+            String data, username, timestamp, type, finalMessage, position;
             for(int i = 0; i < messagesToSend.size(); i++){
                 String[] msg = messagesToSend.get(i).split(",");
                 data = msg[0];
                 username = msg[1];
                 timestamp = msg[2];
                 type = msg[3];
+                position = msg[4];
                 //if image then put default image, don't transmit
                 if(type.equals("1")){
                     msg[0] = "";
                 }
-                finalMessage = data + "," + username + "," + timestamp + "," + type;
+                finalMessage = data + "," + username + "," + timestamp + "," + type + "," + position;
                 messagesToSend.set(i, finalMessage);
             }
 

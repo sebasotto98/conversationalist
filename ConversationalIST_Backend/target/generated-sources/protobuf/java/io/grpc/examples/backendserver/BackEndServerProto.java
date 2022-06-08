@@ -64,26 +64,29 @@ public final class BackEndServerProto {
       "sageRequest\022\020\n\010chatroom\030\001 \001(\t\"c\n\016sending" +
       "Message\022\020\n\010username\030\001 \001(\t\022\021\n\ttimestamp\030\002" +
       " \001(\t\022\020\n\010chatroom\030\003 \001(\t\022\014\n\004data\030\004 \001(\t\022\014\n\004" +
-      "type\030\005 \001(\005\"d\n\017messageResponse\022\020\n\010usernam" +
+      "type\030\005 \001(\005\"v\n\017messageResponse\022\020\n\010usernam" +
       "e\030\001 \001(\t\022\021\n\ttimestamp\030\002 \001(\t\022\020\n\010chatroom\030\003" +
-      " \001(\t\022\014\n\004data\030\004 \001(\t\022\014\n\004type\030\005 \001(\005\"8\n\021Crea" +
-      "teChatRequest\022\014\n\004user\030\001 \001(\t\022\025\n\rchatroom_" +
-      "name\030\002 \001(\t\"\036\n\017CreateChatReply\022\013\n\003ack\030\001 \001" +
-      "(\t\"?\n\021NMessagesFromChat\022\020\n\010chatroom\030\001 \001(" +
-      "\t\022\030\n\020numberOfMessages\030\002 \001(\0052\267\003\n\006Server\022H" +
-      "\n\013sendMessage\022\032.helloworld.sendingMessag" +
-      "e\032\033.helloworld.messageResponse\"\000\022U\n\022getA" +
-      "llChatMessages\022\036.helloworld.chatMessageR" +
-      "equest\032\033.helloworld.messageResponse\"\0000\001\022" +
-      "d\n\034getChatMessagesSincePosition\022#.hellow" +
-      "orld.chatMessageFromPosition\032\033.helloworl" +
-      "d.messageResponse\"\0000\001\022J\n\ncreateChat\022\035.he" +
-      "lloworld.CreateChatRequest\032\033.helloworld." +
-      "CreateChatReply\"\000\022Z\n\030getLastNMessagesFro" +
-      "mChat\022\035.helloworld.NMessagesFromChat\032\033.h" +
-      "elloworld.messageResponse\"\0000\001B<\n\036io.grpc" +
-      ".examples.backendserverB\022BackEndServerPr" +
-      "otoP\001\242\002\003HLWb\006proto3"
+      " \001(\t\022\014\n\004data\030\004 \001(\t\022\014\n\004type\030\005 \001(\005\022\020\n\010posi" +
+      "tion\030\006 \001(\005\"8\n\021CreateChatRequest\022\014\n\004user\030" +
+      "\001 \001(\t\022\025\n\rchatroom_name\030\002 \001(\t\"\036\n\017CreateCh" +
+      "atReply\022\013\n\003ack\030\001 \001(\t\"?\n\021NMessagesFromCha" +
+      "t\022\020\n\010chatroom\030\001 \001(\t\022\030\n\020numberOfMessages\030" +
+      "\002 \001(\0052\247\004\n\006Server\022H\n\013sendMessage\022\032.hellow" +
+      "orld.sendingMessage\032\033.helloworld.message" +
+      "Response\"\000\022U\n\022getAllChatMessages\022\036.hello" +
+      "world.chatMessageRequest\032\033.helloworld.me" +
+      "ssageResponse\"\0000\001\022d\n\034getChatMessagesSinc" +
+      "ePosition\022#.helloworld.chatMessageFromPo" +
+      "sition\032\033.helloworld.messageResponse\"\0000\001\022" +
+      "J\n\ncreateChat\022\035.helloworld.CreateChatReq" +
+      "uest\032\033.helloworld.CreateChatReply\"\000\022Z\n\030g" +
+      "etLastNMessagesFromChat\022\035.helloworld.NMe" +
+      "ssagesFromChat\032\033.helloworld.messageRespo" +
+      "nse\"\0000\001\022n\n&getChatMessagesSincePositionM" +
+      "obileData\022#.helloworld.chatMessageFromPo" +
+      "sition\032\033.helloworld.messageResponse\"\0000\001B" +
+      "<\n\036io.grpc.examples.backendserverB\022BackE" +
+      "ndServerProtoP\001\242\002\003HLWb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -112,7 +115,7 @@ public final class BackEndServerProto {
     internal_static_helloworld_messageResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helloworld_messageResponse_descriptor,
-        new java.lang.String[] { "Username", "Timestamp", "Chatroom", "Data", "Type", });
+        new java.lang.String[] { "Username", "Timestamp", "Chatroom", "Data", "Type", "Position", });
     internal_static_helloworld_CreateChatRequest_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_helloworld_CreateChatRequest_fieldAccessorTable = new

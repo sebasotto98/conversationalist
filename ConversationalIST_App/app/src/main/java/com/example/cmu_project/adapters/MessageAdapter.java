@@ -29,7 +29,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private static final Logger logger = Logger.getLogger(ChatActivity.class.getName());
 
-    private final List<messageResponse> messageList;
+    private List<messageResponse> messageList;
     private final Context context;
 
     private final int MESSAGE_TEXT = 0;
@@ -47,13 +47,26 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         messageList.add(message);
         Log.d("MessageAdapter", "added message: " + message);
 
+        smoothScroll();
+    }
+
+    public List<messageResponse> getMessageList() {
+        return messageList;
+    }
+
+    private void smoothScroll(){
         myRecyclerView.post(() -> {
             // Call smooth scroll
             myRecyclerView.smoothScrollToPosition(getItemCount());
         });
-
-
     }
+
+    public void setMessageList(List<messageResponse> newList){
+        messageList = newList;
+        this.notifyDataSetChanged();
+        smoothScroll();
+    }
+
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);

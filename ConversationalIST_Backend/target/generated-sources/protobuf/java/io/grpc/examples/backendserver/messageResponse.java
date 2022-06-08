@@ -81,6 +81,11 @@ private static final long serialVersionUID = 0L;
             type_ = input.readInt32();
             break;
           }
+          case 48: {
+
+            position_ = input.readInt32();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -276,6 +281,17 @@ private static final long serialVersionUID = 0L;
     return type_;
   }
 
+  public static final int POSITION_FIELD_NUMBER = 6;
+  private int position_;
+  /**
+   * <code>int32 position = 6;</code>
+   * @return The position.
+   */
+  @java.lang.Override
+  public int getPosition() {
+    return position_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -305,6 +321,9 @@ private static final long serialVersionUID = 0L;
     if (type_ != 0) {
       output.writeInt32(5, type_);
     }
+    if (position_ != 0) {
+      output.writeInt32(6, position_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -329,6 +348,10 @@ private static final long serialVersionUID = 0L;
     if (type_ != 0) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(5, type_);
+    }
+    if (position_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(6, position_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -355,6 +378,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getData())) return false;
     if (getType()
         != other.getType()) return false;
+    if (getPosition()
+        != other.getPosition()) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -376,6 +401,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getData().hashCode();
     hash = (37 * hash) + TYPE_FIELD_NUMBER;
     hash = (53 * hash) + getType();
+    hash = (37 * hash) + POSITION_FIELD_NUMBER;
+    hash = (53 * hash) + getPosition();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -519,6 +546,8 @@ private static final long serialVersionUID = 0L;
 
       type_ = 0;
 
+      position_ = 0;
+
       return this;
     }
 
@@ -550,6 +579,7 @@ private static final long serialVersionUID = 0L;
       result.chatroom_ = chatroom_;
       result.data_ = data_;
       result.type_ = type_;
+      result.position_ = position_;
       onBuilt();
       return result;
     }
@@ -616,6 +646,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getType() != 0) {
         setType(other.getType());
+      }
+      if (other.getPosition() != 0) {
+        setPosition(other.getPosition());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -977,6 +1010,37 @@ private static final long serialVersionUID = 0L;
     public Builder clearType() {
       
       type_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int position_ ;
+    /**
+     * <code>int32 position = 6;</code>
+     * @return The position.
+     */
+    @java.lang.Override
+    public int getPosition() {
+      return position_;
+    }
+    /**
+     * <code>int32 position = 6;</code>
+     * @param value The position to set.
+     * @return This builder for chaining.
+     */
+    public Builder setPosition(int value) {
+      
+      position_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 position = 6;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearPosition() {
+      
+      position_ = 0;
       onChanged();
       return this;
     }

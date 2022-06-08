@@ -60,4 +60,10 @@ public interface messageResponseOrBuilder extends
    * @return The type.
    */
   int getType();
+
+  /**
+   * <code>int32 position = 6;</code>
+   * @return The position.
+   */
+  int getPosition();
 }

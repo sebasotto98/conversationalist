@@ -95,7 +95,8 @@ public class ChatActivity extends AppCompatActivity {
             } else {
                 Log.d("ChatActivity", "Loaded some messages from cache. Now contact server.");
 
-                int position = messageList.size() - 1;
+                int position = (messageList.get(messageAdapter.getItemCount() - 1)).getPosition();
+
                 new getRemainingMessagesGrpcTask(this, messageRecycler)
                         .execute(
                                 "192.168.1.135",
@@ -114,11 +115,17 @@ public class ChatActivity extends AppCompatActivity {
                                 "50051",
                                 ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
             } else {
-                //TODO
+                int position = (messageList.get(messageAdapter.getItemCount() - 1)).getPosition();
+                new getRemainingMessagesMobileDataGrpcTask(this, messageRecycler)
+                        .execute(
+                                "192.168.1.135",
+                                "50051",
+                                position,
+                                ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
             }
         } else {
             Toast.makeText(getApplicationContext(),
-                    "No connection available.", Toast.LENGTH_SHORT).show();
+                    "No connection available. Please connect to the internet.", Toast.LENGTH_SHORT).show();
         }
 
         messageRecycler.post(() -> {
@@ -143,6 +150,7 @@ public class ChatActivity extends AppCompatActivity {
                     .setUsername(messagesCursor.getString(messagesCursor.getColumnIndexOrThrow(DBHelper.MESSAGES_COLUMN_USERNAME)))
                     .setType(Integer.parseInt(messagesCursor.getString(messagesCursor.getColumnIndexOrThrow(DBHelper.MESSAGES_COLUMN_TYPE))))
                     .setTimestamp(messagesCursor.getString(messagesCursor.getColumnIndexOrThrow(DBHelper.MESSAGES_COLUMN_TIMESTAMP)))
+                    .setPosition(Integer.parseInt(messagesCursor.getString(messagesCursor.getColumnIndexOrThrow(DBHelper.MESSAGES_COLUMN_POSITION))))
                     .build();
             Log.d("CHAT ACTIVITY", String.valueOf(message));
             messageList.add(message);
@@ -207,7 +215,8 @@ public class ChatActivity extends AppCompatActivity {
                             nextMessage.getUsername(),
                             nextMessage.getTimestamp(),
                             String.valueOf(nextMessage.getType()),
-                            ((GlobalVariables) activityReference.get().getApplication()).getCurrentChatroomName()
+                            ((GlobalVariables) activityReference.get().getApplication()).getCurrentChatroomName(),
+                            nextMessage.getPosition()
                     );
 
                     if(r) {
@@ -284,7 +293,8 @@ public class ChatActivity extends AppCompatActivity {
                         result.getUsername(),
                         result.getTimestamp(),
                         String.valueOf(result.getType()),
-                        result.getChatroom()
+                        result.getChatroom(),
+                        result.getPosition()
                 );
 
                 if(r) {
@@ -364,7 +374,8 @@ public class ChatActivity extends AppCompatActivity {
                             nextMessage.getUsername(),
                             nextMessage.getTimestamp(),
                             String.valueOf(nextMessage.getType()),
-                            ((GlobalVariables) activityReference.get().getApplication()).getCurrentChatroomName()
+                            ((GlobalVariables) activityReference.get().getApplication()).getCurrentChatroomName(),
+                            nextMessage.getPosition()
                     );
 
                     if(r) {
@@ -434,6 +445,83 @@ public class ChatActivity extends AppCompatActivity {
                     int position = messageAdapter.getItemCount() - 1;
                     messageAdapter.notifyItemInserted(position);
 
+                    //save message in cache
+                    boolean r = ((GlobalVariables) activityReference.get().getApplication()).getDb().insertMessage(
+                            nextMessage.getData(),
+                            nextMessage.getUsername(),
+                            nextMessage.getTimestamp(),
+                            String.valueOf(nextMessage.getType()),
+                            ((GlobalVariables) activityReference.get().getApplication()).getCurrentChatroomName(),
+                            nextMessage.getPosition()
+                    );
+
+                    if(r) {
+                        Log.d("ChatActivity", "Message response inserted in cache.");
+                    } else {
+                        Log.d("ChatActivity", "Couldn't insert message in cache.");
+                    }
+                }
+
+                try {
+                    channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+    }
+
+    private static class getRemainingMessagesMobileDataGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
+        private final WeakReference<Activity> activityReference;
+        private ManagedChannel channel;
+        private final MessageAdapter messageAdapter;
+
+        private getRemainingMessagesMobileDataGrpcTask(Activity activity, RecyclerView messageRecycler) {
+            this.activityReference = new WeakReference<>(activity);
+            this.messageAdapter = (MessageAdapter) messageRecycler.getAdapter();
+        }
+
+        @Override
+        protected Iterator<messageResponse> doInBackground(Object... params) {
+            String host = (String) params[0];
+            String portStr = (String) params[1];
+            int position = (int) params[2];
+            String chatroom = (String) params[3];
+            int port = TextUtils.isEmpty(portStr) ? 0 : Integer.parseInt(portStr);
+            try {
+                channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
+                ServerGrpc.ServerBlockingStub stub = ServerGrpc.newBlockingStub(channel);
+
+                chatMessageFromPosition request = chatMessageFromPosition.newBuilder()
+                        .setChatroom(chatroom)
+                        .setPositionOfLastMessage(position)
+                        .build();
+
+                return stub.getChatMessagesSincePositionMobileData(request);
+            } catch (Exception e) {
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+                e.printStackTrace(pw);
+                pw.flush();
+                logger.info(sw.toString());
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Iterator<messageResponse> messages) {
+            if(messages != null) {
+
+                Activity activity = activityReference.get();
+                if (activity == null) {
+                    return;
+                }
+
+                while (messages.hasNext()) {
+                    messageResponse nextMessage = messages.next();
+                    messageAdapter.addToMessageList(nextMessage);
+                    int position = messageAdapter.getItemCount() - 1;
+                    messageAdapter.notifyItemInserted(position);
 
                     //save message in cache
                     boolean r = ((GlobalVariables) activityReference.get().getApplication()).getDb().insertMessage(
@@ -441,7 +529,8 @@ public class ChatActivity extends AppCompatActivity {
                             nextMessage.getUsername(),
                             nextMessage.getTimestamp(),
                             String.valueOf(nextMessage.getType()),
-                            ((GlobalVariables) activityReference.get().getApplication()).getCurrentChatroomName()
+                            ((GlobalVariables) activityReference.get().getApplication()).getCurrentChatroomName(),
+                            nextMessage.getPosition()
                     );
 
                     if(r) {

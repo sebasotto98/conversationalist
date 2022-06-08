@@ -173,6 +173,37 @@ public final class ServerGrpc {
     return getGetLastNMessagesFromChatMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.chatMessageFromPosition,
+      io.grpc.examples.backendserver.messageResponse> getGetChatMessagesSincePositionMobileDataMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getChatMessagesSincePositionMobileData",
+      requestType = io.grpc.examples.backendserver.chatMessageFromPosition.class,
+      responseType = io.grpc.examples.backendserver.messageResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+  public static io.grpc.MethodDescriptor<io.grpc.examples.backendserver.chatMessageFromPosition,
+      io.grpc.examples.backendserver.messageResponse> getGetChatMessagesSincePositionMobileDataMethod() {
+    io.grpc.MethodDescriptor<io.grpc.examples.backendserver.chatMessageFromPosition, io.grpc.examples.backendserver.messageResponse> getGetChatMessagesSincePositionMobileDataMethod;
+    if ((getGetChatMessagesSincePositionMobileDataMethod = ServerGrpc.getGetChatMessagesSincePositionMobileDataMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getGetChatMessagesSincePositionMobileDataMethod = ServerGrpc.getGetChatMessagesSincePositionMobileDataMethod) == null) {
+          ServerGrpc.getGetChatMessagesSincePositionMobileDataMethod = getGetChatMessagesSincePositionMobileDataMethod =
+              io.grpc.MethodDescriptor.<io.grpc.examples.backendserver.chatMessageFromPosition, io.grpc.examples.backendserver.messageResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getChatMessagesSincePositionMobileData"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.chatMessageFromPosition.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.messageResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("getChatMessagesSincePositionMobileData"))
+              .build();
+        }
+      }
+    }
+    return getGetChatMessagesSincePositionMobileDataMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -259,6 +290,13 @@ public final class ServerGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetLastNMessagesFromChatMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void getChatMessagesSincePositionMobileData(io.grpc.examples.backendserver.chatMessageFromPosition request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetChatMessagesSincePositionMobileDataMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -296,6 +334,13 @@ public final class ServerGrpc {
                 io.grpc.examples.backendserver.NMessagesFromChat,
                 io.grpc.examples.backendserver.messageResponse>(
                   this, METHODID_GET_LAST_NMESSAGES_FROM_CHAT)))
+          .addMethod(
+            getGetChatMessagesSincePositionMobileDataMethod(),
+            io.grpc.stub.ServerCalls.asyncServerStreamingCall(
+              new MethodHandlers<
+                io.grpc.examples.backendserver.chatMessageFromPosition,
+                io.grpc.examples.backendserver.messageResponse>(
+                  this, METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA)))
           .build();
     }
   }
@@ -356,6 +401,14 @@ public final class ServerGrpc {
       io.grpc.stub.ClientCalls.asyncServerStreamingCall(
           getChannel().newCall(getGetLastNMessagesFromChatMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getChatMessagesSincePositionMobileData(io.grpc.examples.backendserver.chatMessageFromPosition request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncServerStreamingCall(
+          getChannel().newCall(getGetChatMessagesSincePositionMobileDataMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -412,6 +465,14 @@ public final class ServerGrpc {
       return io.grpc.stub.ClientCalls.blockingServerStreamingCall(
           getChannel(), getGetLastNMessagesFromChatMethod(), getCallOptions(), request);
     }
+
+    /**
+     */
+    public java.util.Iterator<io.grpc.examples.backendserver.messageResponse> getChatMessagesSincePositionMobileData(
+        io.grpc.examples.backendserver.chatMessageFromPosition request) {
+      return io.grpc.stub.ClientCalls.blockingServerStreamingCall(
+          getChannel(), getGetChatMessagesSincePositionMobileDataMethod(), getCallOptions(), request);
+    }
   }
 
   /**
@@ -453,6 +514,7 @@ public final class ServerGrpc {
   private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION = 2;
   private static final int METHODID_CREATE_CHAT = 3;
   private static final int METHODID_GET_LAST_NMESSAGES_FROM_CHAT = 4;
+  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA = 5;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -489,6 +551,10 @@ public final class ServerGrpc {
           break;
         case METHODID_GET_LAST_NMESSAGES_FROM_CHAT:
           serviceImpl.getLastNMessagesFromChat((io.grpc.examples.backendserver.NMessagesFromChat) request,
+              (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse>) responseObserver);
+          break;
+        case METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA:
+          serviceImpl.getChatMessagesSincePositionMobileData((io.grpc.examples.backendserver.chatMessageFromPosition) request,
               (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse>) responseObserver);
           break;
         default:
@@ -557,6 +623,7 @@ public final class ServerGrpc {
               .addMethod(getGetChatMessagesSincePositionMethod())
               .addMethod(getCreateChatMethod())
               .addMethod(getGetLastNMessagesFromChatMethod())
+              .addMethod(getGetChatMessagesSincePositionMobileDataMethod())
               .build();
         }
       }
