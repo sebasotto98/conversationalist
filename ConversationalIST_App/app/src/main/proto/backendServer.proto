@@ -16,7 +16,13 @@ service Server {
   rpc createChat (CreateChatRequest) returns (CreateChatReply) {}
   rpc getLastNMessagesFromChat (NMessagesFromChat) returns (stream messageResponse) {}
   rpc getChatMessagesSincePositionMobileData (chatMessageFromPosition) returns (stream messageResponse) {}
+  rpc getMessagesBetweenPositionsMobileData (messagesBetweenPosition) returns (stream messageResponse) {}
+}
 
+message messagesBetweenPosition {
+  string chatroom = 1;
+  int32 positionOfLastMessage = 2;
+  int32 numberOfMessages = 3;
 }
 
 message chatMessageFromPosition {

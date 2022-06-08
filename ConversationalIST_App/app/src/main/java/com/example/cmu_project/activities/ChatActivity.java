@@ -22,10 +22,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cmu_project.MyOnScrollListener;
 import com.example.cmu_project.R;
 import com.example.cmu_project.adapters.MessageAdapter;
 import com.example.cmu_project.contexts.MobDataContext;
@@ -59,6 +61,9 @@ public class ChatActivity extends AppCompatActivity {
     private EditText messageEdit;
     private RecyclerView messageRecycler;
     private MessageAdapter messageAdapter;
+    private LinearLayoutManager linearLayoutManager;
+    private boolean loadingMoreMessages = false;
+    private boolean gotAllChatMessages;
 
     private List<messageResponse> messageList = new ArrayList<>();
 
@@ -76,8 +81,21 @@ public class ChatActivity extends AppCompatActivity {
         retrieveMessagesFromCache();
 
         messageAdapter = new MessageAdapter(this, messageList);
-        messageRecycler.setLayoutManager(new LinearLayoutManager(this));
+
+        linearLayoutManager = new LinearLayoutManager(this);
+        messageRecycler.setLayoutManager(linearLayoutManager);
         messageRecycler.setAdapter(messageAdapter);
+
+        MyOnScrollListener myOnScrollListener = new MyOnScrollListener(this, messageRecycler);
+
+        if(!messageList.isEmpty()){
+            int firstPosition = messageList.get(0).getPosition();
+            if(firstPosition == 1){
+                myOnScrollListener.setGotAllChatMessages(true);
+            }
+        }
+
+        messageRecycler.addOnScrollListener(myOnScrollListener);
 
         WifiContext wifiContext = new WifiContext();
         MobDataContext MDContext = new MobDataContext();
@@ -132,6 +150,10 @@ public class ChatActivity extends AppCompatActivity {
             // Call smooth scroll
             messageRecycler.smoothScrollToPosition(messageAdapter.getItemCount());
         });
+    }
+
+    public void setLoadingMoreMessages(boolean loadingMoreMessages) {
+        this.loadingMoreMessages = loadingMoreMessages;
     }
 
     private void retrieveMessagesFromCache() {

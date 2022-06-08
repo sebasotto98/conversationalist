@@ -204,6 +204,37 @@ public final class ServerGrpc {
     return getGetChatMessagesSincePositionMobileDataMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.messagesBetweenPosition,
+      io.grpc.examples.backendserver.messageResponse> getGetMessagesBetweenPositionsMobileDataMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getMessagesBetweenPositionsMobileData",
+      requestType = io.grpc.examples.backendserver.messagesBetweenPosition.class,
+      responseType = io.grpc.examples.backendserver.messageResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+  public static io.grpc.MethodDescriptor<io.grpc.examples.backendserver.messagesBetweenPosition,
+      io.grpc.examples.backendserver.messageResponse> getGetMessagesBetweenPositionsMobileDataMethod() {
+    io.grpc.MethodDescriptor<io.grpc.examples.backendserver.messagesBetweenPosition, io.grpc.examples.backendserver.messageResponse> getGetMessagesBetweenPositionsMobileDataMethod;
+    if ((getGetMessagesBetweenPositionsMobileDataMethod = ServerGrpc.getGetMessagesBetweenPositionsMobileDataMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getGetMessagesBetweenPositionsMobileDataMethod = ServerGrpc.getGetMessagesBetweenPositionsMobileDataMethod) == null) {
+          ServerGrpc.getGetMessagesBetweenPositionsMobileDataMethod = getGetMessagesBetweenPositionsMobileDataMethod =
+              io.grpc.MethodDescriptor.<io.grpc.examples.backendserver.messagesBetweenPosition, io.grpc.examples.backendserver.messageResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getMessagesBetweenPositionsMobileData"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.messagesBetweenPosition.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.messageResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("getMessagesBetweenPositionsMobileData"))
+              .build();
+        }
+      }
+    }
+    return getGetMessagesBetweenPositionsMobileDataMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -297,6 +328,13 @@ public final class ServerGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetChatMessagesSincePositionMobileDataMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void getMessagesBetweenPositionsMobileData(io.grpc.examples.backendserver.messagesBetweenPosition request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetMessagesBetweenPositionsMobileDataMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -341,6 +379,13 @@ public final class ServerGrpc {
                 io.grpc.examples.backendserver.chatMessageFromPosition,
                 io.grpc.examples.backendserver.messageResponse>(
                   this, METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA)))
+          .addMethod(
+            getGetMessagesBetweenPositionsMobileDataMethod(),
+            io.grpc.stub.ServerCalls.asyncServerStreamingCall(
+              new MethodHandlers<
+                io.grpc.examples.backendserver.messagesBetweenPosition,
+                io.grpc.examples.backendserver.messageResponse>(
+                  this, METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA)))
           .build();
     }
   }
@@ -409,6 +454,14 @@ public final class ServerGrpc {
       io.grpc.stub.ClientCalls.asyncServerStreamingCall(
           getChannel().newCall(getGetChatMessagesSincePositionMobileDataMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getMessagesBetweenPositionsMobileData(io.grpc.examples.backendserver.messagesBetweenPosition request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncServerStreamingCall(
+          getChannel().newCall(getGetMessagesBetweenPositionsMobileDataMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -473,6 +526,14 @@ public final class ServerGrpc {
       return io.grpc.stub.ClientCalls.blockingServerStreamingCall(
           getChannel(), getGetChatMessagesSincePositionMobileDataMethod(), getCallOptions(), request);
     }
+
+    /**
+     */
+    public java.util.Iterator<io.grpc.examples.backendserver.messageResponse> getMessagesBetweenPositionsMobileData(
+        io.grpc.examples.backendserver.messagesBetweenPosition request) {
+      return io.grpc.stub.ClientCalls.blockingServerStreamingCall(
+          getChannel(), getGetMessagesBetweenPositionsMobileDataMethod(), getCallOptions(), request);
+    }
   }
 
   /**
@@ -515,6 +576,7 @@ public final class ServerGrpc {
   private static final int METHODID_CREATE_CHAT = 3;
   private static final int METHODID_GET_LAST_NMESSAGES_FROM_CHAT = 4;
   private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA = 5;
+  private static final int METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA = 6;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -555,6 +617,10 @@ public final class ServerGrpc {
           break;
         case METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA:
           serviceImpl.getChatMessagesSincePositionMobileData((io.grpc.examples.backendserver.chatMessageFromPosition) request,
+              (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse>) responseObserver);
+          break;
+        case METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA:
+          serviceImpl.getMessagesBetweenPositionsMobileData((io.grpc.examples.backendserver.messagesBetweenPosition) request,
               (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse>) responseObserver);
           break;
         default:
@@ -624,6 +690,7 @@ public final class ServerGrpc {
               .addMethod(getCreateChatMethod())
               .addMethod(getGetLastNMessagesFromChatMethod())
               .addMethod(getGetChatMessagesSincePositionMobileDataMethod())
+              .addMethod(getGetMessagesBetweenPositionsMobileDataMethod())
               .build();
         }
       }

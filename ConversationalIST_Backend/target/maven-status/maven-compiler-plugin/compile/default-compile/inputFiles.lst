@@ -10,6 +10,7 @@ C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\target\generate
 C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\chatMessageRequest.java
 C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\src\main\java\org\example\cmu_project\TestClient.java
 C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\grpc-java\io\grpc\examples\backendserver\ServerGrpc.java
+C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\messagesBetweenPosition.java
 C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\sendingMessageOrBuilder.java
 C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\src\main\java\org\example\cmu_project\helpers\GeneralHelper.java
 C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\NMessagesFromChat.java
@@ -19,6 +20,7 @@ C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\target\generate
 C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\NMessagesFromChatOrBuilder.java
 C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\src\main\java\org\example\cmu_project\helpers\PasswordHashingHelper.java
 C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\src\main\java\org\example\cmu_project\helpers\ImageHelper.java
+C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\messagesBetweenPositionOrBuilder.java
 C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\messageResponse.java
 C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\CreateChatRequestOrBuilder.java
 C:\Users\ricos\Desktop\CMU\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\messageResponseOrBuilder.java

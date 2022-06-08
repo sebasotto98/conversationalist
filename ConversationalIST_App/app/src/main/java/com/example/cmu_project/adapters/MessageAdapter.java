@@ -61,10 +61,16 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         });
     }
 
+    public void setScrollPosition(int position){
+        myRecyclerView.post(() -> {
+            // Call smooth scroll
+            myRecyclerView.scrollToPosition(position);
+        });
+    }
+
     public void setMessageList(List<messageResponse> newList){
         messageList = newList;
         this.notifyDataSetChanged();
-        smoothScroll();
     }
 
     @Override

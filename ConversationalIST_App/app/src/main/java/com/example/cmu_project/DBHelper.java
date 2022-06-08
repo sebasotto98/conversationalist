@@ -22,7 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String MESSAGES_COLUMN_POSITION = "position";
 
     //change this and onUpgrade will be called
-    private static final int VERSION = 36;
+    private static final int VERSION = 41;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME , null, VERSION);
@@ -70,7 +70,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] args = {chatroom};
 
-        String sortOrder = MESSAGES_COLUMN_ID + " ASC";
+        String sortOrder = MESSAGES_COLUMN_POSITION + " ASC";
         String selection = MESSAGES_COLUMN_CHATROOM + " = ?";
 
         Cursor cs = db.query(

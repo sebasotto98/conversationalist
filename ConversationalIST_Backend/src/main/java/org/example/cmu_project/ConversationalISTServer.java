@@ -186,6 +186,28 @@ public class ConversationalISTServer {
 
         }
 
+        @Override
+        public void getMessagesBetweenPositionsMobileData(messagesBetweenPosition req, StreamObserver<messageResponse> responseObserver){
+            logger.info("Got request from client: " + req);
+
+            int position = req.getPositionOfLastMessage();
+            String chatroom = req.getChatroom();
+            int numberOfMessages = req.getNumberOfMessages();
+
+            int beginning = position-numberOfMessages;
+            if(beginning < 0){
+                beginning = 0;
+            }
+
+            List<String> messages = chatroomFileHelper.readFile(chatroom);
+
+            List<String> remainMessages = messages.subList(beginning, position);
+
+            List<String> messagesToSend = modifyMessagesToSendForMobileData(remainMessages);
+
+            sendMessageStreamToClient(responseObserver, messagesToSend);
+        }
+
         private void sendMessageStreamToClient(StreamObserver<messageResponse> responseObserver, List<String> messages) {
             String data, username, timestamp, type;
             int position;
