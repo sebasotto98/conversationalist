@@ -107,7 +107,7 @@ public class ChatActivity extends AppCompatActivity {
                 //after load IP and port from file or whatever just use those vars
                 new getAllMessagesFromChatGrpcTask(this, messageRecycler)
                         .execute(
-                                "192.168.56.1",
+                                "192.168.1.135",
                                 "50051",
                                 ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
             } else {
@@ -117,26 +117,26 @@ public class ChatActivity extends AppCompatActivity {
 
                 new getRemainingMessagesGrpcTask(this, messageRecycler)
                         .execute(
-                                "192.168.56.1",
+                                "192.168.1.135",
                                 "50051",
                                 position,
                                 ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
             }
         } else if(MDContext.conforms(this)){
             //Toast.makeText(getApplicationContext(),"Connected to mobile data.", Toast.LENGTH_SHORT).show();
-            Log.d("ChatActivity", "messageList is Empty");
 
             if(messageList.isEmpty()) {
+                Log.d("ChatActivity", "messageList is Empty");
                 new getLastNMessagesFromChatGrpcTask(this, messageRecycler)
                         .execute(
-                                "192.168.56.1",
+                                "192.168.1.135",
                                 "50051",
                                 ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
             } else {
                 int position = (messageList.get(messageAdapter.getItemCount() - 1)).getPosition();
                 new getRemainingMessagesMobileDataGrpcTask(this, messageRecycler)
                         .execute(
-                                "192.168.56.1",
+                                "192.168.1.135",
                                 "50051",
                                 position,
                                 ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
@@ -209,7 +209,7 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        "192.168.56.1",
+                        "192.168.1.135",
                         messageEdit.getText().toString(),
                         "50051",
                         MessageType.TEXT.getValue());
@@ -249,7 +249,7 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        "192.168.56.1",
+                        "192.168.1.135",
                         geolocation,
                         "50051",
                         MessageType.GEOLOCATION.getValue());
@@ -271,7 +271,7 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        "192.168.56.1",
+                        "192.168.1.135",
                         bitMapToString(imageBitmap),
                         "50051",
                         MessageType.PHOTO.getValue());
