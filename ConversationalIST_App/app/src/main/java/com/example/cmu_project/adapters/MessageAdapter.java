@@ -197,7 +197,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public Bitmap stringToBitMap(String encodedString) {
         try {
-            byte [] encodeByte = Base64.decode(encodedString,Base64.DEFAULT);
+            byte [] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         }
         catch(Exception e) {
