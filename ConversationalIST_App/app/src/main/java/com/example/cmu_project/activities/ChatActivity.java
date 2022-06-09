@@ -10,10 +10,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmu_project.GrpcTasks.*;
-import com.example.cmu_project.MyOnScrollListener;
+import com.example.cmu_project.Listeners.MyOnScrollListener;
 import com.example.cmu_project.R;
 import com.example.cmu_project.adapters.MessageAdapter;
 import com.example.cmu_project.contexts.MobDataContext;
@@ -36,17 +34,10 @@ import com.example.cmu_project.enums.MessageType;
 
 import java.io.ByteArrayOutputStream;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import io.grpc.examples.backendserver.*;
 
 public class ChatActivity extends AppCompatActivity {

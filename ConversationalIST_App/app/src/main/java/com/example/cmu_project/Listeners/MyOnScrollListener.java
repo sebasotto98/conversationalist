@@ -1,4 +1,4 @@
-package com.example.cmu_project;
+package com.example.cmu_project.Listeners;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cmu_project.GlobalVariables;
 import com.example.cmu_project.adapters.MessageAdapter;
 
 import java.io.PrintWriter;
