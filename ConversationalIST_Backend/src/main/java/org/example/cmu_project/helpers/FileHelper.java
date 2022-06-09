@@ -41,8 +41,22 @@ public class FileHelper {
         try {
             File myObj = new File(fileId + FILE_FORMAT);
             Scanner myReader = new Scanner(myObj);
+            String stringToBeAdded = "";
+            String newLine;
+            boolean imageMessage = false;
             while (myReader.hasNextLine()) {
-                data.add(myReader.nextLine());
+                newLine = myReader.nextLine();
+                if(!newLine.contains(",")) {
+                    imageMessage = true;
+                    stringToBeAdded = stringToBeAdded.concat(newLine);
+                } else if(imageMessage) {
+                    stringToBeAdded = stringToBeAdded.concat(newLine);
+                    data.add(stringToBeAdded);
+                    stringToBeAdded = "";
+                    imageMessage = false;
+                } else {
+                    data.add(newLine);
+                }
             }
             myReader.close();
         } catch (FileNotFoundException e) {

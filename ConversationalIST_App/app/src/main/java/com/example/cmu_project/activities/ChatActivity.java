@@ -107,7 +107,7 @@ public class ChatActivity extends AppCompatActivity {
                 //after load IP and port from file or whatever just use those vars
                 new getAllMessagesFromChatGrpcTask(this, messageRecycler)
                         .execute(
-                                "192.168.1.135",
+                                "192.168.56.1",
                                 "50051",
                                 ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
             } else {
@@ -117,7 +117,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 new getRemainingMessagesGrpcTask(this, messageRecycler)
                         .execute(
-                                "192.168.1.135",
+                                "192.168.56.1",
                                 "50051",
                                 position,
                                 ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
@@ -129,14 +129,14 @@ public class ChatActivity extends AppCompatActivity {
             if(messageList.isEmpty()) {
                 new getLastNMessagesFromChatGrpcTask(this, messageRecycler)
                         .execute(
-                                "192.168.1.135",
+                                "192.168.56.1",
                                 "50051",
                                 ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
             } else {
                 int position = (messageList.get(messageAdapter.getItemCount() - 1)).getPosition();
                 new getRemainingMessagesMobileDataGrpcTask(this, messageRecycler)
                         .execute(
-                                "192.168.1.135",
+                                "192.168.56.1",
                                 "50051",
                                 position,
                                 ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
@@ -580,8 +580,8 @@ public class ChatActivity extends AppCompatActivity {
 
             sendPhoto(imageBitmap);
         } else if (requestCode == REQUEST_LOCATION_PICKER && resultCode == RESULT_OK) {
-            Double latitude = data.getDoubleExtra("latitude", 0.0);
-            Double longitude = data.getDoubleExtra("longitude", 0.0);
+            double latitude = data.getDoubleExtra("latitude", 0.0);
+            double longitude = data.getDoubleExtra("longitude", 0.0);
 
             String geolocation = latitude + "/" + longitude;
 
@@ -599,7 +599,7 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        "192.168.1.135",
+                        "192.168.56.1",
                         messageEdit.getText().toString(),
                         "50051",
                         MessageType.TEXT.getValue());
@@ -639,7 +639,7 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        "192.168.1.135",
+                        "192.168.56.1",
                         geolocation,
                         "50051",
                         MessageType.GEOLOCATION.getValue());
@@ -661,7 +661,7 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        "192.168.1.135",
+                        "192.168.56.1",
                         bitMapToString(imageBitmap),
                         "50051",
                         MessageType.PHOTO.getValue());
@@ -671,8 +671,7 @@ public class ChatActivity extends AppCompatActivity {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] b = baos.toByteArray();
-        String temp = Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
+        return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
 }

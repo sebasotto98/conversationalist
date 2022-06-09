@@ -31,20 +31,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\app-data-files\chatrooms_info.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\app-data-files\chatrooms_info_sample.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\app-data-files\passwords.csv">
           <value>
             <Attribute>

@@ -5,9 +5,6 @@ mandatory:
 		- difference between joined and unjoined chats
 		- new chat
 	- chat activity
-		- simple text
-		- photos
-		- geolocation
 		- difference between message sent and received
 	- notifications
 	- resource frugality

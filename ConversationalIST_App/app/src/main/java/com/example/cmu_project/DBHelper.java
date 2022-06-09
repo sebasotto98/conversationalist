@@ -22,7 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String MESSAGES_COLUMN_POSITION = "position";
 
     //change this and onUpgrade will be called
-    private static final int VERSION = 41;
+    private static final int VERSION = 43;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME , null, VERSION);
