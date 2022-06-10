@@ -14,6 +14,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -23,6 +24,9 @@ public class ConversationalISTServer {
     private static final Logger logger = Logger.getLogger(ConversationalISTServer.class.getName());
     private static final int TIMEOUT = 30;
     private static final int PORT_NUM = 50051;
+
+    //hash map where key is the chatroom name and value is a list with the StreamObserver of all the interested clients
+    private static HashMap<String, List<StreamObserver<messageResponse>>> clientSubscriptions = new HashMap<>();
 
     private Server server;
 
@@ -89,6 +93,7 @@ public class ConversationalISTServer {
 
             chatroomFileHelper.writeToFile(data, username, timestamp, type, chatroom, String.valueOf(position));
 
+            //TODO send ack instead of message. Message is sent for for the service that treats it after
             messageResponse reply = messageResponse.newBuilder()
                     .setData(data)
                     .setTimestamp(timestamp)
@@ -97,6 +102,9 @@ public class ConversationalISTServer {
                     .setType(Integer.parseInt(type))
                     .setPosition(position)
                     .build();
+
+            sendMessageToInterestedClients(reply, chatroom);
+
             responseObserver.onNext(reply);
             responseObserver.onCompleted();
         }
@@ -208,6 +216,11 @@ public class ConversationalISTServer {
             sendMessageStreamToClient(responseObserver, messagesToSend);
         }
 
+        @Override
+        public StreamObserver<listenToChatroom> listenToChatrooms(StreamObserver<messageResponse> responseObserver){
+            return new listenToChatroomObserver(responseObserver);
+        }
+
         private void sendMessageStreamToClient(StreamObserver<messageResponse> responseObserver, List<String> messages) {
             String data, username, timestamp, type;
             int position;
@@ -251,6 +264,62 @@ public class ConversationalISTServer {
             }
 
             return messagesToSend;
+        }
+
+        private void sendMessageToInterestedClients(messageResponse message, String chatroom) {
+
+            List<StreamObserver<messageResponse>> clients = clientSubscriptions.get(chatroom);
+            if(clients == null){
+                logger.info("No interested Clients"); //how??
+            } else {
+                for(StreamObserver<messageResponse> client: clients){
+                    client.onNext(message);
+                }
+            }
+        }
+
+        private static class listenToChatroomObserver implements StreamObserver<listenToChatroom> {
+
+            private final StreamObserver<messageResponse> responseObserver;
+            private List<String> allChats = new ArrayList<>();
+
+            public listenToChatroomObserver(StreamObserver<messageResponse> responseObserver) {
+                this.responseObserver = responseObserver;
+            }
+
+            @Override
+            public void onNext(listenToChatroom listenToChatroom) {
+                String chat = listenToChatroom.getChatroom();
+
+                allChats.add(chat);
+
+                if(clientSubscriptions.containsKey(chat)){
+                    clientSubscriptions.get(chat).add(responseObserver);
+                } else {
+                    List<StreamObserver<messageResponse>> clients = new ArrayList<>();
+                    clients.add(responseObserver);
+                    clientSubscriptions.put(chat, clients);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                logger.info(throwable.getMessage());
+                removeClient();
+            }
+
+            @Override
+            public void onCompleted() {
+                removeClient();
+            }
+
+            private void removeClient(){
+                for(String chat: allChats){
+                    List<StreamObserver<messageResponse>> clients = clientSubscriptions.get(chat);
+                    clients.remove(responseObserver);
+                    clientSubscriptions.put(chat, clients);
+                }
+            }
         }
     }
 }
