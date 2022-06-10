@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmu_project.GlobalVariables;
 import com.example.cmu_project.R;
+import com.example.cmu_project.Services.FetchDataService;
 
 public class ChatroomActivity extends AppCompatActivity {
 
@@ -31,6 +32,7 @@ public class ChatroomActivity extends AppCompatActivity {
 
         ((GlobalVariables) this.getApplication()).setUsername(username);
 
+        startService(new Intent( this, FetchDataService.class ) );
     }
 
     public void enterChat(View view) {
