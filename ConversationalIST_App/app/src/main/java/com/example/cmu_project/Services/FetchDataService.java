@@ -1,31 +1,20 @@
-package com.example.cmu_project.Services;
+package com.example.cmu_project.services;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
-import com.example.cmu_project.GlobalVariables;
-import com.example.cmu_project.GrpcTasks.getAllMessagesFromChatGrpcTask;
-import com.example.cmu_project.GrpcTasks.listenToChatroomsGrpcTask;
-import com.example.cmu_project.R;
+import com.example.cmu_project.grpc_tasks.ListenToChatroomsGrpcTask;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class FetchDataService extends Service {
 
     private int currentNotificationID = 0;
-    private listenToChatroomsGrpcTask listenGrpcTask;
+    private ListenToChatroomsGrpcTask listenGrpcTask;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -33,10 +22,10 @@ public class FetchDataService extends Service {
         //TODO -> Fetch chatrooms from DB or from server (which one?)
         List<String> chats = Collections.singletonList("CMU Chat");
 
-        listenGrpcTask = (com.example.cmu_project.GrpcTasks.listenToChatroomsGrpcTask)
-                new listenToChatroomsGrpcTask(chats,this, currentNotificationID)
+        listenGrpcTask = (ListenToChatroomsGrpcTask)
+                new ListenToChatroomsGrpcTask(chats,this, currentNotificationID)
                 .execute(
-                        "192.168.1.135",
+                        "192.168.56.1",
                         "50051");
 
         return START_STICKY;

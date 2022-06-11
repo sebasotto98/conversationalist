@@ -26,15 +26,11 @@
     </dependencyManagement>
 
     <dependencies>
-
-        <!-- https://mvnrepository.com/artifact/io.opentracing.contrib/opentracing-grpc -->
         <dependency>
             <groupId>io.opentracing.contrib</groupId>
             <artifactId>opentracing-grpc</artifactId>
             <version>0.2.3</version>
         </dependency>
-
-
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-netty-shaded</artifactId>
@@ -59,13 +55,13 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.9.0</version> <!-- prevent downgrade via protobuf-java-util -->
+            <version>2.9.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>annotations-api</artifactId>
             <version>6.0.53</version>
-            <scope>provided</scope> <!-- not needed at runtime -->
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.grpc</groupId>

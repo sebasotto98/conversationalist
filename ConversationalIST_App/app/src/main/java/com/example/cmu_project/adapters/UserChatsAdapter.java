@@ -1,7 +1,5 @@
 package com.example.cmu_project.adapters;
 
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -12,11 +10,9 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 
-import com.example.cmu_project.GlobalVariables;
+import com.example.cmu_project.helpers.GlobalVariableHelper;
 import com.example.cmu_project.R;
 import com.example.cmu_project.activities.ChatActivity;
-import com.example.cmu_project.activities.ChatroomActivity;
-import com.example.cmu_project.activities.CreateChatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +28,6 @@ public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
         this.context = context;
         this.application = application;
     }
-
 
     @Override
     public int getCount() {
@@ -71,7 +66,7 @@ public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
             public void onClick(View v) {
 
 
-                ((GlobalVariables) app).setCurrentChatroomName(callbtn.getText().toString());
+                ((GlobalVariableHelper) app).setCurrentChatroomName(callbtn.getText().toString());
 
                 Intent myIntent = new Intent(v.getContext(), ChatActivity.class);
                 v.getContext().startActivity(myIntent);

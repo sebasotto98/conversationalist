@@ -7,18 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.cmu_project.GlobalVariables;
 import com.example.cmu_project.R;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.examples.backendserver.CreateChatReply;
 import io.grpc.examples.backendserver.CreateChatRequest;
 import io.grpc.examples.backendserver.ServerGrpc;
-import io.grpc.examples.backendserver.sendingMessage;
 
 public class CreateChatActivity extends AppCompatActivity {
 
@@ -44,7 +38,7 @@ public class CreateChatActivity extends AppCompatActivity {
     public void create(View view) {
 
 
-        ServerBlockingStub = ServerGrpc.newBlockingStub(ManagedChannelBuilder.forAddress("172.28.128.1",50051).usePlaintext().build());
+        ServerBlockingStub = ServerGrpc.newBlockingStub(ManagedChannelBuilder.forAddress("192.168.56.1", 50051).usePlaintext().build());
 
         //Send Requests
         CreateChatRequest request = CreateChatRequest.newBuilder().setChatroomName("AndroidRoom").setUser("testerAndroid").build();

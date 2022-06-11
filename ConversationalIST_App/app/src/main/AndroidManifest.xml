@@ -19,7 +19,7 @@
         android:required="true" />
 
     <application
-        android:name=".GlobalVariables"
+        android:name=".helpers.GlobalVariableHelper"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -53,7 +53,7 @@
             android:name=".activities.CreateChatActivity"
             android:exported="true"></activity>
 
-        <service android:name=".Services.FetchDataService" />
+        <service android:name=".services.FetchDataService" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

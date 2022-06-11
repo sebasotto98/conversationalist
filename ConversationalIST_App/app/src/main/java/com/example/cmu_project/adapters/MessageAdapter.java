@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmu_project.R;
 import com.example.cmu_project.activities.ChatActivity;
+import com.example.cmu_project.helpers.PropertiesHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -186,7 +187,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             String y = coordinates[1];
 
             Picasso.with(context)
-                    .load("https://maps.google.com/maps/api/staticmap?center=" + x + "," + y + "&zoom=15&size=640x480&scale=2&maptype=hybrid&key=AIzaSyBVHoyrgJOlu_Zla_PLsWFXb8XMhVzCxDU")
+                    .load("https://maps.google.com/maps/api/staticmap?center=" + x + "," + y + "&zoom=15&size=640x480&scale=2&maptype=hybrid&key=" + PropertiesHelper.getInstance().getProperty("MAPS_API_KEY"))
                     .into(messageGeolocation);
 
             timeGeolocation.setText(message.getTimestamp());

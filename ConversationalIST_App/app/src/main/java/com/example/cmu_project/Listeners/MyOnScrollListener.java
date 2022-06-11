@@ -1,4 +1,4 @@
-package com.example.cmu_project.Listeners;
+package com.example.cmu_project.listeners;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cmu_project.GlobalVariables;
+import com.example.cmu_project.helpers.GlobalVariableHelper;
 import com.example.cmu_project.adapters.MessageAdapter;
 
 import java.io.PrintWriter;
@@ -68,11 +68,11 @@ public class MyOnScrollListener extends RecyclerView.OnScrollListener {
                     int numberOfMessages = 10;
                     new MyOnScrollListener.getMessagesBetweenPositionsMobileDataGrpcTask(activityReference.get(), messageRecycler, this)
                             .execute(
-                                    "192.168.1.135",
+                                    "192.168.56.1",
                                     "50051",
                                     position,
                                     numberOfMessages,
-                                    ((GlobalVariables) activityReference.get().getApplication()).getCurrentChatroomName());
+                                    ((GlobalVariableHelper) activityReference.get().getApplication()).getCurrentChatroomName());
                 }
             }
         }
@@ -144,12 +144,12 @@ public class MyOnScrollListener extends RecyclerView.OnScrollListener {
                     newMessageList.add(nextMessage);
 
                     //save message in cache
-                    boolean r = ((GlobalVariables) activityReference.get().getApplication()).getDb().insertMessage(
+                    boolean r = ((GlobalVariableHelper) activityReference.get().getApplication()).getDb().insertMessage(
                             nextMessage.getData(),
                             nextMessage.getUsername(),
                             nextMessage.getTimestamp(),
                             String.valueOf(nextMessage.getType()),
-                            ((GlobalVariables) activityReference.get().getApplication()).getCurrentChatroomName(),
+                            ((GlobalVariableHelper) activityReference.get().getApplication()).getCurrentChatroomName(),
                             nextMessage.getPosition()
                     );
 

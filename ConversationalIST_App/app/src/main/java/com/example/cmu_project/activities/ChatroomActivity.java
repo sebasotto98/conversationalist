@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.cmu_project.GlobalVariables;
+import com.example.cmu_project.helpers.GlobalVariableHelper;
 import com.example.cmu_project.R;
-import com.example.cmu_project.Services.FetchDataService;
+import com.example.cmu_project.services.FetchDataService;
 import com.example.cmu_project.adapters.UserChatsAdapter;
 
 import java.util.List;
@@ -39,11 +39,11 @@ public class ChatroomActivity extends AppCompatActivity {
         tx1.setText(welcomeMessage);
         tx1.setVisibility(View.VISIBLE);
 
-        ((GlobalVariables) this.getApplication()).setUsername(username);
+        ((GlobalVariableHelper) this.getApplication()).setUsername(username);
 
         my_chats_list = (ListView) findViewById(R.id.my_chat_list);
-        ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariables) this.getApplication()).getStub();
-        GetChatsReply reply = ServerBlockingStub.getAllChats(GetChatsRequest.newBuilder().setUser(((GlobalVariables) this.getApplication()).getUsername()).build());
+        ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getStub();
+        GetChatsReply reply = ServerBlockingStub.getAllChats(GetChatsRequest.newBuilder().setUser(((GlobalVariableHelper) this.getApplication()).getUsername()).build());
         List<String> chats_list = reply.getUserChatsList();
 
         my_chats_list.setAdapter(new UserChatsAdapter(chats_list,ChatroomActivity.this,this.getApplication()));
@@ -53,7 +53,7 @@ public class ChatroomActivity extends AppCompatActivity {
 
     public void enterChat(View view) {
 
-        ((GlobalVariables) this.getApplication()).setCurrentChatroomName(chatIcon.getText().toString());
+        ((GlobalVariableHelper) this.getApplication()).setCurrentChatroomName(chatIcon.getText().toString());
 
         Intent myIntent = new Intent(ChatroomActivity.this, ChatActivity.class);
         ChatroomActivity.this.startActivity(myIntent);

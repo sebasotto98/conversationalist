@@ -1,8 +1,8 @@
 package com.example.cmu_project.activities;
 
 import com.adevinta.leku.LocationPickerActivity;
-import com.example.cmu_project.DBHelper;
-import com.example.cmu_project.GlobalVariables;
+import com.example.cmu_project.helpers.DBHelper;
+import com.example.cmu_project.helpers.GlobalVariableHelper;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -24,8 +24,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cmu_project.GrpcTasks.*;
-import com.example.cmu_project.Listeners.MyOnScrollListener;
+import com.example.cmu_project.grpc_tasks.*;
+import com.example.cmu_project.helpers.PropertiesHelper;
+import com.example.cmu_project.listeners.MyOnScrollListener;
 import com.example.cmu_project.R;
 import com.example.cmu_project.adapters.MessageAdapter;
 import com.example.cmu_project.contexts.MobDataContext;
@@ -96,41 +97,37 @@ public class ChatActivity extends AppCompatActivity {
                 Log.d("ChatActivity", "messageList is Empty");
                 //change IP for this to work
                 //after load IP and port from file or whatever just use those vars
-                new getAllMessagesFromChatGrpcTask(this, messageRecycler)
-                        .execute(
-                                "172.28.128.1",
+                new GetAllMessagesFromChatGrpcTask(this, messageRecycler)
+                        .execute("192.168.56.1",
                                 "50051",
-                                ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
+                                ((GlobalVariableHelper) this.getApplication()).getCurrentChatroomName());
             } else {
                 Log.d("ChatActivity", "Loaded some messages from cache. Now contact server.");
 
                 int position = (messageList.get(messageAdapter.getItemCount() - 1)).getPosition();
 
-                new getRemainingMessagesGrpcTask(this, messageRecycler)
-                        .execute(
-                                "172.28.128.1",
+                new GetRemainingMessagesGrpcTask(this, messageRecycler)
+                        .execute("192.168.56.1",
                                 "50051",
                                 position,
-                                ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
+                                ((GlobalVariableHelper) this.getApplication()).getCurrentChatroomName());
             }
         } else if(MDContext.conforms(this)){
             //Toast.makeText(getApplicationContext(),"Connected to mobile data.", Toast.LENGTH_SHORT).show();
 
             if(messageList.isEmpty()) {
                 Log.d("ChatActivity", "messageList is Empty");
-                new getLastNMessagesFromChatGrpcTask(this, messageRecycler)
-                        .execute(
-                                "172.28.128.1",
+                new GetLastNMessagesFromChatGrpcTask(this, messageRecycler)
+                        .execute("192.168.56.1",
                                 "50051",
-                                ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
+                                ((GlobalVariableHelper) this.getApplication()).getCurrentChatroomName());
             } else {
                 int position = (messageList.get(messageAdapter.getItemCount() - 1)).getPosition();
-                new getRemainingMessagesMobileDataGrpcTask(this, messageRecycler)
-                        .execute(
-                                "172.28.128.1",
+                new GetRemainingMessagesMobileDataGrpcTask(this, messageRecycler)
+                        .execute("192.168.56.1",
                                 "50051",
                                 position,
-                                ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
+                                ((GlobalVariableHelper) this.getApplication()).getCurrentChatroomName());
             }
         } else {
             Toast.makeText(getApplicationContext(),
@@ -148,9 +145,9 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void retrieveMessagesFromCache() {
-        String chatroom = ((GlobalVariables) this.getApplication()).getCurrentChatroomName();
+        String chatroom = ((GlobalVariableHelper) this.getApplication()).getCurrentChatroomName();
 
-        Cursor messagesCursor = ((GlobalVariables) this.getApplication()).getDb()
+        Cursor messagesCursor = ((GlobalVariableHelper) this.getApplication()).getDb()
                                                     .getAllChatroomMessages(chatroom);
         messagesCursor.moveToFirst();
         Log.d("CHAT ACTIVITY", String.valueOf(messagesCursor.getCount()));
@@ -198,9 +195,8 @@ public class ChatActivity extends AppCompatActivity {
                 .hideSoftInputFromWindow(hostEdit.getWindowToken(), 0);
         sendButton.setEnabled(false);
 
-        new sendMessageGrpcTask(this, messageRecycler)
-                .execute(
-                        "172.28.128.1",
+        new SendMessageGrpcTask(this, messageRecycler)
+                .execute("192.168.56.1",
                         messageEdit.getText().toString(),
                         "50051",
                         MessageType.TEXT.getValue());
@@ -209,7 +205,7 @@ public class ChatActivity extends AppCompatActivity {
     public void showMap(View view) {
         Intent locationPickerIntent = new LocationPickerActivity.Builder()
                 .withLocation(41.4036299, 2.1743558)
-                .withGeolocApiKey("AIzaSyBVHoyrgJOlu_Zla_PLsWFXb8XMhVzCxDU")
+                .withGeolocApiKey(PropertiesHelper.getInstance().getProperty("MAPS_API_KEY"))
                 .withSearchZone("en_EN")
                 //.withSearchZone(SearchZoneRect(LatLng(26.525467, -18.910366), LatLng(43.906271, 5.394197)))
                 .withDefaultLocaleSearchZone()
@@ -238,9 +234,8 @@ public class ChatActivity extends AppCompatActivity {
                 .hideSoftInputFromWindow(hostEdit.getWindowToken(), 0);
         sendButton.setEnabled(false);
 
-        new sendMessageGrpcTask(this, messageRecycler)
-                .execute(
-                        "172.28.128.1",
+        new SendMessageGrpcTask(this, messageRecycler)
+                .execute("192.168.56.1",
                         geolocation,
                         "50051",
                         MessageType.GEOLOCATION.getValue());
@@ -260,9 +255,8 @@ public class ChatActivity extends AppCompatActivity {
                 .hideSoftInputFromWindow(hostEdit.getWindowToken(), 0);
         sendButton.setEnabled(false);
 
-        new sendMessageGrpcTask(this, messageRecycler)
-                .execute(
-                        "172.28.128.1",
+        new SendMessageGrpcTask(this, messageRecycler)
+                .execute("192.168.56.1",
                         bitMapToString(imageBitmap),
                         "50051",
                         MessageType.PHOTO.getValue());

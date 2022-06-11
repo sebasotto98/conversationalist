@@ -8,10 +8,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.cmu_project.GlobalVariables;
+import com.example.cmu_project.helpers.GlobalVariableHelper;
 import com.example.cmu_project.R;
 
 import java.util.List;
@@ -55,14 +53,14 @@ public class JoinChatActivity extends AppCompatActivity {
 
     public void join(View view) {
 
-        ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariables) this.getApplication()).getStub();
-        JoinChatRequest request = JoinChatRequest.newBuilder().setUser(((GlobalVariables) this.getApplication()).getUsername()).setChatName(current_chat_to_join).build();
+        ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getStub();
+        JoinChatRequest request = JoinChatRequest.newBuilder().setUser(((GlobalVariableHelper) this.getApplication()).getUsername()).setChatName(current_chat_to_join).build();
         JoinChatReply reply = ServerBlockingStub.joinChat(request);
 
         System.out.println(reply.getAck());
 
         //jump to the chat activity
-        ((GlobalVariables) this.getApplication()).setCurrentChatroomName(current_chat_to_join);
+        ((GlobalVariableHelper) this.getApplication()).setCurrentChatroomName(current_chat_to_join);
         Intent myIntent = new Intent(JoinChatActivity.this, ChatActivity.class);
         JoinChatActivity.this.startActivity(myIntent);
 
@@ -71,10 +69,10 @@ public class JoinChatActivity extends AppCompatActivity {
     private List<String> getAvailableChats() {
 
         List<String> ret_list;
-        ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariables) this.getApplication()).getStub();
+        ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getStub();
 
         //send request and get response
-        JoinableChatsRequest request = JoinableChatsRequest.newBuilder().setUser(((GlobalVariables) this.getApplication()).getUsername()).build();
+        JoinableChatsRequest request = JoinableChatsRequest.newBuilder().setUser(((GlobalVariableHelper) this.getApplication()).getUsername()).build();
         JoinableChatsReply response = ServerBlockingStub.getJoinableChats(request);
         ret_list = response.getChatsList();
 
