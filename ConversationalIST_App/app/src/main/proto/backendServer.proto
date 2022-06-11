@@ -62,15 +62,27 @@ message messageResponse {
 message CreateChatRequest {
   string user = 1;
   string chatroom_name = 2;
+  string type_of_chat = 3;
+  Location location = 4;
+  string radius = 5;
 }
 
 message CreateChatReply {
   string ack = 1;
 }
 
+message Location {
+ string latitude = 1;
+ string longitude = 2;
+}
+
 message NMessagesFromChat {
   string chatroom = 1;
   int32 numberOfMessages = 2;
+}
+
+message JoinableChatsRequest {
+ string user = 1;
 }
 
 message JoinableChatsReply {
