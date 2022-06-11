@@ -17,6 +17,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmu_project.R;
+import com.example.cmu_project.activities.ChatActivity;
 import com.example.cmu_project.adapters.MessageAdapter;
 import com.example.cmu_project.enums.MessageType;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
@@ -27,6 +28,8 @@ import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -79,26 +82,38 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
                     }
 
                     //TODO -> create Pending intent that opens the chatroom
-                     /*Intent notificationIntent = new Intent(this, ChatActivity.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);*/
-                    PendingIntent pendingIntent = null;
+                    Intent notificationIntent = new Intent(context.get().getApplicationContext(),
+                            ChatActivity.class);
+                    Log.d("ListenToChatroomsGrpcTask", message.getChatroom());
+                    notificationIntent.putExtra("chatroom", message.getChatroom());
+                    notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    PendingIntent pendingIntent = PendingIntent.getActivity(
+                            context.get().getApplicationContext(),
+                            (int)(System.currentTimeMillis()/1000),
+                            notificationIntent,
+                            PendingIntent.FLAG_IMMUTABLE);
+
+                    //PendingIntent pendingIntent = null;
 
                     messageRecycler = ((GlobalVariableHelper) context.get().getApplicationContext()).getMessageRecycler();
                     messageAdapter = ((GlobalVariableHelper) context.get().getApplicationContext()).getMessageAdapter();
+                    String currentChatroom = ((GlobalVariableHelper) context.get().getApplicationContext())
+                            .getCurrentChatroomName();
 
-                    if (messageRecycler != null && messageAdapter != null) {
+                    if (messageRecycler != null && messageAdapter != null && Objects.equals(currentChatroom, message.getChatroom())) {
 
                         messageAdapter.addToMessageList(message);
-                        Log.d("ListenToChatroomsGrpcTask", "1");
+
                         int position = messageAdapter.getItemCount() - 1;
 
                         Intent intent = new Intent(((GlobalVariableHelper)context.get().getApplicationContext())
                                 .getBROADCAST_MESSAGE_INSERTED());
                         intent.putExtra("position", position);
-                        Log.d("ListenToChatroomsGrpcTask", "2");
+
                         LocalBroadcastManager.getInstance(context.get()).sendBroadcast(intent);
-                        Log.d("ListenToChatroomsGrpcTask", "3");
+
                     } else {
                         if (message.getType() == MessageType.TEXT.getValue()) {
                             pushNotification(message.getChatroom(),
@@ -111,7 +126,6 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
                                     message.getUsername() + " sent a geolocation", pendingIntent);
                         }
                     }
-                    Log.d("ListenToChatroomsGrpcTask", "4");
                 }
 
                 @Override

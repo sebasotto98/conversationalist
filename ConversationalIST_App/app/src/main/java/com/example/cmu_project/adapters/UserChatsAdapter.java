@@ -69,6 +69,7 @@ public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
                 ((GlobalVariableHelper) app).setCurrentChatroomName(callbtn.getText().toString());
 
                 Intent myIntent = new Intent(v.getContext(), ChatActivity.class);
+                myIntent.putExtra("chatroom", callbtn.getText().toString());
                 v.getContext().startActivity(myIntent);
 
             }

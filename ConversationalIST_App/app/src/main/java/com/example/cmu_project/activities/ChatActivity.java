@@ -57,12 +57,19 @@ public class ChatActivity extends AppCompatActivity {
     private MessageAdapter messageAdapter;
     private LinearLayoutManager linearLayoutManager;
 
+    private String chatroom;
+
     private List<messageResponse> messageList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        chatroom = getIntent().getStringExtra("chatroom");
+        ((GlobalVariableHelper) getApplication()).setCurrentChatroomName(chatroom);
+
+        Log.d("ChatActivity", String.valueOf(getIntent().getStringExtra("chatroom")));
 
         sendButton = (Button) findViewById(R.id.send_button);
         hostEdit = (EditText) findViewById(R.id.host_edit_text);
@@ -104,8 +111,7 @@ public class ChatActivity extends AppCompatActivity {
                 //change IP for this to work
                 //after load IP and port from file or whatever just use those vars
                 new GetAllMessagesFromChatGrpcTask(this, messageRecycler)
-                        .execute(
-                                ((GlobalVariableHelper) this.getApplication()).getCurrentChatroomName());
+                        .execute(chatroom);
             } else {
                 Log.d("ChatActivity", "Loaded some messages from cache. Now contact server.");
 
@@ -113,7 +119,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 new GetRemainingMessagesGrpcTask(this, messageRecycler)
                         .execute(position,
-                                ((GlobalVariableHelper) this.getApplication()).getCurrentChatroomName());
+                                chatroom);
             }
         } else if(MDContext.conforms(this)){
             //Toast.makeText(getApplicationContext(),"Connected to mobile data.", Toast.LENGTH_SHORT).show();
@@ -121,13 +127,12 @@ public class ChatActivity extends AppCompatActivity {
             if(messageList.isEmpty()) {
                 Log.d("ChatActivity", "messageList is Empty");
                 new GetLastNMessagesFromChatGrpcTask(this, messageRecycler)
-                        .execute(
-                                ((GlobalVariableHelper) this.getApplication()).getCurrentChatroomName());
+                        .execute(chatroom);
             } else {
                 int position = (messageList.get(messageAdapter.getItemCount() - 1)).getPosition();
                 new GetRemainingMessagesMobileDataGrpcTask(this, messageRecycler)
                         .execute(position,
-                                ((GlobalVariableHelper) this.getApplication()).getCurrentChatroomName());
+                                chatroom);
             }
         } else {
             Toast.makeText(getApplicationContext(),
@@ -141,7 +146,6 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void retrieveMessagesFromCache() {
-        String chatroom = ((GlobalVariableHelper) this.getApplication()).getCurrentChatroomName();
 
         Cursor messagesCursor = ((GlobalVariableHelper) this.getApplication()).getDb()
                                                     .getAllChatroomMessages(chatroom);
@@ -271,7 +275,7 @@ public class ChatActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
-            int position = intent.getIntExtra("position", messageAdapter.getItemCount());
+            int position = intent.getIntExtra("position", messageAdapter.getItemCount() - 1);
             Log.d("ChatActivity (BroadcastReceiver)", "Update position in " + position);
 
             messageAdapter.notifyItemInserted(position);
