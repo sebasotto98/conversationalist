@@ -2,6 +2,7 @@ package com.example.cmu_project.contexts;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.util.Log;
 
 import androidx.core.net.ConnectivityManagerCompat;
 
@@ -13,7 +14,6 @@ public class MobDataContext extends BandwidthContext{
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         if(cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected()) {
-
 
             //isActiveNetworkMetered returns true if connected to data/metered connection
             //                               false if connected to wifi

@@ -349,7 +349,7 @@ public class ConversationalISTServer {
         private void sendMessageToInterestedClients(messageResponse message, String chatroom) {
 
             List<StreamObserver<messageResponse>> clients = clientSubscriptions.get(chatroom);
-            if(clients == null){
+            if(clients == null || clients.isEmpty()){
                 logger.info("No interested Clients"); //how??
             } else {
                 for(StreamObserver<messageResponse> client: clients){
@@ -370,9 +370,9 @@ public class ConversationalISTServer {
             @Override
             public void onNext(listenToChatroom listenToChatroom) {
                 String chat = listenToChatroom.getChatroom();
-
+                logger.info("Got request from client: " + listenToChatroom);
                 allChats.add(chat);
-
+                logger.info("allChats " + allChats);
                 if(clientSubscriptions.containsKey(chat)){
                     clientSubscriptions.get(chat).add(responseObserver);
                 } else {

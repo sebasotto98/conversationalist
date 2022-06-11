@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.text.TextUtils;
@@ -12,14 +13,18 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmu_project.R;
+import com.example.cmu_project.adapters.MessageAdapter;
 import com.example.cmu_project.enums.MessageType;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,6 +40,8 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
     private StreamObserver<listenToChatroom> requestObserver;
     private final WeakReference<Context> context;
     private int currentNotificationID;
+    private RecyclerView messageRecycler;
+    private MessageAdapter messageAdapter;
 
     public ListenToChatroomsGrpcTask(List<String> userChats, Context context, int currentNotificationID) {
         this.userChats = userChats;
@@ -54,22 +61,7 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
                 @Override
                 public void onNext(messageResponse message) {
                     Log.d("listenToChatroomsGrpcTask", String.valueOf(message));
-                    //TODO -> create Pending intent that opens the chatroom
-                    //TODO -> check if chat is open and present the new message instead of sending notification
-                     /*Intent notificationIntent = new Intent(this, ChatActivity.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);*/
-                    PendingIntent pendingIntent = null;
-                    if(message.getType() == MessageType.TEXT.getValue()){
-                        pushNotification(message.getChatroom(),
-                                message.getUsername() + ": " + message.getData(),pendingIntent);
-                    } else if(message.getType() == MessageType.PHOTO.getValue()){
-                        pushNotification(message.getChatroom(),
-                                message.getUsername() + " sent a photo",pendingIntent);
-                    } else if(message.getType() == MessageType.GEOLOCATION.getValue()){
-                        pushNotification(message.getChatroom(),
-                                message.getUsername() + " sent a geolocation",pendingIntent);
-                    }
+
 
                     boolean r = ((GlobalVariableHelper) context.get().getApplicationContext()).getDb().insertMessage(
                             message.getData(),
@@ -86,11 +78,46 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
                         Log.d("ListenToChatroomsGrpcTask", "Couldn't insert message in cache.");
                     }
 
+                    //TODO -> create Pending intent that opens the chatroom
+                    //TODO -> check if chat is open and present the new message instead of sending notification
+                     /*Intent notificationIntent = new Intent(this, ChatActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);*/
+                    PendingIntent pendingIntent = null;
+
+                    messageRecycler = ((GlobalVariableHelper) context.get().getApplicationContext()).getMessageRecycler();
+                    messageAdapter = ((GlobalVariableHelper) context.get().getApplicationContext()).getMessageAdapter();
+
+                    if (messageRecycler != null && messageAdapter != null) {
+
+                        messageAdapter.addToMessageList(message);
+                        Log.d("ListenToChatroomsGrpcTask", "1");
+                        int position = messageAdapter.getItemCount() - 1;
+
+                        Intent intent = new Intent(((GlobalVariableHelper)context.get().getApplicationContext())
+                                .getBROADCAST_MESSAGE_INSERTED());
+                        intent.putExtra("position", position);
+                        Log.d("ListenToChatroomsGrpcTask", "2");
+                        LocalBroadcastManager.getInstance(context.get()).sendBroadcast(intent);
+                        Log.d("ListenToChatroomsGrpcTask", "3");
+                    } else {
+                        if (message.getType() == MessageType.TEXT.getValue()) {
+                            pushNotification(message.getChatroom(),
+                                    message.getUsername() + ": " + message.getData(), pendingIntent);
+                        } else if (message.getType() == MessageType.PHOTO.getValue()) {
+                            pushNotification(message.getChatroom(),
+                                    message.getUsername() + " sent a photo", pendingIntent);
+                        } else if (message.getType() == MessageType.GEOLOCATION.getValue()) {
+                            pushNotification(message.getChatroom(),
+                                    message.getUsername() + " sent a geolocation", pendingIntent);
+                        }
+                    }
+                    Log.d("ListenToChatroomsGrpcTask", "4");
                 }
 
                 @Override
                 public void onError(Throwable t) {
-                    Log.d("listenToChatroomsGrpcTask", t.getMessage());
+                    Log.d("listenToChatroomsGrpcTask", Arrays.toString(t.getStackTrace()));
                 }
 
                 @Override

@@ -5,8 +5,10 @@ import com.example.cmu_project.helpers.DBHelper;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,13 +52,10 @@ public class ChatActivity extends AppCompatActivity {
 
     private Button sendButton;
     private EditText hostEdit;
-    private EditText portEdit;
     private EditText messageEdit;
     private RecyclerView messageRecycler;
     private MessageAdapter messageAdapter;
     private LinearLayoutManager linearLayoutManager;
-    private boolean loadingMoreMessages = false;
-    private boolean gotAllChatMessages;
 
     private List<messageResponse> messageList = new ArrayList<>();
 
@@ -66,11 +66,14 @@ public class ChatActivity extends AppCompatActivity {
 
         sendButton = (Button) findViewById(R.id.send_button);
         hostEdit = (EditText) findViewById(R.id.host_edit_text);
-        portEdit = (EditText) findViewById(R.id.port_edit_text);
         messageEdit = (EditText) findViewById(R.id.message_edit_text);
         messageRecycler = (RecyclerView) findViewById(R.id.recyclerView);
 
         retrieveMessagesFromCache();
+
+        //listen to this events
+        LocalBroadcastManager.getInstance(this).registerReceiver(messageAdapterBroadcastReceiver,
+                new IntentFilter(((GlobalVariableHelper) getApplication()).getBROADCAST_MESSAGE_INSERTED()));
 
         messageAdapter = new MessageAdapter(this, messageList);
 
@@ -79,6 +82,9 @@ public class ChatActivity extends AppCompatActivity {
         messageRecycler.setAdapter(messageAdapter);
 
         MyOnScrollListener myOnScrollListener = new MyOnScrollListener(this, messageRecycler);
+
+        ((GlobalVariableHelper) getApplication()).setMessageAdapter(messageAdapter);
+        ((GlobalVariableHelper) getApplication()).setMessageRecycler(messageRecycler);
 
         if(!messageList.isEmpty()){
             int firstPosition = messageList.get(0).getPosition();
@@ -134,10 +140,6 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    public void setLoadingMoreMessages(boolean loadingMoreMessages) {
-        this.loadingMoreMessages = loadingMoreMessages;
-    }
-
     private void retrieveMessagesFromCache() {
         String chatroom = ((GlobalVariableHelper) this.getApplication()).getCurrentChatroomName();
 
@@ -182,6 +184,14 @@ public class ChatActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_CANCELED) {
             Log.d("RESULT****", "CANCELLED");
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ((GlobalVariableHelper) getApplication()).setMessageAdapter(null);
+        ((GlobalVariableHelper) getApplication()).setMessageRecycler(null);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(messageAdapterBroadcastReceiver);
     }
 
     public void sendText(View view) {
@@ -257,4 +267,14 @@ public class ChatActivity extends AppCompatActivity {
         return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
+    private final BroadcastReceiver messageAdapterBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            int position = intent.getIntExtra("position", messageAdapter.getItemCount());
+            Log.d("ChatActivity (BroadcastReceiver)", "Update position in " + position);
+
+            messageAdapter.notifyItemInserted(position);
+        }
+    };
 }
