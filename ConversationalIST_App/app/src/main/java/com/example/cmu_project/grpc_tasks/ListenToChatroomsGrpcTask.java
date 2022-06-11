@@ -55,7 +55,6 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
                 public void onNext(messageResponse message) {
                     Log.d("listenToChatroomsGrpcTask", String.valueOf(message));
                     //TODO -> create Pending intent that opens the chatroom
-                    //TODO -> save message in cache
                     //TODO -> check if chat is open and present the new message instead of sending notification
                      /*Intent notificationIntent = new Intent(this, ChatActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
