@@ -1,4 +1,4 @@
-package com.example.cmu_project.services;
+package com.example.cmu_project.Services;
 
 import android.app.Service;
 import android.content.Intent;
@@ -20,13 +20,11 @@ public class FetchDataService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         //TODO -> Fetch chatrooms from DB or from server (which one?)
-        List<String> chats = Collections.singletonList("CMU Chat");
+        List<String> chats = Collections.singletonList("sala1");
 
         listenGrpcTask = (ListenToChatroomsGrpcTask)
                 new ListenToChatroomsGrpcTask(chats,this, currentNotificationID)
-                .execute(
-                        "192.168.56.1",
-                        "50051");
+                .execute();
 
         return START_STICKY;
     }

@@ -24,7 +24,7 @@ public class ChatroomFileHelper extends FileHelper {
                                 username + "," +
                                 timestamp + ","+
                                 type + "," +
-                                position + "\n";
+                                position;
 
         super.write(finalString, CHATROOM_FILE_BEGIN + fileName);
     }

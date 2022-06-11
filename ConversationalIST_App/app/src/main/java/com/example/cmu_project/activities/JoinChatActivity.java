@@ -53,7 +53,7 @@ public class JoinChatActivity extends AppCompatActivity {
 
     public void join(View view) {
 
-        ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getStub();
+        ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getServerBlockingStub();
         JoinChatRequest request = JoinChatRequest.newBuilder().setUser(((GlobalVariableHelper) this.getApplication()).getUsername()).setChatName(current_chat_to_join).build();
         JoinChatReply reply = ServerBlockingStub.joinChat(request);
 
@@ -69,7 +69,7 @@ public class JoinChatActivity extends AppCompatActivity {
     private List<String> getAvailableChats() {
 
         List<String> ret_list;
-        ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getStub();
+        ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getServerBlockingStub();
 
         //send request and get response
         JoinableChatsRequest request = JoinableChatsRequest.newBuilder().setUser(((GlobalVariableHelper) this.getApplication()).getUsername()).build();

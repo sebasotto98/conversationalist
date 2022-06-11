@@ -2,6 +2,7 @@ package com.example.cmu_project.helpers;
 
 import android.app.Application;
 
+import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.examples.backendserver.ServerGrpc;
 
@@ -9,7 +10,9 @@ public class GlobalVariableHelper extends Application {
 
     private String currentChatroomName = null;
     private String username = null;
-    private ServerGrpc.ServerBlockingStub ServerBlockingStub = ServerGrpc.newBlockingStub(ManagedChannelBuilder.forAddress("172.28.128.1",50051).usePlaintext().build());
+    private final ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.1.135",50051).usePlaintext().build();
+    private final ServerGrpc.ServerBlockingStub ServerBlockingStub = ServerGrpc.newBlockingStub(channel);
+    private final  ServerGrpc.ServerStub nonBlockingStub = ServerGrpc.newStub(channel);
 
     private final DBHelper db = new DBHelper(this);
 
@@ -19,10 +22,6 @@ public class GlobalVariableHelper extends Application {
 
     public void setCurrentChatroomName(String currentChatroomName) {
         this.currentChatroomName = currentChatroomName;
-    }
-
-    public ServerGrpc.ServerBlockingStub getStub() {
-        return this.ServerBlockingStub;
     }
 
     public String getUsername() {
@@ -37,4 +36,11 @@ public class GlobalVariableHelper extends Application {
         return db;
     }
 
+    public ServerGrpc.ServerBlockingStub getServerBlockingStub() {
+        return ServerBlockingStub;
+    }
+
+    public ServerGrpc.ServerStub getNonBlockingStub() {
+        return nonBlockingStub;
+    }
 }

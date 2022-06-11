@@ -53,7 +53,7 @@
             android:name=".activities.CreateChatActivity"
             android:exported="true"></activity>
 
-        <service android:name=".services.FetchDataService" />
+        <service android:name=".Services.FetchDataService" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

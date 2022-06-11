@@ -3,6 +3,7 @@ package com.example.cmu_project.grpc_tasks;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -14,9 +15,11 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.example.cmu_project.R;
 import com.example.cmu_project.enums.MessageType;
+import com.example.cmu_project.helpers.GlobalVariableHelper;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,29 +33,30 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
     private final String CHANNEL_ID = "ConversationalIST notification";
     private final List<String> userChats;
     private StreamObserver<listenToChatroom> requestObserver;
-    private final Context context;
+    private final WeakReference<Context> context;
     private int currentNotificationID;
 
     public ListenToChatroomsGrpcTask(List<String> userChats, Context context, int currentNotificationID) {
         this.userChats = userChats;
-        this.context = context;
+        this.context = new WeakReference<>(context);
         this.currentNotificationID = currentNotificationID;
     }
 
     @Override
     protected Iterator<messageResponse> doInBackground(Object... params) {
-        String host = (String) params[0];
-        String portStr = (String) params[1];
-        int port = TextUtils.isEmpty(portStr) ? 0 : Integer.parseInt(portStr);
         try {
-            ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
-            ServerGrpc.ServerStub nonBlockingStub = ServerGrpc.newStub(channel);
+
+            ServerGrpc.ServerStub nonBlockingStub
+                    = ((GlobalVariableHelper) context.get().getApplicationContext())
+                    .getNonBlockingStub();
             StreamObserver<messageResponse> responseMessages = new StreamObserver<messageResponse>() {
 
                 @Override
                 public void onNext(messageResponse message) {
                     Log.d("listenToChatroomsGrpcTask", String.valueOf(message));
                     //TODO -> create Pending intent that opens the chatroom
+                    //TODO -> save message in cache
+                    //TODO -> check if chat is open and present the new message instead of sending notification
                      /*Intent notificationIntent = new Intent(this, ChatActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);*/
@@ -96,7 +100,7 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
             pw.flush();
-            Log.d("getRemainingMessagesMobileDataGrpcTask", sw.toString());
+            Log.d("listenToChatroomsGrpcTask", sw.toString());
         }
         return null;
     }
@@ -111,7 +115,7 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
 
         createNotificationChannel();
 
-        builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+        builder = new NotificationCompat.Builder(context.get(), CHANNEL_ID)
                 .setContentTitle(Title)
                 .setContentText(Text)
                 .setAutoCancel(true)
@@ -121,7 +125,7 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
         if(intent != null) {
             builder.setContentIntent(intent);
         }
-        NotificationManagerCompat manager = NotificationManagerCompat.from(context);
+        NotificationManagerCompat manager = NotificationManagerCompat.from(context.get());
 
         manager.notify(currentNotificationID, builder.build());
         currentNotificationID++;
@@ -139,7 +143,7 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            NotificationManager notificationManager = context.get().getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
     }

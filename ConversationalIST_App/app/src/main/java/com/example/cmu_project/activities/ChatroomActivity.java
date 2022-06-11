@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 import com.example.cmu_project.R;
-import com.example.cmu_project.services.FetchDataService;
+import com.example.cmu_project.Services.FetchDataService;
 import com.example.cmu_project.adapters.UserChatsAdapter;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class ChatroomActivity extends AppCompatActivity {
         ((GlobalVariableHelper) this.getApplication()).setUsername(username);
 
         my_chats_list = (ListView) findViewById(R.id.my_chat_list);
-        ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getStub();
+        ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getServerBlockingStub();
         GetChatsReply reply = ServerBlockingStub.getAllChats(GetChatsRequest.newBuilder().setUser(((GlobalVariableHelper) this.getApplication()).getUsername()).build());
         List<String> chats_list = reply.getUserChatsList();
 

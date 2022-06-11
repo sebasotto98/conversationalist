@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                     .show();
         } else {
 
-            ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getStub();
+            ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getServerBlockingStub();
             registerUserRequest request = registerUserRequest.newBuilder().setUser(ed1.getText().toString()).build();
             registerUserReply response = ServerBlockingStub.registerUser(request);
 

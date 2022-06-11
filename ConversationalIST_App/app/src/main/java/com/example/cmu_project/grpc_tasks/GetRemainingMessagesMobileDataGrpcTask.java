@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,7 +25,6 @@ import io.grpc.examples.backendserver.messageResponse;
 
 public class GetRemainingMessagesMobileDataGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
     private final WeakReference<Activity> activityReference;
-    private ManagedChannel channel;
     private final MessageAdapter messageAdapter;
 
     public GetRemainingMessagesMobileDataGrpcTask(Activity activity, RecyclerView messageRecycler) {
@@ -34,14 +34,12 @@ public class GetRemainingMessagesMobileDataGrpcTask extends AsyncTask<Object, Vo
 
     @Override
     protected Iterator<messageResponse> doInBackground(Object... params) {
-        String host = (String) params[0];
-        String portStr = (String) params[1];
-        int position = (int) params[2];
-        String chatroom = (String) params[3];
-        int port = TextUtils.isEmpty(portStr) ? 0 : Integer.parseInt(portStr);
+        int position = (int) params[0];
+        String chatroom = (String) params[1];
         try {
-            channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
-            ServerGrpc.ServerBlockingStub stub = ServerGrpc.newBlockingStub(channel);
+            ServerGrpc.ServerBlockingStub stub
+                    = ((GlobalVariableHelper) activityReference.get().getApplication())
+                    .getServerBlockingStub();
 
             chatMessageFromPosition request = chatMessageFromPosition.newBuilder()
                     .setChatroom(chatroom)
@@ -68,33 +66,34 @@ public class GetRemainingMessagesMobileDataGrpcTask extends AsyncTask<Object, Vo
                 return;
             }
 
-            while (messages.hasNext()) {
-                messageResponse nextMessage = messages.next();
-                messageAdapter.addToMessageList(nextMessage);
-                int position = messageAdapter.getItemCount() - 1;
-                messageAdapter.notifyItemInserted(position);
+            try{
+                while (messages.hasNext()) {
+                    messageResponse nextMessage = messages.next();
+                    messageAdapter.addToMessageList(nextMessage);
+                    int position = messageAdapter.getItemCount() - 1;
+                    messageAdapter.notifyItemInserted(position);
 
-                //save message in cache
-                boolean r = ((GlobalVariableHelper) activityReference.get().getApplication()).getDb().insertMessage(
-                        nextMessage.getData(),
-                        nextMessage.getUsername(),
-                        nextMessage.getTimestamp(),
-                        String.valueOf(nextMessage.getType()),
-                        ((GlobalVariableHelper) activityReference.get().getApplication()).getCurrentChatroomName(),
-                        nextMessage.getPosition()
-                );
+                    //save message in cache
+                    boolean r = ((GlobalVariableHelper) activityReference.get().getApplication()).getDb().insertMessage(
+                            nextMessage.getData(),
+                            nextMessage.getUsername(),
+                            nextMessage.getTimestamp(),
+                            String.valueOf(nextMessage.getType()),
+                            ((GlobalVariableHelper) activityReference.get().getApplication()).getCurrentChatroomName(),
+                            nextMessage.getPosition()
+                    );
 
-                if(r) {
-                    Log.d("ChatActivity", "Message response inserted in cache.");
-                } else {
-                    Log.d("ChatActivity", "Couldn't insert message in cache.");
+                    if(r) {
+                        Log.d("getRemainingMessagesMobileDataGrpcTask", "Message response inserted in cache.");
+                    } else {
+                        Log.d("getRemainingMessagesMobileDataGrpcTask", "Couldn't insert message in cache.");
+                    }
                 }
-            }
 
-            try {
-                channel.shutdown().awaitTermination(1, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+            } catch (Exception e) {
+                Log.d("getRemainingMessagesMobileDataGrpcTask", e.getMessage());
+                Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
+                        Toast.LENGTH_SHORT).show();
             }
         }
     }
