@@ -209,9 +209,14 @@ public class ConversationalISTServer {
         @Override
         public void getAllChats(GetChatsRequest request,StreamObserver<GetChatsReply> responseObserver) {
 
+            System.out.println("Recebi pedido");
+
             String user = request.getUser();
 
             List<String> user_chats = userFileHelper.getChats(user);
+            for (int i = 0;i<user_chats.size();i++) {
+                System.out.println(user_chats.get(i));
+            }
 
             GetChatsReply response = GetChatsReply.newBuilder().addAllUserChats(user_chats).build();
             responseObserver.onNext(response);

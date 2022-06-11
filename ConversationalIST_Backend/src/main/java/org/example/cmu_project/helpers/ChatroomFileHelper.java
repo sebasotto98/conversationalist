@@ -32,7 +32,7 @@ public class ChatroomFileHelper extends FileHelper {
     public List<String> readFile(String fileName){
         List<String> data;
 
-        data = super.read(CHATROOM_FILE_BEGIN + fileName);
+        data = super.readChats(CHATROOM_FILE_BEGIN + fileName);
 
         return data;
     }
@@ -41,7 +41,7 @@ public class ChatroomFileHelper extends FileHelper {
 
         List<String> data;
 
-        data = super.read(CHATROOM_FILE_INFO);
+        data = super.readChats(CHATROOM_FILE_INFO);
 
         return data;
     }

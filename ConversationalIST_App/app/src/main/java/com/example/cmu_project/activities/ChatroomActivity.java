@@ -45,6 +45,7 @@ public class ChatroomActivity extends AppCompatActivity {
         ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariables) this.getApplication()).getStub();
         GetChatsReply reply = ServerBlockingStub.getAllChats(GetChatsRequest.newBuilder().setUser(((GlobalVariables) this.getApplication()).getUsername()).build());
         List<String> chats_list = reply.getUserChatsList();
+
         my_chats_list.setAdapter(new UserChatsAdapter(chats_list,ChatroomActivity.this,this.getApplication()));
 
         startService(new Intent( this, FetchDataService.class ) );
@@ -60,6 +61,11 @@ public class ChatroomActivity extends AppCompatActivity {
 
     public void create_chatroom(View view) {
         Intent myIntent = new Intent(ChatroomActivity.this, CreateChatActivity.class);
+        ChatroomActivity.this.startActivity(myIntent);
+    }
+
+    public void join_chatroom(View view) {
+        Intent myIntent = new Intent(ChatroomActivity.this, JoinChatActivity.class);
         ChatroomActivity.this.startActivity(myIntent);
     }
 }

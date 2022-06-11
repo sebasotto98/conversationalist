@@ -66,6 +66,21 @@ public class FileHelper {
         return data;
     }
 
+    protected List<String> readChats(String fileId) {
+        List<String> data = new ArrayList<>();
+        try {
+            File myObj = new File(fileId + FILE_FORMAT);
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                data.add(myReader.nextLine());
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            logger.warning(e.getMessage());
+        }
+        return data;
+    }
+
     public void store(String data, String fileId) {
         this.store(data, fileId, false);
     }

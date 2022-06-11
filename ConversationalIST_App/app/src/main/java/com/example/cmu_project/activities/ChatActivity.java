@@ -98,7 +98,7 @@ public class ChatActivity extends AppCompatActivity {
                 //after load IP and port from file or whatever just use those vars
                 new getAllMessagesFromChatGrpcTask(this, messageRecycler)
                         .execute(
-                                "192.168.1.135",
+                                "172.28.128.1",
                                 "50051",
                                 ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
             } else {
@@ -108,7 +108,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 new getRemainingMessagesGrpcTask(this, messageRecycler)
                         .execute(
-                                "192.168.1.135",
+                                "172.28.128.1",
                                 "50051",
                                 position,
                                 ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
@@ -120,14 +120,14 @@ public class ChatActivity extends AppCompatActivity {
                 Log.d("ChatActivity", "messageList is Empty");
                 new getLastNMessagesFromChatGrpcTask(this, messageRecycler)
                         .execute(
-                                "192.168.1.135",
+                                "172.28.128.1",
                                 "50051",
                                 ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
             } else {
                 int position = (messageList.get(messageAdapter.getItemCount() - 1)).getPosition();
                 new getRemainingMessagesMobileDataGrpcTask(this, messageRecycler)
                         .execute(
-                                "192.168.1.135",
+                                "172.28.128.1",
                                 "50051",
                                 position,
                                 ((GlobalVariables) this.getApplication()).getCurrentChatroomName());
@@ -200,7 +200,7 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        "192.168.1.135",
+                        "172.28.128.1",
                         messageEdit.getText().toString(),
                         "50051",
                         MessageType.TEXT.getValue());
@@ -240,7 +240,7 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        "192.168.1.135",
+                        "172.28.128.1",
                         geolocation,
                         "50051",
                         MessageType.GEOLOCATION.getValue());
@@ -262,7 +262,7 @@ public class ChatActivity extends AppCompatActivity {
 
         new sendMessageGrpcTask(this, messageRecycler)
                 .execute(
-                        "192.168.1.135",
+                        "172.28.128.1",
                         bitMapToString(imageBitmap),
                         "50051",
                         MessageType.PHOTO.getValue());

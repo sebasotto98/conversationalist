@@ -24,7 +24,8 @@ public class UserFileHelper extends FileHelper {
 
 
     public List<String> getChats(String fileId) {
-        List<String> user_data = super.read(USER_FILES_PATH + fileId);
+
+        List<String> user_data = super.readChats(USER_FILES_PATH + fileId);
         List<String> user_chats = new ArrayList<>();
 
         for (String line: user_data) {

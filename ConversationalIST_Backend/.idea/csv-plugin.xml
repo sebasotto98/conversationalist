@@ -52,7 +52,21 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\app-data-files\users\da.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\app-data-files\users\da2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\users\qq.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

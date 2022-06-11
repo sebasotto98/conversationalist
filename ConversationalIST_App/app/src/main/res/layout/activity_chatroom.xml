@@ -40,6 +40,16 @@
         -->
 
     <Button
+        android:id="@+id/joinChatRoom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="57dp"
+        android:onClick="join_chatroom"
+        android:text="JOIN NEW CHATROOM" />
+
+
+    <Button
         android:id="@+id/create_chatroom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
