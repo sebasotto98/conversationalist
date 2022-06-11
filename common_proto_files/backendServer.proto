@@ -9,18 +9,20 @@ package helloworld;
 
 // The greeting service definition.
 service Server {
-
   rpc sendMessage (sendingMessage) returns (messageResponse) {}
   rpc getAllChatMessages (chatMessageRequest) returns (stream messageResponse) {}
   rpc getChatMessagesSincePosition (chatMessageFromPosition) returns (stream messageResponse) {}
   rpc createChat (CreateChatRequest) returns (CreateChatReply) {}
+  rpc getJoinableChats (JoinableChatsRequest) returns (JoinableChatsReply) {}
+  rpc getAllChats (GetChatsRequest) returns (GetChatsReply) {}
+  rpc joinChat (JoinChatRequest) returns (JoinChatReply) {}  
   rpc getLastNMessagesFromChat (NMessagesFromChat) returns (stream messageResponse) {}
   rpc getChatMessagesSincePositionMobileData (chatMessageFromPosition) returns (stream messageResponse) {}
   rpc getMessagesBetweenPositionsMobileData (messagesBetweenPosition) returns (stream messageResponse) {}
   rpc listenToChatrooms (stream listenToChatroom) returns (stream messageResponse) {}
 }
 
-message listenToChatroom{
+message listenToChatroom {
   string chatroom = 1;
 }
 
@@ -31,12 +33,12 @@ message messagesBetweenPosition {
 }
 
 message chatMessageFromPosition {
-	string chatroom = 1;
-	int32 positionOfLastMessage = 2;
+  string chatroom = 1;
+  int32 positionOfLastMessage = 2;
 }
 
 message chatMessageRequest {
-	string chatroom = 1;
+  string chatroom = 1;
 }
 
 message sendingMessage {
@@ -68,4 +70,25 @@ message CreateChatReply {
 message NMessagesFromChat {
   string chatroom = 1;
   int32 numberOfMessages = 2;
+}
+
+message JoinableChatsReply {
+  repeated string chats = 1;
+}
+
+message JoinChatRequest {
+ string user = 1;
+ string chat_name = 2;
+}
+
+message JoinChatReply {
+ string ack = 1;
+}
+
+message GetChatsRequest {
+ string user = 1;
+}
+
+message GetChatsReply {
+ repeated string user_chats = 1;
 }

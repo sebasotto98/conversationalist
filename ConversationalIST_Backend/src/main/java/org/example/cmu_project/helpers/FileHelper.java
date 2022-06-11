@@ -29,6 +29,7 @@ public class FileHelper {
 
             BufferedWriter myWriter = new BufferedWriter(new FileWriter(fileId + FILE_FORMAT, true));
             myWriter.write(data);
+            myWriter.newLine();
             myWriter.close();
             logger.info("Successfully wrote to the file.");
         } catch (IOException e) {

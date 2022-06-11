@@ -30,13 +30,14 @@
         android:textColor = "#009688"
         android:textSize = "35sp" />
 
-    <Button
+   <!-- <Button
         android:id="@+id/chat_icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/username"
         android:onClick="enterChat"
         android:text="@string/cmu_chat" />
+        -->
 
     <Button
         android:id="@+id/create_chatroom"
@@ -45,5 +46,12 @@
         android:onClick="create_chatroom"
         android:layout_alignParentBottom="true"
         android:text="@string/create_new_chatroom" />
+
+    <ListView
+        android:id="@+id/my_chat_list"
+        android:layout_width="310dp"
+        android:layout_height="309dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="24dp" />
 
 </RelativeLayout>

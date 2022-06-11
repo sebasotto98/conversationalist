@@ -140,12 +140,20 @@ public class ConversationalISTServer {
 
             String chatName = request.getChatroomName();
             String user_name = request.getUser();
+            String type_of_chat = request.getTypeOfChat();
 
             if(generalHelper.userExists(user_name)) {
                 if(!generalHelper.chatAlreadyExists(chatName)) {
-                        userFileHelper.store(chatName,user_name);
-                        chatroomFileHelper.store("",chatroomFileHelper.CHATROOM_FILE_BEGIN+chatName);
-                        chatroomFileHelper.store(chatName+","+user_name,chatroomFileHelper.CHATROOM_FILE_INFO);
+                    userFileHelper.store(chatName,user_name);
+                    chatroomFileHelper.store("",chatroomFileHelper.CHATROOM_FILE_BEGIN+chatName);
+                    if(type_of_chat.equals("GeoFanced")) {
+                        chatroomFileHelper.store(chatName+","+user_name+ "," + type_of_chat + "," + request.getLocation().getLatitude()+"/"+request.getLocation().getLongitude() + "," + request.getRadius(),chatroomFileHelper.CHATROOM_FILE_INFO);
+                    } else if (type_of_chat.equals("Private")) {
+                        //TO-DO (create link to the chat)
+                        chatroomFileHelper.store(chatName+","+user_name+ "," + type_of_chat,chatroomFileHelper.CHATROOM_FILE_INFO);
+                    } else {
+                        chatroomFileHelper.store(chatName+","+user_name+ "," + type_of_chat,chatroomFileHelper.CHATROOM_FILE_INFO);
+                    }
                 }
             }
 
@@ -153,7 +161,61 @@ public class ConversationalISTServer {
             responseObserver.onNext(response);
             responseObserver.onCompleted();
 
+        }
 
+        @Override
+        public void getJoinableChats(JoinableChatsRequest request, StreamObserver<JoinableChatsReply> responseObserver) {
+
+            String user = request.getUser();
+            List<String> user_chats = userFileHelper.getChats(user);
+            List<String> chats_info = chatroomFileHelper.readInfoFile();
+            List<String> chats_available = new ArrayList<>();
+
+            for (String line: chats_info) {
+
+                String[] split_line = line.split(",");
+                String chat_name = split_line[0];
+
+                if(!user_chats.contains(chat_name)) {
+                    chats_available.add(chat_name);
+                }
+
+                String type_of_chat = split_line[2];
+            }
+
+
+            JoinableChatsReply response = JoinableChatsReply.newBuilder().addAllChats(chats_available).build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+
+
+
+        }
+
+        @Override
+        public void joinChat(JoinChatRequest request,StreamObserver<JoinChatReply> responseObserver) {
+
+            String user = request.getUser();
+            String chat_name = request.getChatName();
+
+            userFileHelper.store(chat_name,user);
+
+            JoinChatReply response = JoinChatReply.newBuilder().setAck("OK").build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+
+        }
+
+        @Override
+        public void getAllChats(GetChatsRequest request,StreamObserver<GetChatsReply> responseObserver) {
+
+            String user = request.getUser();
+
+            List<String> user_chats = userFileHelper.getChats(user);
+
+            GetChatsReply response = GetChatsReply.newBuilder().addAllUserChats(user_chats).build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
 
         }
 

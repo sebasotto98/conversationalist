@@ -37,6 +37,15 @@ public class ChatroomFileHelper extends FileHelper {
         return data;
     }
 
+    public List<String> readInfoFile() {
+
+        List<String> data;
+
+        data = super.read(CHATROOM_FILE_INFO);
+
+        return data;
+    }
+
 
     @Override
     public void store(String data, String fileId) {
