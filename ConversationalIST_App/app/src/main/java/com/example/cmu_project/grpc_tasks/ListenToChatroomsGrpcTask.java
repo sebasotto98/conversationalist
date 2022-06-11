@@ -72,6 +72,21 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
                                 message.getUsername() + " sent a geolocation",pendingIntent);
                     }
 
+                    boolean r = ((GlobalVariableHelper) context.get().getApplicationContext()).getDb().insertMessage(
+                            message.getData(),
+                            message.getUsername(),
+                            message.getTimestamp(),
+                            String.valueOf(message.getType()),
+                            message.getChatroom(),
+                            message.getPosition()
+                    );
+
+                    if(r) {
+                        Log.d("ListenToChatroomsGrpcTask", "Message response inserted in cache.");
+                    } else {
+                        Log.d("ListenToChatroomsGrpcTask", "Couldn't insert message in cache.");
+                    }
+
                 }
 
                 @Override

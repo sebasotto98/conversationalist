@@ -70,7 +70,7 @@ public class SendMessageGrpcTask extends AsyncTask<Object, Void, messageResponse
             }
 
             try{
-                messageAdapter.addToMessageList(result);
+                /*messageAdapter.addToMessageList(result);
                 int position = messageAdapter.getItemCount() - 1;
                 messageAdapter.notifyItemInserted(position);
 
@@ -88,7 +88,7 @@ public class SendMessageGrpcTask extends AsyncTask<Object, Void, messageResponse
                     Log.d("SendMessageGrpcTask", "Message response inserted in cache.");
                 } else {
                     Log.d("SendMessageGrpcTask", "Couldn't insert message in cache.");
-                }
+                }*/
 
                 Button sendButton = (Button) activity.findViewById(R.id.send_button);
                 sendButton.setEnabled(true);
