@@ -48,7 +48,7 @@ public class ChatroomActivity extends AppCompatActivity {
 
         my_chats_list.setAdapter(new UserChatsAdapter(chats_list,ChatroomActivity.this,this.getApplication()));
 
-        startService(new Intent( this, FetchDataService.class ) );
+        startService(new Intent( this, FetchDataService.class ));
     }
 
     public void enterChat(View view) {

@@ -38,6 +38,27 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\app-data-files\users\da.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\users\da2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\users\da3.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\app-data-files\users\sample_user.csv">
           <value>
             <Attribute>

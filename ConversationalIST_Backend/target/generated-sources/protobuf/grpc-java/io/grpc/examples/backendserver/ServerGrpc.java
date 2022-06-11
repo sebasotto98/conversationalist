@@ -18,6 +18,37 @@ public final class ServerGrpc {
   public static final String SERVICE_NAME = "helloworld.Server";
 
   // Static method descriptors that strictly reflect the proto.
+  private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.registerUserRequest,
+      io.grpc.examples.backendserver.registerUserReply> getRegisterUserMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "registerUser",
+      requestType = io.grpc.examples.backendserver.registerUserRequest.class,
+      responseType = io.grpc.examples.backendserver.registerUserReply.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<io.grpc.examples.backendserver.registerUserRequest,
+      io.grpc.examples.backendserver.registerUserReply> getRegisterUserMethod() {
+    io.grpc.MethodDescriptor<io.grpc.examples.backendserver.registerUserRequest, io.grpc.examples.backendserver.registerUserReply> getRegisterUserMethod;
+    if ((getRegisterUserMethod = ServerGrpc.getRegisterUserMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getRegisterUserMethod = ServerGrpc.getRegisterUserMethod) == null) {
+          ServerGrpc.getRegisterUserMethod = getRegisterUserMethod =
+              io.grpc.MethodDescriptor.<io.grpc.examples.backendserver.registerUserRequest, io.grpc.examples.backendserver.registerUserReply>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "registerUser"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.registerUserRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.registerUserReply.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("registerUser"))
+              .build();
+        }
+      }
+    }
+    return getRegisterUserMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.sendingMessage,
       io.grpc.examples.backendserver.messageResponse> getSendMessageMethod;
 
@@ -412,6 +443,13 @@ public final class ServerGrpc {
 
     /**
      */
+    public void registerUser(io.grpc.examples.backendserver.registerUserRequest request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.registerUserReply> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getRegisterUserMethod(), responseObserver);
+    }
+
+    /**
+     */
     public void sendMessage(io.grpc.examples.backendserver.sendingMessage request,
         io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getSendMessageMethod(), responseObserver);
@@ -489,6 +527,13 @@ public final class ServerGrpc {
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+          .addMethod(
+            getRegisterUserMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                io.grpc.examples.backendserver.registerUserRequest,
+                io.grpc.examples.backendserver.registerUserReply>(
+                  this, METHODID_REGISTER_USER)))
           .addMethod(
             getSendMessageMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
@@ -585,6 +630,14 @@ public final class ServerGrpc {
     protected ServerStub build(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new ServerStub(channel, callOptions);
+    }
+
+    /**
+     */
+    public void registerUser(io.grpc.examples.backendserver.registerUserRequest request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.registerUserReply> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getRegisterUserMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -695,6 +748,13 @@ public final class ServerGrpc {
 
     /**
      */
+    public io.grpc.examples.backendserver.registerUserReply registerUser(io.grpc.examples.backendserver.registerUserRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getRegisterUserMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
     public io.grpc.examples.backendserver.messageResponse sendMessage(io.grpc.examples.backendserver.sendingMessage request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getSendMessageMethod(), getCallOptions(), request);
@@ -788,6 +848,14 @@ public final class ServerGrpc {
 
     /**
      */
+    public com.google.common.util.concurrent.ListenableFuture<io.grpc.examples.backendserver.registerUserReply> registerUser(
+        io.grpc.examples.backendserver.registerUserRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getRegisterUserMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
     public com.google.common.util.concurrent.ListenableFuture<io.grpc.examples.backendserver.messageResponse> sendMessage(
         io.grpc.examples.backendserver.sendingMessage request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
@@ -827,17 +895,18 @@ public final class ServerGrpc {
     }
   }
 
-  private static final int METHODID_SEND_MESSAGE = 0;
-  private static final int METHODID_GET_ALL_CHAT_MESSAGES = 1;
-  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION = 2;
-  private static final int METHODID_CREATE_CHAT = 3;
-  private static final int METHODID_GET_JOINABLE_CHATS = 4;
-  private static final int METHODID_GET_ALL_CHATS = 5;
-  private static final int METHODID_JOIN_CHAT = 6;
-  private static final int METHODID_GET_LAST_NMESSAGES_FROM_CHAT = 7;
-  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA = 8;
-  private static final int METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA = 9;
-  private static final int METHODID_LISTEN_TO_CHATROOMS = 10;
+  private static final int METHODID_REGISTER_USER = 0;
+  private static final int METHODID_SEND_MESSAGE = 1;
+  private static final int METHODID_GET_ALL_CHAT_MESSAGES = 2;
+  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION = 3;
+  private static final int METHODID_CREATE_CHAT = 4;
+  private static final int METHODID_GET_JOINABLE_CHATS = 5;
+  private static final int METHODID_GET_ALL_CHATS = 6;
+  private static final int METHODID_JOIN_CHAT = 7;
+  private static final int METHODID_GET_LAST_NMESSAGES_FROM_CHAT = 8;
+  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA = 9;
+  private static final int METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA = 10;
+  private static final int METHODID_LISTEN_TO_CHATROOMS = 11;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -856,6 +925,10 @@ public final class ServerGrpc {
     @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
+        case METHODID_REGISTER_USER:
+          serviceImpl.registerUser((io.grpc.examples.backendserver.registerUserRequest) request,
+              (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.registerUserReply>) responseObserver);
+          break;
         case METHODID_SEND_MESSAGE:
           serviceImpl.sendMessage((io.grpc.examples.backendserver.sendingMessage) request,
               (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse>) responseObserver);
@@ -960,6 +1033,7 @@ public final class ServerGrpc {
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new ServerFileDescriptorSupplier())
+              .addMethod(getRegisterUserMethod())
               .addMethod(getSendMessageMethod())
               .addMethod(getGetAllChatMessagesMethod())
               .addMethod(getGetChatMessagesSincePositionMethod())

@@ -78,6 +78,21 @@ public class ConversationalISTServer {
         GeneralHelper generalHelper = new GeneralHelper();
 
         @Override
+        public void registerUser(registerUserRequest request,StreamObserver<registerUserReply> responseObserver) {
+
+            String user = request.getUser();
+
+            //create a csv file for this new user
+            userFileHelper.store("",user);
+
+
+            registerUserReply response = registerUserReply.newBuilder().setAck("OK").build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+
+        }
+
+        @Override
         public void sendMessage(sendingMessage req, StreamObserver<messageResponse> responseObserver) {
             logger.info("Got request from client: " + req);
 

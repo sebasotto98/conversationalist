@@ -14,6 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cmu_project.R;
+import com.example.cmu_project.helpers.GlobalVariableHelper;
+
+import io.grpc.examples.backendserver.ServerGrpc;
+import io.grpc.examples.backendserver.registerUserReply;
+import io.grpc.examples.backendserver.registerUserRequest;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -71,7 +76,12 @@ public class LoginActivity extends AppCompatActivity {
                     .setCancelable(true)
                     .show();
         } else {
-            //TODO: Save users to backend
+
+            ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getStub();
+            registerUserRequest request = registerUserRequest.newBuilder().setUser(ed1.getText().toString()).build();
+            registerUserReply response = ServerBlockingStub.registerUser(request);
+
+
             Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
             Intent myIntent = new Intent(LoginActivity.this, ChatroomActivity.class);
             myIntent.putExtra("username", ed1.getText().toString());

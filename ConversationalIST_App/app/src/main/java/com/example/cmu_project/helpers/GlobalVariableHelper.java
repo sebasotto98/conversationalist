@@ -9,7 +9,7 @@ public class GlobalVariableHelper extends Application {
 
     private String currentChatroomName = null;
     private String username = null;
-    private ServerGrpc.ServerBlockingStub ServerBlockingStub = ServerGrpc.newBlockingStub(ManagedChannelBuilder.forAddress("192.168.56.1",50051).usePlaintext().build());
+    private ServerGrpc.ServerBlockingStub ServerBlockingStub = ServerGrpc.newBlockingStub(ManagedChannelBuilder.forAddress("172.28.128.1",50051).usePlaintext().build());
 
     private final DBHelper db = new DBHelper(this);
 

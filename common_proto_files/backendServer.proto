@@ -9,6 +9,7 @@ package helloworld;
 
 // The greeting service definition.
 service Server {
+  rpc registerUser(registerUserRequest) returns (registerUserReply) {}
   rpc sendMessage (sendingMessage) returns (messageResponse) {}
   rpc getAllChatMessages (chatMessageRequest) returns (stream messageResponse) {}
   rpc getChatMessagesSincePosition (chatMessageFromPosition) returns (stream messageResponse) {}
@@ -20,6 +21,14 @@ service Server {
   rpc getChatMessagesSincePositionMobileData (chatMessageFromPosition) returns (stream messageResponse) {}
   rpc getMessagesBetweenPositionsMobileData (messagesBetweenPosition) returns (stream messageResponse) {}
   rpc listenToChatrooms (stream listenToChatroom) returns (stream messageResponse) {}
+}
+
+message registerUserRequest {
+  string user = 1;
+}
+
+message registerUserReply {
+  string ack = 1;
 }
 
 message listenToChatroom {

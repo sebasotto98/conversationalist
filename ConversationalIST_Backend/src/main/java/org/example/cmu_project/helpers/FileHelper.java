@@ -95,12 +95,12 @@ public class FileHelper {
                 System.out.println("File created: " + myObj.getName());
             } else {
                 System.out.println("File already exists.");
+                write(data, fileId);
             }
         } catch (IOException e) {
             System.out.println("An error occurred.");
             logger.warning(e.getMessage());
         }
-        write(data, fileId);
     }
 
     protected List<String> retrieve(String fileId) {
