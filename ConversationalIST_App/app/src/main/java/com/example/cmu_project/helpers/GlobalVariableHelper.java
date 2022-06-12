@@ -14,7 +14,7 @@ public class GlobalVariableHelper extends Application {
 
     private String currentChatroomName = null;
     private String username = null;
-    private final ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.1.135",50051).usePlaintext().build();
+    private final ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.56.1",50051).usePlaintext().build();
     private final ServerGrpc.ServerBlockingStub ServerBlockingStub = ServerGrpc.newBlockingStub(channel);
     private final ServerGrpc.ServerStub nonBlockingStub = ServerGrpc.newStub(channel);
 

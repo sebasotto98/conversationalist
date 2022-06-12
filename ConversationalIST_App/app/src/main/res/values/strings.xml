@@ -9,10 +9,6 @@
     <string name="quit">Quit</string>
     <string name="register">Register</string>
     <string name="chatrooms">Chatrooms</string>
-    <string name="_3">3</string>
-    <string name="enter_host">Enter Host</string>
-    <string name="enter_port">Enter Port</string>
-    <string name="enter_message_to_send">Enter message to send</string>
     <string name="send_grpc_request">Send Grpc Request</string>
     <string name="response">Response:</string>
     <string name="cmu_chat">CMU Chat</string>
@@ -25,4 +21,5 @@
     <string name="send_photo">Send Photo</string>
     <string name="send_geolocation">Send Geolocation</string>
     <string name="send_message">Send Message</string>
+    <string name="aa">Aa</string>
 </resources>

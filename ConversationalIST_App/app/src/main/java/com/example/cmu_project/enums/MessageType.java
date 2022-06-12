@@ -12,4 +12,16 @@ public enum MessageType {
     public int getValue() {
         return value;
     }
+
+    public static MessageType getByValue(int value) {
+        MessageType[] messageTypes = MessageType.values();
+
+        for (MessageType m : messageTypes) {
+            if(m.getValue() == value) {
+                return m;
+            }
+        }
+
+        return null;
+    }
 }

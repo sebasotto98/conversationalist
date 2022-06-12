@@ -58,7 +58,7 @@ public class MyOnScrollListener extends RecyclerView.OnScrollListener {
                     gotAllChatMessages = true;
                 } else {
                     int numberOfMessages = 10;
-                    new getMessagesBetweenPositionsMobileDataGrpcTask(activityReference.get(), messageRecycler, this)
+                    new GetMessagesBetweenPositionsMobileDataGrpcTask(activityReference.get(), messageRecycler, this)
                             .execute(position,
                                     numberOfMessages,
                                     ((GlobalVariableHelper) activityReference.get().getApplication()).getCurrentChatroomName());

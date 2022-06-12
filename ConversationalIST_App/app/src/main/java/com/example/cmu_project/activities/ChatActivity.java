@@ -9,6 +9,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 
@@ -28,7 +30,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmu_project.grpc_tasks.*;
-import com.example.cmu_project.helpers.PropertiesHelper;
 import com.example.cmu_project.listeners.MyOnScrollListener;
 import com.example.cmu_project.R;
 import com.example.cmu_project.adapters.MessageAdapter;
@@ -51,11 +52,9 @@ public class ChatActivity extends AppCompatActivity {
     private static final int REQUEST_LOCATION_PICKER = 2;
 
     private Button sendButton;
-    private EditText hostEdit;
     private EditText messageEdit;
     private RecyclerView messageRecycler;
     private MessageAdapter messageAdapter;
-    private LinearLayoutManager linearLayoutManager;
 
     private String chatroom;
 
@@ -72,7 +71,6 @@ public class ChatActivity extends AppCompatActivity {
         Log.d("ChatActivity", String.valueOf(getIntent().getStringExtra("chatroom")));
 
         sendButton = (Button) findViewById(R.id.send_button);
-        hostEdit = (EditText) findViewById(R.id.host_edit_text);
         messageEdit = (EditText) findViewById(R.id.message_edit_text);
         messageRecycler = (RecyclerView) findViewById(R.id.recyclerView);
 
@@ -84,7 +82,7 @@ public class ChatActivity extends AppCompatActivity {
 
         messageAdapter = new MessageAdapter(this, messageList);
 
-        linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         messageRecycler.setLayoutManager(linearLayoutManager);
         messageRecycler.setAdapter(messageAdapter);
 
@@ -200,7 +198,7 @@ public class ChatActivity extends AppCompatActivity {
 
     public void sendText(View view) {
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(hostEdit.getWindowToken(), 0);
+                .hideSoftInputFromWindow(sendButton.getWindowToken(), 0);
         sendButton.setEnabled(false);
 
         new SendMessageGrpcTask(this, messageRecycler)
@@ -208,23 +206,24 @@ public class ChatActivity extends AppCompatActivity {
                         MessageType.TEXT.getValue());
     }
 
-    public void showMap(View view) {
+    public void showMap(View view) throws PackageManager.NameNotFoundException {
+        ApplicationInfo applicationInfo = getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
+        Bundle bundle = applicationInfo.metaData;
+        String apiKey = bundle.getString("com.google.android.geo.API_KEY");
+
         Intent locationPickerIntent = new LocationPickerActivity.Builder()
                 .withLocation(41.4036299, 2.1743558)
-                .withGeolocApiKey(PropertiesHelper.getInstance().getProperty("MAPS_API_KEY"))
+                .withGeolocApiKey(apiKey)
                 .withSearchZone("en_EN")
-                //.withSearchZone(SearchZoneRect(LatLng(26.525467, -18.910366), LatLng(43.906271, 5.394197)))
                 .withDefaultLocaleSearchZone()
                 .shouldReturnOkOnBackPressed()
                 .withStreetHidden()
                 .withCityHidden()
                 .withZipCodeHidden()
                 .withSatelliteViewHidden()
-                //.withGooglePlacesEnabled()
                 .withGoogleTimeZoneEnabled()
                 .withVoiceSearchHidden()
                 .withUnnamedRoadHidden()
-                //.withSearchBarHidden()
                 .build(getApplicationContext());
 
         try {
@@ -237,7 +236,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void sendGeolocation(String geolocation) {
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(hostEdit.getWindowToken(), 0);
+                .hideSoftInputFromWindow(sendButton.getWindowToken(), 0);
         sendButton.setEnabled(false);
 
         new SendMessageGrpcTask(this, messageRecycler)
@@ -256,7 +255,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void sendPhoto(Bitmap imageBitmap) {
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(hostEdit.getWindowToken(), 0);
+                .hideSoftInputFromWindow(sendButton.getWindowToken(), 0);
         sendButton.setEnabled(false);
 
         new SendMessageGrpcTask(this, messageRecycler)

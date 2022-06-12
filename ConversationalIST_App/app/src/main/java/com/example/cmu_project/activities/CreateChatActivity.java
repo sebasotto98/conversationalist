@@ -38,7 +38,7 @@ public class CreateChatActivity extends AppCompatActivity {
     public void create(View view) {
 
 
-        ServerBlockingStub = ServerGrpc.newBlockingStub(ManagedChannelBuilder.forAddress("192.168.1.135", 50051).usePlaintext().build());
+        ServerBlockingStub = ServerGrpc.newBlockingStub(ManagedChannelBuilder.forAddress("192.168.56.1", 50051).usePlaintext().build());
 
         //Send Requests
         CreateChatRequest request = CreateChatRequest.newBuilder().setChatroomName("AndroidRoom").setUser("testerAndroid").build();

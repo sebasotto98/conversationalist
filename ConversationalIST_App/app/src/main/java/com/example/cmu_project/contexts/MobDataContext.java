@@ -2,7 +2,6 @@ package com.example.cmu_project.contexts;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.util.Log;
 
 import androidx.core.net.ConnectivityManagerCompat;
 

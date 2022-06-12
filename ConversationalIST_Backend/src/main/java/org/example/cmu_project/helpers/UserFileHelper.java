@@ -1,7 +1,5 @@
 package org.example.cmu_project.helpers;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,24 +19,21 @@ public class UserFileHelper extends FileHelper {
 
     @Override
     public void store(String data, String fileId) {
-        super.store(data,USER_FILES_PATH+fileId);
+        super.store(data,USER_FILES_PATH + fileId);
     }
-
 
     public List<String> getChats(String fileId) {
 
-        List<String> user_data = super.readChats(USER_FILES_PATH + fileId);
-        List<String> user_chats = new ArrayList<>();
+        List<String> userData = super.read(USER_FILES_PATH + fileId);
+        List<String> userChats = new ArrayList<>();
 
-        for (String line: user_data) {
-            String[] splited_line = line.split(",");
-            String chat_name = splited_line[0];
-            user_chats.add(chat_name);
+        for (String line: userData) {
+            String[] splitedLine = line.split(",");
+            String chat_name = splitedLine[0];
+            userChats.add(chat_name);
         }
 
-        return  user_chats;
-
-
+        return userChats;
     }
 
 }

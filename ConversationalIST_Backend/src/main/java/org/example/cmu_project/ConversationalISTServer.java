@@ -4,6 +4,7 @@ import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.examples.backendserver.*;
 import io.grpc.stub.StreamObserver;
+import org.example.cmu_project.enums.ChatType;
 import org.example.cmu_project.helpers.ChatroomFileHelper;
 import org.example.cmu_project.helpers.GeneralHelper;
 import org.example.cmu_project.helpers.UserFileHelper;
@@ -152,20 +153,22 @@ public class ConversationalISTServer {
         public void createChat(CreateChatRequest request, StreamObserver<CreateChatReply> responseObserver) {
 
             String chatName = request.getChatroomName();
-            String user_name = request.getUser();
-            String type_of_chat = request.getTypeOfChat();
+            String userName = request.getUser();
+            String chatType = request.getTypeOfChat();
 
-            if(generalHelper.userExists(user_name)) {
+            if(generalHelper.userExists(userName)) {
                 if(!generalHelper.chatAlreadyExists(chatName)) {
-                    userFileHelper.store(chatName,user_name);
-                    chatroomFileHelper.store("",chatroomFileHelper.CHATROOM_FILE_BEGIN+chatName);
-                    if(type_of_chat.equals("GeoFanced")) {
-                        chatroomFileHelper.store(chatName+","+user_name+ "," + type_of_chat + "," + request.getLocation().getLatitude()+"/"+request.getLocation().getLongitude() + "," + request.getRadius(),chatroomFileHelper.CHATROOM_FILE_INFO);
-                    } else if (type_of_chat.equals("Private")) {
-                        //TO-DO (create link to the chat)
-                        chatroomFileHelper.store(chatName+","+user_name+ "," + type_of_chat,chatroomFileHelper.CHATROOM_FILE_INFO);
-                    } else {
-                        chatroomFileHelper.store(chatName+","+user_name+ "," + type_of_chat,chatroomFileHelper.CHATROOM_FILE_INFO);
+                    Instant instant = Instant.now();
+                    String data = chatName + ", " + instant;
+                    userFileHelper.store(data, userName);
+                    chatroomFileHelper.store("", ChatroomFileHelper.CHATROOM_FILE_BEGIN + chatName);
+                    if(chatType.equalsIgnoreCase(ChatType.GEOFENCED.name())) {
+                        chatroomFileHelper.store(chatName + "," + userName + "," + chatType + "," + request.getLocation().getLatitude() + "/" + request.getLocation().getLongitude() + "," + request.getRadius(), ChatroomFileHelper.CHATROOM_FILE_INFO);
+                    } else if (chatType.equalsIgnoreCase(ChatType.PRIVATE.name())) {
+                        //TODO: (create link to the chat)
+                        chatroomFileHelper.store(chatName+","+userName+ "," + chatType, ChatroomFileHelper.CHATROOM_FILE_INFO);
+                    } else if (chatType.equalsIgnoreCase(ChatType.PUBLIC.name())) {
+                        chatroomFileHelper.store(chatName+","+userName+ "," + chatType, ChatroomFileHelper.CHATROOM_FILE_INFO);
                     }
                 }
             }

@@ -76,11 +76,9 @@ public class LoginActivity extends AppCompatActivity {
                     .setCancelable(true)
                     .show();
         } else {
-
             ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getServerBlockingStub();
             registerUserRequest request = registerUserRequest.newBuilder().setUser(ed1.getText().toString()).build();
             registerUserReply response = ServerBlockingStub.registerUser(request);
-
 
             Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
             Intent myIntent = new Intent(LoginActivity.this, ChatroomActivity.class);

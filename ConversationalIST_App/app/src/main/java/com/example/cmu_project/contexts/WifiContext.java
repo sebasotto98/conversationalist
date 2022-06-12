@@ -2,9 +2,6 @@ package com.example.cmu_project.contexts;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 
 import androidx.core.net.ConnectivityManagerCompat;
 

@@ -2,7 +2,6 @@ package com.example.cmu_project.grpc_tasks;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
@@ -16,10 +15,7 @@ import com.example.cmu_project.adapters.MessageAdapter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
-import java.util.concurrent.TimeUnit;
 
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import io.grpc.examples.backendserver.ServerGrpc;
 import io.grpc.examples.backendserver.messageResponse;
 import io.grpc.examples.backendserver.sendingMessage;

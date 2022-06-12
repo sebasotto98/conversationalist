@@ -1,4 +1,4 @@
-package com.example.cmu_project.Services;
+package com.example.cmu_project.services;
 
 import android.app.Service;
 import android.content.Intent;

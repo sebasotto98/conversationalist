@@ -26,7 +26,6 @@ public class FileHelper {
 
     protected void write(String data, String fileId) {
         try {
-
             BufferedWriter myWriter = new BufferedWriter(new FileWriter(fileId + FILE_FORMAT, true));
             myWriter.write(data);
             myWriter.newLine();
@@ -66,21 +65,6 @@ public class FileHelper {
         return data;
     }
 
-    protected List<String> readChats(String fileId) {
-        List<String> data = new ArrayList<>();
-        try {
-            File myObj = new File(fileId + FILE_FORMAT);
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                data.add(myReader.nextLine());
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            logger.warning(e.getMessage());
-        }
-        return data;
-    }
-
     public void store(String data, String fileId) {
         this.store(data, fileId, false);
     }
@@ -92,13 +76,13 @@ public class FileHelper {
         try {
             File myObj =  new File(fileId + FILE_FORMAT);
             if (myObj.createNewFile()) {
-                System.out.println("File created: " + myObj.getName());
+                logger.info("File created: " + myObj.getName());
             } else {
-                System.out.println("File already exists.");
+                logger.info("File already exists.");
                 write(data, fileId);
             }
         } catch (IOException e) {
-            System.out.println("An error occurred.");
+            logger.info("An error occurred.");
             logger.warning(e.getMessage());
         }
     }

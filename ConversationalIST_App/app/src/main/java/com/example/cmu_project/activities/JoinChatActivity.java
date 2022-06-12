@@ -38,7 +38,6 @@ public class JoinChatActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,current_chats);
         chats_list.setAdapter(adapter);
         chats_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
@@ -49,10 +48,7 @@ public class JoinChatActivity extends AppCompatActivity {
 
     }
 
-
-
     public void join(View view) {
-
         ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getServerBlockingStub();
         JoinChatRequest request = JoinChatRequest.newBuilder().setUser(((GlobalVariableHelper) this.getApplication()).getUsername()).setChatName(current_chat_to_join).build();
         JoinChatReply reply = ServerBlockingStub.joinChat(request);
@@ -63,11 +59,9 @@ public class JoinChatActivity extends AppCompatActivity {
         ((GlobalVariableHelper) this.getApplication()).setCurrentChatroomName(current_chat_to_join);
         Intent myIntent = new Intent(JoinChatActivity.this, ChatActivity.class);
         JoinChatActivity.this.startActivity(myIntent);
-
     }
 
     private List<String> getAvailableChats() {
-
         List<String> ret_list;
         ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getServerBlockingStub();
 
@@ -75,7 +69,6 @@ public class JoinChatActivity extends AppCompatActivity {
         JoinableChatsRequest request = JoinableChatsRequest.newBuilder().setUser(((GlobalVariableHelper) this.getApplication()).getUsername()).build();
         JoinableChatsReply response = ServerBlockingStub.getJoinableChats(request);
         ret_list = response.getChatsList();
-
 
         return ret_list;
     }

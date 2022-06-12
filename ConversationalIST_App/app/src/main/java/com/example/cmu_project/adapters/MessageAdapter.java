@@ -1,9 +1,15 @@
 package com.example.cmu_project.adapters;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import android.net.Uri;
+import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,14 +20,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmu_project.R;
 import com.example.cmu_project.activities.ChatActivity;
-import com.example.cmu_project.helpers.PropertiesHelper;
+import com.example.cmu_project.enums.MessageType;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 import io.grpc.examples.backendserver.messageResponse;
@@ -33,10 +43,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private List<messageResponse> messageList;
     private final Context context;
 
-    private final int MESSAGE_TEXT = 0;
-    private final int MESSAGE_PHOTO = 1;
-    private final int MESSAGE_GEOLOCATION = 2;
-
     private RecyclerView myRecyclerView;
 
     public MessageAdapter(Context context, List<messageResponse> messageList) {
@@ -44,7 +50,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.messageList = messageList;
     }
 
-    public void addToMessageList(messageResponse message){
+    public void addToMessageList(messageResponse message) {
         messageList.add(message);
         Log.d("MessageAdapter", "added message: " + message);
 
@@ -55,21 +61,21 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return messageList;
     }
 
-    private void smoothScroll(){
+    private void smoothScroll() {
         myRecyclerView.post(() -> {
             // Call smooth scroll
             myRecyclerView.smoothScrollToPosition(getItemCount());
         });
     }
 
-    public void setScrollPosition(int position){
+    public void setScrollPosition(int position) {
         myRecyclerView.post(() -> {
             // Call smooth scroll
             myRecyclerView.scrollToPosition(position);
         });
     }
 
-    public void setMessageList(List<messageResponse> newList){
+    public void setMessageList(List<messageResponse> newList) {
         messageList = newList;
         this.notifyDataSetChanged();
     }
@@ -97,15 +103,15 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
 
-        if (viewType == MESSAGE_TEXT) {
+        if (viewType == MessageType.TEXT.getValue()) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.message_text, parent, false);
             return new MessageTextHolder(view);
-        } else if (viewType == MESSAGE_PHOTO) {
+        } else if (viewType == MessageType.PHOTO.getValue()) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.message_photo, parent, false);
             return new MessagePhotoHolder(view);
-        } else if (viewType == MESSAGE_GEOLOCATION) {
+        } else if (viewType == MessageType.GEOLOCATION.getValue()) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.message_geolocation, parent, false);
             return new MessageGeolocationHolder(view);
@@ -118,18 +124,26 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         messageResponse message = messageList.get(position);
 
-        switch (holder.getItemViewType()) {
-            case MESSAGE_TEXT:
-                ((MessageTextHolder) holder).bind(message);
-                break;
-            case MESSAGE_PHOTO:
-                ((MessagePhotoHolder) holder).bind(message);
-                break;
-            case MESSAGE_GEOLOCATION:
-                ((MessageGeolocationHolder) holder).bind(message);
-                break;
-            default:
-                throw new IllegalArgumentException();
+        MessageType type = MessageType.getByValue(holder.getItemViewType());
+
+        if (type != null) {
+            switch (type) {
+                case TEXT:
+                    ((MessageTextHolder) holder).bind(message);
+                    break;
+                case PHOTO:
+                    ((MessagePhotoHolder) holder).bind(message);
+                    break;
+                case GEOLOCATION:
+                    try {
+                        ((MessageGeolocationHolder) holder).bind(message);
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+        } else {
+            throw new IllegalArgumentException();
         }
     }
 
@@ -180,20 +194,45 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             nameGeolocation = (TextView) itemView.findViewById(R.id.geolocation_user);
         }
 
-        void bind(messageResponse message) {
+        void bind(messageResponse message) throws PackageManager.NameNotFoundException {
 
             String[] coordinates = message.getData().split("/");
-            String x = coordinates[0];
-            String y = coordinates[1];
+            String geolocationX = coordinates[0];
+            String geolocationY = coordinates[1];
+
+            ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            Bundle bundle = applicationInfo.metaData;
+            String apiKey = bundle.getString("com.google.android.geo.API_KEY");
 
             Picasso.with(context)
-                    .load("https://maps.google.com/maps/api/staticmap?center=" + x + "," + y + "&zoom=15&size=640x480&scale=2&maptype=hybrid&key=" + PropertiesHelper.getInstance().getProperty("MAPS_API_KEY"))
+                    .load("https://maps.google.com/maps/api/staticmap?center=" + geolocationX + "," + geolocationY + "&zoom=15&size=640x480&scale=2&maptype=hybrid&key=" + apiKey)
                     .into(messageGeolocation);
+
+            FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+
+            AtomicReference<Double> userX = new AtomicReference<>((double) 0);
+            AtomicReference<Double> userY = new AtomicReference<>((double) 0);
+
+            mFusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+                if (location != null) {
+                    userX.set(location.getLatitude());
+                    userY.set(location.getLongitude());
+                }
+            });
+
+            messageGeolocation.setOnClickListener(v -> {
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?saddr=" + userX + "," + userY + "&daddr=" + geolocationX + "," + geolocationY));
+                context.startActivity(intent);
+            });
 
             timeGeolocation.setText(message.getTimestamp());
             nameGeolocation.setText(message.getUsername());
         }
-
     }
 
     public Bitmap stringToBitMap(String encodedString) {

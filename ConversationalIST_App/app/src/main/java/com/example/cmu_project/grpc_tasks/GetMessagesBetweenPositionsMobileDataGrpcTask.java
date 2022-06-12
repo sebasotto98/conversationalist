@@ -2,7 +2,6 @@ package com.example.cmu_project.grpc_tasks;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,20 +16,17 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import io.grpc.examples.backendserver.ServerGrpc;
 import io.grpc.examples.backendserver.messageResponse;
 import io.grpc.examples.backendserver.messagesBetweenPosition;
 
-public class getMessagesBetweenPositionsMobileDataGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
+public class GetMessagesBetweenPositionsMobileDataGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
     private final WeakReference<Activity> activityReference;
     private final MessageAdapter messageAdapter;
     private final com.example.cmu_project.listeners.MyOnScrollListener scrollListener;
 
-    public getMessagesBetweenPositionsMobileDataGrpcTask(Activity activity, RecyclerView messageRecycler, com.example.cmu_project.listeners.MyOnScrollListener scrollListener) {
+    public GetMessagesBetweenPositionsMobileDataGrpcTask(Activity activity, RecyclerView messageRecycler, com.example.cmu_project.listeners.MyOnScrollListener scrollListener) {
         this.activityReference = new WeakReference<>(activity);
         this.messageAdapter = (MessageAdapter) messageRecycler.getAdapter();
         this.scrollListener = scrollListener;

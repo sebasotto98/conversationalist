@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 import com.example.cmu_project.R;
-import com.example.cmu_project.Services.FetchDataService;
+import com.example.cmu_project.services.FetchDataService;
 import com.example.cmu_project.adapters.UserChatsAdapter;
 
 import java.util.List;
