@@ -21,6 +21,7 @@ io\grpc\examples\backendserver\registerUserReplyOrBuilder.class
 io\grpc\examples\backendserver\chatMessageRequest.class
 io\grpc\examples\backendserver\chatMessageFromPosition.class
 io\grpc\examples\backendserver\chatMessageFromPositionOrBuilder.class
+org\example\cmu_project\enums\ChatType.class
 io\grpc\examples\backendserver\JoinableChatsReplyOrBuilder.class
 io\grpc\examples\backendserver\listenToChatroom.class
 io\grpc\examples\backendserver\BackEndServerProto.class
@@ -70,7 +71,6 @@ io\grpc\examples\backendserver\chatMessageFromPosition$1.class
 io\grpc\examples\backendserver\JoinChatReplyOrBuilder.class
 io\grpc\examples\backendserver\ServerGrpc$ServerStub.class
 io\grpc\examples\backendserver\JoinChatRequest.class
-org\example\cmu_project\helpers\ImageHelper.class
 io\grpc\examples\backendserver\chatMessageRequest$1.class
 io\grpc\examples\backendserver\sendingMessage$Builder.class
 io\grpc\examples\backendserver\JoinChatRequest$Builder.class

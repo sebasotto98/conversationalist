@@ -9,6 +9,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.cmu_project.grpc_tasks.GetAllUserChatsGrpcTask;
+import com.example.cmu_project.grpc_tasks.GetAvailableChatsToJoinGrpcTask;
+import com.example.cmu_project.grpc_tasks.JoinChatGrpcTask;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 import com.example.cmu_project.R;
 
@@ -23,7 +26,6 @@ import io.grpc.examples.backendserver.ServerGrpc;
 public class JoinChatActivity extends AppCompatActivity {
 
     ListView chats_list;
-    List<String> current_chats;
     String current_chat_to_join;
 
     @Override
@@ -32,11 +34,11 @@ public class JoinChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_chat);
 
-        current_chats = this.getAvailableChats();
+
+        new GetAvailableChatsToJoinGrpcTask(this).execute(((GlobalVariableHelper) this.getApplication()).getUsername());
 
         chats_list = (ListView) findViewById(R.id.chats_list);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,current_chats);
-        chats_list.setAdapter(adapter);
+
         chats_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -48,29 +50,25 @@ public class JoinChatActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new GetAvailableChatsToJoinGrpcTask(this).execute(((GlobalVariableHelper) this.getApplication()).getUsername());
+        chats_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                current_chat_to_join = chats_list.getItemAtPosition(i).toString();
+
+            }
+        });
+    }
+
     public void join(View view) {
-        ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getServerBlockingStub();
-        JoinChatRequest request = JoinChatRequest.newBuilder().setUser(((GlobalVariableHelper) this.getApplication()).getUsername()).setChatName(current_chat_to_join).build();
-        JoinChatReply reply = ServerBlockingStub.joinChat(request);
 
-        System.out.println(reply.getAck());
+        new JoinChatGrpcTask(this,current_chat_to_join).execute(((GlobalVariableHelper) this.getApplication()).getUsername());
 
-        //jump to the chat activity
-        ((GlobalVariableHelper) this.getApplication()).setCurrentChatroomName(current_chat_to_join);
-        Intent myIntent = new Intent(JoinChatActivity.this, ChatActivity.class);
-        JoinChatActivity.this.startActivity(myIntent);
     }
 
-    private List<String> getAvailableChats() {
-        List<String> ret_list;
-        ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getServerBlockingStub();
-
-        //send request and get response
-        JoinableChatsRequest request = JoinableChatsRequest.newBuilder().setUser(((GlobalVariableHelper) this.getApplication()).getUsername()).build();
-        JoinableChatsReply response = ServerBlockingStub.getJoinableChats(request);
-        ret_list = response.getChatsList();
-
-        return ret_list;
-    }
 
 }

@@ -214,7 +214,7 @@ public class ConversationalISTServer {
             String user = request.getUser();
             String chat_name = request.getChatName();
 
-            userFileHelper.store(chat_name,user);
+            userFileHelper.store(chat_name+",",user);
 
             JoinChatReply response = JoinChatReply.newBuilder().setAck("OK").build();
             responseObserver.onNext(response);
@@ -224,8 +224,6 @@ public class ConversationalISTServer {
 
         @Override
         public void getAllChats(GetChatsRequest request,StreamObserver<GetChatsReply> responseObserver) {
-
-            System.out.println("Recebi pedido");
 
             String user = request.getUser();
 

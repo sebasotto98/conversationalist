@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cmu_project.R;
+import com.example.cmu_project.grpc_tasks.RegisterUserGrpcTask;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 
 import io.grpc.examples.backendserver.ServerGrpc;
@@ -44,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
         tx1.setVisibility(View.GONE);
 
         quitButton.setOnClickListener(v -> finish());
+
+
     }
 
     public void login(View view) {
@@ -70,20 +74,17 @@ public class LoginActivity extends AppCompatActivity {
 
     public void register(View view) {
         if (TextUtils.isEmpty(ed1.getText().toString())) {
-            //TODO: Do stronger validity check
+            //TODO: Do stronger validity Rcheck
             new AlertDialog.Builder(LoginActivity.this)
                     .setMessage("Please input a valid username.")
                     .setCancelable(true)
                     .show();
         } else {
-            ServerGrpc.ServerBlockingStub ServerBlockingStub = ((GlobalVariableHelper) this.getApplication()).getServerBlockingStub();
-            registerUserRequest request = registerUserRequest.newBuilder().setUser(ed1.getText().toString()).build();
-            registerUserReply response = ServerBlockingStub.registerUser(request);
 
-            Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
-            Intent myIntent = new Intent(LoginActivity.this, ChatroomActivity.class);
-            myIntent.putExtra("username", ed1.getText().toString());
-            startActivity(myIntent);
+            new RegisterUserGrpcTask(this,ed1.getText().toString()).execute();
+
+
+
         }
     }
 }

@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".activities.CreateChatActivity">
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="192dp"
+        android:layout_marginEnd="344dp"
+        android:text="Chat Type:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/create_chatroom"
         android:layout_width="wrap_content"
@@ -22,65 +32,98 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="96dp"
-        android:layout_marginEnd="184dp"
+        android:layout_marginEnd="200dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="ChatRoomName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
-    <EditText
-        android:id="@+id/type_of_chat"
+    <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="176dp"
-        android:layout_marginEnd="180dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Public/Private/Geo"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="368dp"
+        android:text="Name:"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="220dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.chip.ChipGroup
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         tools:ignore="MissingConstraints"
-         tools:layout_editor_absoluteX="29dp"
-         tools:layout_editor_absoluteY="250dp">
+        <RadioButton
+            android:id="@+id/radio_public"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Public" />
 
-         <com.google.android.material.chip.Chip
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             tools:ignore="MissingConstraints" />
+        <RadioButton
+            android:id="@+id/radio_private"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Private" />
 
-         <com.google.android.material.chip.Chip
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             tools:ignore="MissingConstraints" />
+        <RadioButton
+            android:id="@+id/radio_geofanced"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="GeoFanced" />
+    </RadioGroup>
 
-         <com.google.android.material.chip.Chip
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             tools:ignore="MissingConstraints" />
+    <Button
+        android:id="@+id/buttonMyLocation"
+        android:layout_width="121dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="460dp"
+        android:layout_marginEnd="272dp"
+        android:text="Mine"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-         <com.google.android.material.chip.Chip
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             tools:ignore="MissingConstraints" />
+    <TextView
+        android:id="@+id/textViewLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="424dp"
+        android:layout_marginEnd="320dp"
+        android:text="Location:"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-         <com.google.android.material.chip.Chip
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             tools:ignore="MissingConstraints" />
+    <TextView
+        android:id="@+id/textViewRadius"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="424dp"
+        android:layout_marginEnd="120dp"
+        android:text="Radio:"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-         <com.google.android.material.chip.Chip
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             tools:ignore="MissingConstraints" />
-     </com.google.android.material.chip.ChipGroup>
+    <EditText
+        android:id="@+id/radiusId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="456dp"
+        android:layout_marginEnd="28dp"
+        android:ems="10"
+        android:inputType="number"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
