@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 import io.grpc.examples.backendserver.ServerGrpc;
 import io.grpc.examples.backendserver.chatMessageRequest;
@@ -41,7 +42,7 @@ public class GetAllMessagesFromChatGrpcTask extends AsyncTask<Object, Void, Iter
                     .setChatroom(chatroom)
                     .build();
 
-            return stub.getAllChatMessages(request);
+            return stub.withDeadlineAfter(5, TimeUnit.SECONDS).getAllChatMessages(request);
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
@@ -54,41 +55,38 @@ public class GetAllMessagesFromChatGrpcTask extends AsyncTask<Object, Void, Iter
 
     @Override
     protected void onPostExecute(Iterator<messageResponse> messages) {
+
+        Activity activity = activityReference.get();
+        if (activity == null) {
+            return;
+        }
+
         if(messages != null) {
+            while (messages.hasNext()) {
+                messageResponse nextMessage = messages.next();
+                messageAdapter.addToMessageList(nextMessage);
+                int position = messageAdapter.getItemCount() - 1;
+                messageAdapter.notifyItemInserted(position);
 
-            Activity activity = activityReference.get();
-            if (activity == null) {
-                return;
-            }
+                //save message in cache
+                boolean r = ((GlobalVariableHelper) activityReference.get().getApplication()).getDb().insertMessage(
+                        nextMessage.getData(),
+                        nextMessage.getUsername(),
+                        nextMessage.getTimestamp(),
+                        String.valueOf(nextMessage.getType()),
+                        ((GlobalVariableHelper) activityReference.get().getApplication()).getCurrentChatroomName(),
+                        nextMessage.getPosition()
+                );
 
-            try {
-                while (messages.hasNext()) {
-                    messageResponse nextMessage = messages.next();
-                    messageAdapter.addToMessageList(nextMessage);
-                    int position = messageAdapter.getItemCount() - 1;
-                    messageAdapter.notifyItemInserted(position);
-
-                    //save message in cache
-                    boolean r = ((GlobalVariableHelper) activityReference.get().getApplication()).getDb().insertMessage(
-                            nextMessage.getData(),
-                            nextMessage.getUsername(),
-                            nextMessage.getTimestamp(),
-                            String.valueOf(nextMessage.getType()),
-                            ((GlobalVariableHelper) activityReference.get().getApplication()).getCurrentChatroomName(),
-                            nextMessage.getPosition()
-                    );
-
-                    if (r) {
-                        Log.d("getAllMessagesFromChatGrpcTask", "Message response inserted in cache.");
-                    } else {
-                        Log.d("getAllMessagesFromChatGrpcTask", "Couldn't insert message in cache.");
-                    }
+                if (r) {
+                    Log.d("getAllMessagesFromChatGrpcTask", "Message response inserted in cache.");
+                } else {
+                    Log.d("getAllMessagesFromChatGrpcTask", "Couldn't insert message in cache.");
                 }
-            } catch (Exception e) {
-                Log.d("getAllMessagesFromChatGrpcTask", e.getMessage());
-                Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
-                        Toast.LENGTH_SHORT).show();
             }
+        } else {
+            Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 }

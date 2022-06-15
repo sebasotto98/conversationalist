@@ -15,6 +15,7 @@ import com.example.cmu_project.adapters.MessageAdapter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
+import java.util.concurrent.TimeUnit;
 
 import io.grpc.examples.backendserver.ServerGrpc;
 import io.grpc.examples.backendserver.messageResponse;
@@ -24,9 +25,11 @@ public class SendMessageGrpcTask extends AsyncTask<Object, Void, messageResponse
     private final WeakReference<Activity> activityReference;
     private final MessageAdapter messageAdapter;
 
+
     public SendMessageGrpcTask(Activity activity, RecyclerView messageRecycler) {
         this.activityReference = new WeakReference<>(activity);
         this.messageAdapter = (MessageAdapter) messageRecycler.getAdapter();
+
     }
 
     @Override
@@ -44,56 +47,50 @@ public class SendMessageGrpcTask extends AsyncTask<Object, Void, messageResponse
                     .setUsername(((GlobalVariableHelper) activityReference.get().getApplication()).getUsername())
                     .setChatroom(((GlobalVariableHelper) activityReference.get().getApplication()).getCurrentChatroomName())
                     .build();
-
-            return stub.sendMessage(request);
+            return stub.withDeadlineAfter(5, TimeUnit.SECONDS).sendMessage(request);
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
             pw.flush();
             Log.d("sendMessageGrpcTask", sw.toString());
+
             return null;
         }
     }
 
     @Override
     protected void onPostExecute(messageResponse result) {
-        if(result != null) {
 
-            Activity activity = activityReference.get();
-            if (activity == null) {
-                return;
-            }
-
-            try{
-                /*messageAdapter.addToMessageList(result);
-                int position = messageAdapter.getItemCount() - 1;
-                messageAdapter.notifyItemInserted(position);
-
-                //save message in cache
-                boolean r = ((GlobalVariableHelper) activityReference.get().getApplication()).getDb().insertMessage(
-                        result.getData(),
-                        result.getUsername(),
-                        result.getTimestamp(),
-                        String.valueOf(result.getType()),
-                        result.getChatroom(),
-                        result.getPosition()
-                );
-
-                if(r) {
-                    Log.d("SendMessageGrpcTask", "Message response inserted in cache.");
-                } else {
-                    Log.d("SendMessageGrpcTask", "Couldn't insert message in cache.");
-                }*/
-
-                Button sendButton = (Button) activity.findViewById(R.id.send_button);
-                sendButton.setEnabled(true);
-
-            } catch (Exception e) {
-                Log.d("SendMessageGrpcTask", e.getMessage());
-                Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
-                        Toast.LENGTH_SHORT).show();
-            }
+        Activity activity = activityReference.get();
+        if (activity == null) {
+            return;
         }
+
+        if(result == null){
+            Toast.makeText(activityReference.get().getApplicationContext(), "Error contacting the server",
+                    Toast.LENGTH_SHORT).show();
+        }
+        Button sendButton = (Button) activity.findViewById(R.id.send_button);
+        sendButton.setEnabled(true);
+        /*messageAdapter.addToMessageList(result);
+        int position = messageAdapter.getItemCount() - 1;
+        messageAdapter.notifyItemInserted(position);
+
+        //save message in cache
+        boolean r = ((GlobalVariableHelper) activityReference.get().getApplication()).getDb().insertMessage(
+                result.getData(),
+                result.getUsername(),
+                result.getTimestamp(),
+                String.valueOf(result.getType()),
+                result.getChatroom(),
+                result.getPosition()
+        );
+
+        if(r) {
+            Log.d("SendMessageGrpcTask", "Message response inserted in cache.");
+        } else {
+            Log.d("SendMessageGrpcTask", "Couldn't insert message in cache.");
+        }*/
     }
 }

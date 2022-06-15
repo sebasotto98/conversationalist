@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 import io.grpc.examples.backendserver.NMessagesFromChat;
 import io.grpc.examples.backendserver.ServerGrpc;
@@ -41,7 +42,7 @@ public class GetLastNMessagesFromChatGrpcTask extends AsyncTask<Object, Void, It
                     .setNumberOfMessages(10) //10 but this can be variable
                     .build();
 
-            return stub.getLastNMessagesFromChat(request);
+            return stub.withDeadlineAfter(5, TimeUnit.SECONDS).getLastNMessagesFromChat(request);
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
@@ -54,41 +55,36 @@ public class GetLastNMessagesFromChatGrpcTask extends AsyncTask<Object, Void, It
 
     @Override
     protected void onPostExecute(Iterator<messageResponse> messages) {
+        Activity activity = activityReference.get();
+        if (activity == null) {
+            return;
+        }
         if(messages != null) {
+            while (messages.hasNext()) {
+                messageResponse nextMessage = messages.next();
+                messageAdapter.addToMessageList(nextMessage);
+                int position = messageAdapter.getItemCount() - 1;
+                messageAdapter.notifyItemInserted(position);
 
-            Activity activity = activityReference.get();
-            if (activity == null) {
-                return;
-            }
+                //save message in cache
+                boolean r = ((GlobalVariableHelper) activityReference.get().getApplication()).getDb().insertMessage(
+                        nextMessage.getData(),
+                        nextMessage.getUsername(),
+                        nextMessage.getTimestamp(),
+                        String.valueOf(nextMessage.getType()),
+                        ((GlobalVariableHelper) activityReference.get().getApplication()).getCurrentChatroomName(),
+                        nextMessage.getPosition()
+                );
 
-            try {
-                while (messages.hasNext()) {
-                    messageResponse nextMessage = messages.next();
-                    messageAdapter.addToMessageList(nextMessage);
-                    int position = messageAdapter.getItemCount() - 1;
-                    messageAdapter.notifyItemInserted(position);
-
-                    //save message in cache
-                    boolean r = ((GlobalVariableHelper) activityReference.get().getApplication()).getDb().insertMessage(
-                            nextMessage.getData(),
-                            nextMessage.getUsername(),
-                            nextMessage.getTimestamp(),
-                            String.valueOf(nextMessage.getType()),
-                            ((GlobalVariableHelper) activityReference.get().getApplication()).getCurrentChatroomName(),
-                            nextMessage.getPosition()
-                    );
-
-                    if (r) {
-                        Log.d("GetLastNMessagesFromChatGrpcTask", "Message response inserted in cache.");
-                    } else {
-                        Log.d("GetLastNMessagesFromChatGrpcTask", "Couldn't insert message in cache.");
-                    }
+                if (r) {
+                    Log.d("GetLastNMessagesFromChatGrpcTask", "Message response inserted in cache.");
+                } else {
+                    Log.d("GetLastNMessagesFromChatGrpcTask", "Couldn't insert message in cache.");
                 }
-            } catch (Exception e){
-                Log.d("GetLastNMessagesFromChatGrpcTask", e.getMessage());
-                Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
-                        Toast.LENGTH_SHORT).show();
             }
+        } else {
+            Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 }

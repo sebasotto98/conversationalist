@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.cmu_project.R;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
@@ -15,6 +16,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.grpc.examples.backendserver.JoinableChatsReply;
 import io.grpc.examples.backendserver.JoinableChatsRequest;
@@ -41,7 +43,7 @@ public class GetAvailableChatsToJoinGrpcTask extends AsyncTask<Object,Void, Join
 
             JoinableChatsRequest request = JoinableChatsRequest.newBuilder().setUser(user).build();
 
-            return stub.getJoinableChats(request);
+            return stub.withDeadlineAfter(5, TimeUnit.SECONDS).getJoinableChats(request);
 
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
@@ -58,28 +60,20 @@ public class GetAvailableChatsToJoinGrpcTask extends AsyncTask<Object,Void, Join
     @Override
     protected void onPostExecute(JoinableChatsReply chats) {
 
+        Activity activity = activityReference.get();
+        if (activity == null) {
+            return;
+        }
         if(chats != null) {
 
-            Activity activity = activityReference.get();
-            if (activity == null) {
-                return;
-            }
+            List<String> current_chats = chats.getChatsList();
+            ListView chats_list = (ListView) activity.findViewById(R.id.chats_list);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity,android.R.layout.simple_list_item_1,current_chats);
+            chats_list.setAdapter(adapter);
 
-            try {
-
-                List<String> current_chats = chats.getChatsList();
-                ListView chats_list = (ListView) activity.findViewById(R.id.chats_list);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity,android.R.layout.simple_list_item_1,current_chats);
-                chats_list.setAdapter(adapter);
-
-
-
-            } catch (Exception e) {
-
-            }
-
+        } else {
+            Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
+                    Toast.LENGTH_SHORT).show();
         }
-
-
     }
 }

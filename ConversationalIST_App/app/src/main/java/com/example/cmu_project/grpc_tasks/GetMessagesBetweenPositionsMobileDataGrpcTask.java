@@ -16,6 +16,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.grpc.examples.backendserver.ServerGrpc;
 import io.grpc.examples.backendserver.messageResponse;
@@ -49,7 +50,7 @@ public class GetMessagesBetweenPositionsMobileDataGrpcTask extends AsyncTask<Obj
                     .setPositionOfLastMessage(lastMessagePosition - 1)
                     .build();
 
-            return stub.getMessagesBetweenPositionsMobileData(request);
+            return stub.withDeadlineAfter(5, TimeUnit.SECONDS).getMessagesBetweenPositionsMobileData(request);
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
@@ -62,13 +63,13 @@ public class GetMessagesBetweenPositionsMobileDataGrpcTask extends AsyncTask<Obj
 
     @Override
     protected void onPostExecute(Iterator<messageResponse> messages) {
+        Activity activity = activityReference.get();
+        if (activity == null) {
+            return;
+        }
         if(messages != null) {
 
-            Activity activity = activityReference.get();
-            if (activity == null) {
-                return;
-            }
-            try{
+
             List<messageResponse> messageList = messageAdapter.getMessageList();
             List<messageResponse> newMessageList = new ArrayList<>();
 
@@ -106,11 +107,9 @@ public class GetMessagesBetweenPositionsMobileDataGrpcTask extends AsyncTask<Obj
 
             scrollListener.setLoadingMoreMessages(false);
 
-            } catch (Exception e) {
-                Log.d("getMessagesBetweenPositionsMobileDataGrpcTask", e.getMessage());
-                Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
-                        Toast.LENGTH_SHORT).show();
-            }
+        } else {
+            Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 }

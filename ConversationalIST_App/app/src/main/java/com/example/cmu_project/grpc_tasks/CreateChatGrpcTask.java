@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.cmu_project.activities.ChatActivity;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
@@ -11,6 +12,7 @@ import com.example.cmu_project.helpers.GlobalVariableHelper;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
+import java.util.concurrent.TimeUnit;
 
 import io.grpc.examples.backendserver.CreateChatReply;
 import io.grpc.examples.backendserver.CreateChatRequest;
@@ -51,7 +53,7 @@ public class CreateChatGrpcTask extends AsyncTask<Object,Void, CreateChatReply> 
             }
 
 
-            return stub.createChat(request);
+            return stub.withDeadlineAfter(5, TimeUnit.SECONDS).createChat(request);
 
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
@@ -68,28 +70,20 @@ public class CreateChatGrpcTask extends AsyncTask<Object,Void, CreateChatReply> 
     @Override
     protected void onPostExecute(CreateChatReply reply) {
 
+        Activity activity = activityReference.get();
+        if (activity == null) {
+            return;
+        }
         if(reply != null) {
 
-            Activity activity = activityReference.get();
-            if (activity == null) {
-                return;
-            }
-
-            try {
-
-                //jump to the chat activity
-                ((GlobalVariableHelper) activity.getApplication()).setCurrentChatroomName(new_chat_name);
-                Intent myIntent = new Intent(activity, ChatActivity.class);
-                myIntent.putExtra("chatroom",new_chat_name);
-                activity.startActivity(myIntent);
-
-            } catch (Exception e) {
-
-            }
-
+            //jump to the chat activity
+            ((GlobalVariableHelper) activity.getApplication()).setCurrentChatroomName(new_chat_name);
+            Intent myIntent = new Intent(activity, ChatActivity.class);
+            myIntent.putExtra("chatroom",new_chat_name);
+            activity.startActivity(myIntent);
+        } else {
+            Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
+                    Toast.LENGTH_SHORT).show();
         }
-
-
     }
-
 }

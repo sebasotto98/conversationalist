@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import com.example.cmu_project.R;
@@ -14,6 +15,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.grpc.examples.backendserver.CreateChatRequest;
 import io.grpc.examples.backendserver.GetChatsReply;
@@ -42,7 +44,7 @@ public class GetAllUserChatsGrpcTask extends AsyncTask<Object,Void, GetChatsRepl
                     = ((GlobalVariableHelper) activityReference.get().getApplication())
                     .getServerBlockingStub();
 
-            return stub.getAllChats(GetChatsRequest.newBuilder().setUser(user).build());
+            return stub.withDeadlineAfter(5, TimeUnit.SECONDS).getAllChats(GetChatsRequest.newBuilder().setUser(user).build());
 
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
@@ -58,26 +60,19 @@ public class GetAllUserChatsGrpcTask extends AsyncTask<Object,Void, GetChatsRepl
     @Override
     protected void onPostExecute(GetChatsReply reply) {
 
+        Activity activity = activityReference.get();
+        if (activity == null) {
+            return;
+        }
         if(reply != null) {
 
-            Activity activity = activityReference.get();
-            if (activity == null) {
-                return;
-            }
-
-            try {
-
-                List<String> chats_list = reply.getUserChatsList();
-                my_chats_list.setAdapter(new UserChatsAdapter(chats_list, activityReference.get(), activityReference.get().getApplication()));
-
-            } catch (Exception e) {
-
-            }
-
+            List<String> chats_list = reply.getUserChatsList();
+            my_chats_list.setAdapter(new UserChatsAdapter(chats_list, activityReference.get(), activityReference.get().getApplication()));
+        } else {
+            Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
+                    Toast.LENGTH_SHORT).show();
         }
-
     }
-
 }
 
 
