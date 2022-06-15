@@ -20,7 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String MESSAGES_COLUMN_POSITION = "position";
 
     //change this and onUpgrade will be called
-    private static final int VERSION = 58;
+    private static final int VERSION = 67;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME , null, VERSION);
@@ -40,6 +40,26 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS messages");
         onCreate(db);
+    }
+
+    public boolean updateMessage(String data, String username, String timestamp, String type, String chatroom, int position){
+        //debug
+        Log.d("DBHelper", "data = " + data);
+        Log.d("DBHelper", "username = " + username);
+        Log.d("DBHelper", "timestamp = " + timestamp);
+        Log.d("DBHelper", "type = " + type);
+        Log.d("DBHelper", "chatroom = " + chatroom);
+        Log.d("DBHelper", "position = " + position);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MESSAGES_COLUMN_DATA, data);
+        db.update(MESSAGES_TABLE_NAME,
+                contentValues,
+                MESSAGES_COLUMN_CHATROOM + " = ? AND " + MESSAGES_COLUMN_POSITION + " = ? ",
+                new String[]{chatroom, String.valueOf(position)});
+
+        return true;
     }
 
     public boolean insertMessage (String data, String username, String timestamp, String type, String chatroom, int position) {

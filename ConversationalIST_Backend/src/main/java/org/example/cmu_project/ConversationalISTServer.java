@@ -302,6 +302,34 @@ public class ConversationalISTServer {
             return new listenToChatroomObserver(responseObserver);
         }
 
+        @Override
+        public void getMessageAtPosition(getMessagePosition req, StreamObserver<messageResponse> responseObserver){
+            int position = req.getPosition();
+            String chatroom = req.getChatroom();
+
+            List<String> messages = chatroomFileHelper.readFile(chatroom);
+
+            for(String message: messages){
+
+                String[] m = message.split(",");
+
+                int messagePosition = Integer.parseInt(m[4]);
+                if(messagePosition == position){
+                    messageResponse reply = messageResponse.newBuilder()
+                            .setUsername(m[1])
+                            .setTimestamp(m[2])
+                            .setData(m[0])
+                            .setType(Integer.parseInt(m[3]))
+                            .setPosition(position)
+                            .setChatroom(chatroom)
+                            .build();
+                    responseObserver.onNext(reply);
+                    break;
+                }
+            }
+            responseObserver.onCompleted();
+        }
+
         private void sendMessageStreamToClient(StreamObserver<messageResponse> responseObserver, List<String> messages) {
             String data, username, timestamp, type;
             int position;
@@ -338,7 +366,7 @@ public class ConversationalISTServer {
                 position = msg[4];
                 //if image then put default image, don't transmit
                 if(type.equals("1")){
-                    msg[0] = "";
+                    data = "";
                 }
                 finalMessage = data + "," + username + "," + timestamp + "," + type + "," + position;
                 messagesToSend.set(i, finalMessage);

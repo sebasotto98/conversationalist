@@ -76,7 +76,6 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
                         Log.d("ListenToChatroomsGrpcTask", "Couldn't insert message in cache.");
                     }
 
-                    //TODO -> create Pending intent that opens the chatroom
                     Intent notificationIntent = new Intent(context.get().getApplicationContext(),
                             ChatActivity.class);
                     Log.d("ListenToChatroomsGrpcTask", message.getChatroom());

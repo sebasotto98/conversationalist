@@ -390,6 +390,37 @@ public final class ServerGrpc {
     return getListenToChatroomsMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.getMessagePosition,
+      io.grpc.examples.backendserver.messageResponse> getGetMessageAtPositionMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getMessageAtPosition",
+      requestType = io.grpc.examples.backendserver.getMessagePosition.class,
+      responseType = io.grpc.examples.backendserver.messageResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<io.grpc.examples.backendserver.getMessagePosition,
+      io.grpc.examples.backendserver.messageResponse> getGetMessageAtPositionMethod() {
+    io.grpc.MethodDescriptor<io.grpc.examples.backendserver.getMessagePosition, io.grpc.examples.backendserver.messageResponse> getGetMessageAtPositionMethod;
+    if ((getGetMessageAtPositionMethod = ServerGrpc.getGetMessageAtPositionMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getGetMessageAtPositionMethod = ServerGrpc.getGetMessageAtPositionMethod) == null) {
+          ServerGrpc.getGetMessageAtPositionMethod = getGetMessageAtPositionMethod =
+              io.grpc.MethodDescriptor.<io.grpc.examples.backendserver.getMessagePosition, io.grpc.examples.backendserver.messageResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getMessageAtPosition"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.getMessagePosition.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.messageResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("getMessageAtPosition"))
+              .build();
+        }
+      }
+    }
+    return getGetMessageAtPositionMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -525,6 +556,13 @@ public final class ServerGrpc {
       return io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall(getListenToChatroomsMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void getMessageAtPosition(io.grpc.examples.backendserver.getMessagePosition request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetMessageAtPositionMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -611,6 +649,13 @@ public final class ServerGrpc {
                 io.grpc.examples.backendserver.listenToChatroom,
                 io.grpc.examples.backendserver.messageResponse>(
                   this, METHODID_LISTEN_TO_CHATROOMS)))
+          .addMethod(
+            getGetMessageAtPositionMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                io.grpc.examples.backendserver.getMessagePosition,
+                io.grpc.examples.backendserver.messageResponse>(
+                  this, METHODID_GET_MESSAGE_AT_POSITION)))
           .build();
     }
   }
@@ -727,6 +772,14 @@ public final class ServerGrpc {
       return io.grpc.stub.ClientCalls.asyncBidiStreamingCall(
           getChannel().newCall(getListenToChatroomsMethod(), getCallOptions()), responseObserver);
     }
+
+    /**
+     */
+    public void getMessageAtPosition(io.grpc.examples.backendserver.getMessagePosition request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getGetMessageAtPositionMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -827,6 +880,13 @@ public final class ServerGrpc {
       return io.grpc.stub.ClientCalls.blockingServerStreamingCall(
           getChannel(), getGetMessagesBetweenPositionsMobileDataMethod(), getCallOptions(), request);
     }
+
+    /**
+     */
+    public io.grpc.examples.backendserver.messageResponse getMessageAtPosition(io.grpc.examples.backendserver.getMessagePosition request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getGetMessageAtPositionMethod(), getCallOptions(), request);
+    }
   }
 
   /**
@@ -893,6 +953,14 @@ public final class ServerGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getJoinChatMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<io.grpc.examples.backendserver.messageResponse> getMessageAtPosition(
+        io.grpc.examples.backendserver.getMessagePosition request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getGetMessageAtPositionMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_REGISTER_USER = 0;
@@ -906,7 +974,8 @@ public final class ServerGrpc {
   private static final int METHODID_GET_LAST_NMESSAGES_FROM_CHAT = 8;
   private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA = 9;
   private static final int METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA = 10;
-  private static final int METHODID_LISTEN_TO_CHATROOMS = 11;
+  private static final int METHODID_GET_MESSAGE_AT_POSITION = 11;
+  private static final int METHODID_LISTEN_TO_CHATROOMS = 12;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -967,6 +1036,10 @@ public final class ServerGrpc {
           break;
         case METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA:
           serviceImpl.getMessagesBetweenPositionsMobileData((io.grpc.examples.backendserver.messagesBetweenPosition) request,
+              (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse>) responseObserver);
+          break;
+        case METHODID_GET_MESSAGE_AT_POSITION:
+          serviceImpl.getMessageAtPosition((io.grpc.examples.backendserver.getMessagePosition) request,
               (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse>) responseObserver);
           break;
         default:
@@ -1045,6 +1118,7 @@ public final class ServerGrpc {
               .addMethod(getGetChatMessagesSincePositionMobileDataMethod())
               .addMethod(getGetMessagesBetweenPositionsMobileDataMethod())
               .addMethod(getListenToChatroomsMethod())
+              .addMethod(getGetMessageAtPositionMethod())
               .build();
         }
       }

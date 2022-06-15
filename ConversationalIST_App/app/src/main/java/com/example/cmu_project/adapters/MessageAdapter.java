@@ -26,6 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cmu_project.R;
 import com.example.cmu_project.activities.ChatActivity;
 import com.example.cmu_project.enums.MessageType;
+import com.example.cmu_project.grpc_tasks.GetMessageAtPositionGrpcTask;
+import com.example.cmu_project.helpers.GlobalVariableHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.squareup.picasso.Picasso;
@@ -44,10 +46,25 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final Context context;
 
     private RecyclerView myRecyclerView;
+    private MessageAdapter messageAdapter = this;
 
     public MessageAdapter(Context context, List<messageResponse> messageList) {
         this.context = context;
         this.messageList = messageList;
+    }
+
+    public int changeInMessageList(messageResponse message){
+        Log.d("MessageAdapter", String.valueOf(message));
+        int i = 0;
+        for(int j = 0; j < getItemCount(); j++){
+            if(messageList.get(j).getPosition() == message.getPosition()){
+                i = j;
+                break;
+            }
+        }
+
+        messageList.set(i, message);
+        return i;
     }
 
     public void addToMessageList(messageResponse message) {
@@ -176,11 +193,26 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
 
         void bind(messageResponse message) {
-            messagePhoto.setImageBitmap(stringToBitMap(message.getData()));
+            if(!message.getData().equals("")){
+                messagePhoto.setImageBitmap(stringToBitMap(message.getData()));
+            }
             timePhoto.setText(message.getTimestamp());
             namePhoto.setText(message.getUsername());
-        }
 
+            messagePhoto.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Log.d("MessageAdapter", "Click Listener");
+                    if (message.getData().equals("")) {
+
+                        new GetMessageAtPositionGrpcTask(context, messageAdapter)
+                                .execute(
+                                message.getPosition(),
+                                ((GlobalVariableHelper) context.getApplicationContext()).getCurrentChatroomName()
+                                );
+                    }
+                }
+            });
+        }
     }
 
     private class MessageGeolocationHolder extends RecyclerView.ViewHolder {

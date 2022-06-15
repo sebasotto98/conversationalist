@@ -42,7 +42,7 @@
                 android:contentDescription=""
                 android:maxWidth="200dp"
                 android:maxHeight="200dp"
-                android:src="@null" />
+                android:src="@drawable/click_to_download" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

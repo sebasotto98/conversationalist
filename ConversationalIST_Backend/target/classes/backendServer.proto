@@ -21,6 +21,12 @@ service Server {
   rpc getChatMessagesSincePositionMobileData (chatMessageFromPosition) returns (stream messageResponse) {}
   rpc getMessagesBetweenPositionsMobileData (messagesBetweenPosition) returns (stream messageResponse) {}
   rpc listenToChatrooms (stream listenToChatroom) returns (stream messageResponse) {}
+  rpc getMessageAtPosition (getMessagePosition) returns (messageResponse) {}
+}
+
+message getMessagePosition {
+	string chatroom = 1;
+	int32 position = 2;
 }
 
 message registerUserRequest {
