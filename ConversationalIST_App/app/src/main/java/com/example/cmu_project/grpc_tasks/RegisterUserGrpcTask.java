@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.cmu_project.R;
 import com.example.cmu_project.activities.ChatroomActivity;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
+import com.example.cmu_project.helpers.LinkHelper;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -24,11 +25,12 @@ public class RegisterUserGrpcTask extends AsyncTask<Object,Void, registerUserRep
 
     WeakReference<Activity> activityReference;
     String new_user;
+    LinkHelper linkHelper;
 
-
-    public RegisterUserGrpcTask(Activity activity,String new_user) {
+    public RegisterUserGrpcTask(Activity activity, String new_user, LinkHelper linkHelper) {
         this.activityReference = new WeakReference<>(activity);
         this.new_user = new_user;
+        this.linkHelper = linkHelper;
     }
 
     @Override
@@ -67,11 +69,24 @@ public class RegisterUserGrpcTask extends AsyncTask<Object,Void, registerUserRep
 
             Toast.makeText(activity.getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
 
-            //jump to the chat activity
             ((GlobalVariableHelper) activity.getApplication()).setUsername(new_user);
-            Intent myIntent = new Intent(activity, ChatroomActivity.class);
-            myIntent.putExtra("username",new_user);
-            activity.startActivity(myIntent);
+
+            if(linkHelper.getFlag()) {
+
+                String chat_to_join = linkHelper.getChat_to_go();
+                linkHelper.setToEmpty();
+                new JoinChatGrpcTask(activity,chat_to_join).execute(new_user);
+
+            } else {
+
+                //jump to the chatRoom activity
+                Intent myIntent = new Intent(activity, ChatroomActivity.class);
+                myIntent.putExtra("username",new_user);
+                activity.startActivity(myIntent);
+
+            }
+
+
         }
     }
 }

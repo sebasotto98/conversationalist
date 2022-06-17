@@ -204,6 +204,37 @@ public final class ServerGrpc {
     return getGetJoinableChatsMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.ChatTypeRequest,
+      io.grpc.examples.backendserver.ChatTypeReply> getGetChatTypeMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "getChatType",
+      requestType = io.grpc.examples.backendserver.ChatTypeRequest.class,
+      responseType = io.grpc.examples.backendserver.ChatTypeReply.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<io.grpc.examples.backendserver.ChatTypeRequest,
+      io.grpc.examples.backendserver.ChatTypeReply> getGetChatTypeMethod() {
+    io.grpc.MethodDescriptor<io.grpc.examples.backendserver.ChatTypeRequest, io.grpc.examples.backendserver.ChatTypeReply> getGetChatTypeMethod;
+    if ((getGetChatTypeMethod = ServerGrpc.getGetChatTypeMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getGetChatTypeMethod = ServerGrpc.getGetChatTypeMethod) == null) {
+          ServerGrpc.getGetChatTypeMethod = getGetChatTypeMethod =
+              io.grpc.MethodDescriptor.<io.grpc.examples.backendserver.ChatTypeRequest, io.grpc.examples.backendserver.ChatTypeReply>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "getChatType"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.ChatTypeRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.ChatTypeReply.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("getChatType"))
+              .build();
+        }
+      }
+    }
+    return getGetChatTypeMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.GetChatsRequest,
       io.grpc.examples.backendserver.GetChatsReply> getGetAllChatsMethod;
 
@@ -516,6 +547,13 @@ public final class ServerGrpc {
 
     /**
      */
+    public void getChatType(io.grpc.examples.backendserver.ChatTypeRequest request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.ChatTypeReply> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetChatTypeMethod(), responseObserver);
+    }
+
+    /**
+     */
     public void getAllChats(io.grpc.examples.backendserver.GetChatsRequest request,
         io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.GetChatsReply> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetAllChatsMethod(), responseObserver);
@@ -607,6 +645,13 @@ public final class ServerGrpc {
                 io.grpc.examples.backendserver.JoinableChatsRequest,
                 io.grpc.examples.backendserver.JoinableChatsReply>(
                   this, METHODID_GET_JOINABLE_CHATS)))
+          .addMethod(
+            getGetChatTypeMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                io.grpc.examples.backendserver.ChatTypeRequest,
+                io.grpc.examples.backendserver.ChatTypeReply>(
+                  this, METHODID_GET_CHAT_TYPE)))
           .addMethod(
             getGetAllChatsMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
@@ -723,6 +768,14 @@ public final class ServerGrpc {
         io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.JoinableChatsReply> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetJoinableChatsMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void getChatType(io.grpc.examples.backendserver.ChatTypeRequest request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.ChatTypeReply> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getGetChatTypeMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -845,6 +898,13 @@ public final class ServerGrpc {
 
     /**
      */
+    public io.grpc.examples.backendserver.ChatTypeReply getChatType(io.grpc.examples.backendserver.ChatTypeRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getGetChatTypeMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
     public io.grpc.examples.backendserver.GetChatsReply getAllChats(io.grpc.examples.backendserver.GetChatsRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetAllChatsMethod(), getCallOptions(), request);
@@ -940,6 +1000,14 @@ public final class ServerGrpc {
 
     /**
      */
+    public com.google.common.util.concurrent.ListenableFuture<io.grpc.examples.backendserver.ChatTypeReply> getChatType(
+        io.grpc.examples.backendserver.ChatTypeRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getGetChatTypeMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
     public com.google.common.util.concurrent.ListenableFuture<io.grpc.examples.backendserver.GetChatsReply> getAllChats(
         io.grpc.examples.backendserver.GetChatsRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
@@ -969,13 +1037,14 @@ public final class ServerGrpc {
   private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION = 3;
   private static final int METHODID_CREATE_CHAT = 4;
   private static final int METHODID_GET_JOINABLE_CHATS = 5;
-  private static final int METHODID_GET_ALL_CHATS = 6;
-  private static final int METHODID_JOIN_CHAT = 7;
-  private static final int METHODID_GET_LAST_NMESSAGES_FROM_CHAT = 8;
-  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA = 9;
-  private static final int METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA = 10;
-  private static final int METHODID_GET_MESSAGE_AT_POSITION = 11;
-  private static final int METHODID_LISTEN_TO_CHATROOMS = 12;
+  private static final int METHODID_GET_CHAT_TYPE = 6;
+  private static final int METHODID_GET_ALL_CHATS = 7;
+  private static final int METHODID_JOIN_CHAT = 8;
+  private static final int METHODID_GET_LAST_NMESSAGES_FROM_CHAT = 9;
+  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA = 10;
+  private static final int METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA = 11;
+  private static final int METHODID_GET_MESSAGE_AT_POSITION = 12;
+  private static final int METHODID_LISTEN_TO_CHATROOMS = 13;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -1017,6 +1086,10 @@ public final class ServerGrpc {
         case METHODID_GET_JOINABLE_CHATS:
           serviceImpl.getJoinableChats((io.grpc.examples.backendserver.JoinableChatsRequest) request,
               (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.JoinableChatsReply>) responseObserver);
+          break;
+        case METHODID_GET_CHAT_TYPE:
+          serviceImpl.getChatType((io.grpc.examples.backendserver.ChatTypeRequest) request,
+              (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.ChatTypeReply>) responseObserver);
           break;
         case METHODID_GET_ALL_CHATS:
           serviceImpl.getAllChats((io.grpc.examples.backendserver.GetChatsRequest) request,
@@ -1112,6 +1185,7 @@ public final class ServerGrpc {
               .addMethod(getGetChatMessagesSincePositionMethod())
               .addMethod(getCreateChatMethod())
               .addMethod(getGetJoinableChatsMethod())
+              .addMethod(getGetChatTypeMethod())
               .addMethod(getGetAllChatsMethod())
               .addMethod(getJoinChatMethod())
               .addMethod(getGetLastNMessagesFromChatMethod())

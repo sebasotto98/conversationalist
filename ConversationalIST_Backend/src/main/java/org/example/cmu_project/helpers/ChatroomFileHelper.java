@@ -1,6 +1,10 @@
 package org.example.cmu_project.helpers;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class ChatroomFileHelper extends FileHelper {
 
@@ -45,5 +49,34 @@ public class ChatroomFileHelper extends FileHelper {
     @Override
     public void store(String data, String fileId) {
         super.store(data,fileId);
+    }
+
+    public String getChatType(String chat_name) {
+
+        String chat_type = "";
+
+        try {
+            File myObj = new File(CHATROOM_FILE_INFO + FILE_FORMAT);
+            Scanner myReader = new Scanner(myObj);
+            String newLine;
+
+            while (myReader.hasNextLine()) {
+                newLine = myReader.nextLine();
+
+                String[] splited_line = newLine.split(",");
+                if (splited_line[0].equals(chat_name)) {
+                    chat_type = splited_line[2];
+                }
+
+
+            }
+            myReader.close();
+
+        } catch (FileNotFoundException e) {
+            logger.warning(e.getMessage());
+        }
+        return chat_type;
+
+
     }
 }

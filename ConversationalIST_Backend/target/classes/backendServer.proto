@@ -15,6 +15,7 @@ service Server {
   rpc getChatMessagesSincePosition (chatMessageFromPosition) returns (stream messageResponse) {}
   rpc createChat (CreateChatRequest) returns (CreateChatReply) {}
   rpc getJoinableChats (JoinableChatsRequest) returns (JoinableChatsReply) {}
+  rpc getChatType (ChatTypeRequest) returns (ChatTypeReply) {}
   rpc getAllChats (GetChatsRequest) returns (GetChatsReply) {}
   rpc joinChat (JoinChatRequest) returns (JoinChatReply) {}  
   rpc getLastNMessagesFromChat (NMessagesFromChat) returns (stream messageResponse) {}
@@ -118,4 +119,12 @@ message GetChatsRequest {
 
 message GetChatsReply {
  repeated string user_chats = 1;
+}
+
+message ChatTypeRequest {
+ string chat_name = 1;
+}
+
+message ChatTypeReply {
+ string chat_type = 1;
 }

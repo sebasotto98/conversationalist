@@ -239,6 +239,19 @@ public class ConversationalISTServer {
         }
 
         @Override
+        public void getChatType(ChatTypeRequest request,StreamObserver<ChatTypeReply> responseObserver) {
+
+            String chat_name = request.getChatName();
+
+            String chat_type = chatroomFileHelper.getChatType(chat_name);
+
+            ChatTypeReply response = ChatTypeReply.newBuilder().setChatType(chat_type).build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+
+        }
+
+        @Override
         public void getLastNMessagesFromChat(NMessagesFromChat req, StreamObserver<messageResponse> responseObserver){
             logger.info("Got request from client: " + req);
             String chatroom = req.getChatroom();

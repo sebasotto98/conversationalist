@@ -109,6 +109,16 @@ public final class BackEndServerProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_helloworld_GetChatsReply_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_helloworld_ChatTypeRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_helloworld_ChatTypeRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_helloworld_ChatTypeReply_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_helloworld_ChatTypeReply_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -146,38 +156,41 @@ public final class BackEndServerProto {
       "\017JoinChatRequest\022\014\n\004user\030\001 \001(\t\022\021\n\tchat_n" +
       "ame\030\002 \001(\t\"\034\n\rJoinChatReply\022\013\n\003ack\030\001 \001(\t\"" +
       "\037\n\017GetChatsRequest\022\014\n\004user\030\001 \001(\t\"#\n\rGetC" +
-      "hatsReply\022\022\n\nuser_chats\030\001 \003(\t2\374\010\n\006Server" +
-      "\022P\n\014registerUser\022\037.helloworld.registerUs" +
-      "erRequest\032\035.helloworld.registerUserReply" +
-      "\"\000\022H\n\013sendMessage\022\032.helloworld.sendingMe" +
-      "ssage\032\033.helloworld.messageResponse\"\000\022U\n\022" +
-      "getAllChatMessages\022\036.helloworld.chatMess" +
-      "ageRequest\032\033.helloworld.messageResponse\"" +
-      "\0000\001\022d\n\034getChatMessagesSincePosition\022#.he" +
-      "lloworld.chatMessageFromPosition\032\033.hello" +
-      "world.messageResponse\"\0000\001\022J\n\ncreateChat\022" +
-      "\035.helloworld.CreateChatRequest\032\033.hellowo" +
-      "rld.CreateChatReply\"\000\022V\n\020getJoinableChat" +
-      "s\022 .helloworld.JoinableChatsRequest\032\036.he" +
-      "lloworld.JoinableChatsReply\"\000\022G\n\013getAllC" +
-      "hats\022\033.helloworld.GetChatsRequest\032\031.hell" +
-      "oworld.GetChatsReply\"\000\022D\n\010joinChat\022\033.hel" +
-      "loworld.JoinChatRequest\032\031.helloworld.Joi" +
-      "nChatReply\"\000\022Z\n\030getLastNMessagesFromChat" +
-      "\022\035.helloworld.NMessagesFromChat\032\033.hellow" +
-      "orld.messageResponse\"\0000\001\022n\n&getChatMessa" +
-      "gesSincePositionMobileData\022#.helloworld." +
-      "chatMessageFromPosition\032\033.helloworld.mes" +
-      "sageResponse\"\0000\001\022m\n%getMessagesBetweenPo" +
-      "sitionsMobileData\022#.helloworld.messagesB" +
-      "etweenPosition\032\033.helloworld.messageRespo" +
-      "nse\"\0000\001\022T\n\021listenToChatrooms\022\034.helloworl" +
-      "d.listenToChatroom\032\033.helloworld.messageR" +
-      "esponse\"\000(\0010\001\022U\n\024getMessageAtPosition\022\036." +
-      "helloworld.getMessagePosition\032\033.hellowor" +
-      "ld.messageResponse\"\000B<\n\036io.grpc.examples" +
-      ".backendserverB\022BackEndServerProtoP\001\242\002\003H" +
-      "LWb\006proto3"
+      "hatsReply\022\022\n\nuser_chats\030\001 \003(\t\"$\n\017ChatTyp" +
+      "eRequest\022\021\n\tchat_name\030\001 \001(\t\"\"\n\rChatTypeR" +
+      "eply\022\021\n\tchat_type\030\001 \001(\t2\305\t\n\006Server\022P\n\014re" +
+      "gisterUser\022\037.helloworld.registerUserRequ" +
+      "est\032\035.helloworld.registerUserReply\"\000\022H\n\013" +
+      "sendMessage\022\032.helloworld.sendingMessage\032" +
+      "\033.helloworld.messageResponse\"\000\022U\n\022getAll" +
+      "ChatMessages\022\036.helloworld.chatMessageReq" +
+      "uest\032\033.helloworld.messageResponse\"\0000\001\022d\n" +
+      "\034getChatMessagesSincePosition\022#.hellowor" +
+      "ld.chatMessageFromPosition\032\033.helloworld." +
+      "messageResponse\"\0000\001\022J\n\ncreateChat\022\035.hell" +
+      "oworld.CreateChatRequest\032\033.helloworld.Cr" +
+      "eateChatReply\"\000\022V\n\020getJoinableChats\022 .he" +
+      "lloworld.JoinableChatsRequest\032\036.hellowor" +
+      "ld.JoinableChatsReply\"\000\022G\n\013getChatType\022\033" +
+      ".helloworld.ChatTypeRequest\032\031.helloworld" +
+      ".ChatTypeReply\"\000\022G\n\013getAllChats\022\033.hellow" +
+      "orld.GetChatsRequest\032\031.helloworld.GetCha" +
+      "tsReply\"\000\022D\n\010joinChat\022\033.helloworld.JoinC" +
+      "hatRequest\032\031.helloworld.JoinChatReply\"\000\022" +
+      "Z\n\030getLastNMessagesFromChat\022\035.helloworld" +
+      ".NMessagesFromChat\032\033.helloworld.messageR" +
+      "esponse\"\0000\001\022n\n&getChatMessagesSincePosit" +
+      "ionMobileData\022#.helloworld.chatMessageFr" +
+      "omPosition\032\033.helloworld.messageResponse\"" +
+      "\0000\001\022m\n%getMessagesBetweenPositionsMobile" +
+      "Data\022#.helloworld.messagesBetweenPositio" +
+      "n\032\033.helloworld.messageResponse\"\0000\001\022T\n\021li" +
+      "stenToChatrooms\022\034.helloworld.listenToCha" +
+      "troom\032\033.helloworld.messageResponse\"\000(\0010\001" +
+      "\022U\n\024getMessageAtPosition\022\036.helloworld.ge" +
+      "tMessagePosition\032\033.helloworld.messageRes" +
+      "ponse\"\000B<\n\036io.grpc.examples.backendserve" +
+      "rB\022BackEndServerProtoP\001\242\002\003HLWb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -297,6 +310,18 @@ public final class BackEndServerProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_helloworld_GetChatsReply_descriptor,
         new java.lang.String[] { "UserChats", });
+    internal_static_helloworld_ChatTypeRequest_descriptor =
+      getDescriptor().getMessageTypes().get(19);
+    internal_static_helloworld_ChatTypeRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_helloworld_ChatTypeRequest_descriptor,
+        new java.lang.String[] { "ChatName", });
+    internal_static_helloworld_ChatTypeReply_descriptor =
+      getDescriptor().getMessageTypes().get(20);
+    internal_static_helloworld_ChatTypeReply_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_helloworld_ChatTypeReply_descriptor,
+        new java.lang.String[] { "ChatType", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

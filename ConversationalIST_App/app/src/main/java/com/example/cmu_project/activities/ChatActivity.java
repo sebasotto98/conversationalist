@@ -57,6 +57,7 @@ public class ChatActivity extends AppCompatActivity {
     private MessageAdapter messageAdapter;
 
     private String chatroom;
+    private String chatroom_type;
 
     private List<messageResponse> messageList = new ArrayList<>();
 
@@ -67,6 +68,8 @@ public class ChatActivity extends AppCompatActivity {
 
         chatroom = getIntent().getStringExtra("chatroom");
         ((GlobalVariableHelper) getApplication()).setCurrentChatroomName(chatroom);
+
+        new GetTypeOfChatGrpcTask(this).execute(chatroom);
 
         Log.d("ChatActivity", String.valueOf(getIntent().getStringExtra("chatroom")));
 
@@ -280,4 +283,18 @@ public class ChatActivity extends AppCompatActivity {
             messageAdapter.notifyItemInserted(position);
         }
     };
+
+    public void sendLink(View view) {
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "http://conversational-app.com/chat/" + chatroom);
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
+
+    }
+
+
 }

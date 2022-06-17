@@ -1,5 +1,6 @@
 io\grpc\examples\backendserver\JoinableChatsRequestOrBuilder.class
 io\grpc\examples\backendserver\messageResponse$1.class
+io\grpc\examples\backendserver\ChatTypeReplyOrBuilder.class
 io\grpc\examples\backendserver\CreateChatRequest$1.class
 io\grpc\examples\backendserver\JoinableChatsRequest$Builder.class
 io\grpc\examples\backendserver\ServerGrpc$ServerImplBase.class
@@ -7,8 +8,10 @@ io\grpc\examples\backendserver\messagesBetweenPosition$Builder.class
 io\grpc\examples\backendserver\registerUserRequest.class
 io\grpc\examples\backendserver\GetChatsReply$1.class
 io\grpc\examples\backendserver\ServerGrpc.class
+io\grpc\examples\backendserver\ChatTypeRequest.class
 io\grpc\examples\backendserver\sendingMessageOrBuilder.class
 io\grpc\examples\backendserver\chatMessageFromPosition$Builder.class
+io\grpc\examples\backendserver\ChatTypeReply$1.class
 io\grpc\examples\backendserver\listenToChatroom$Builder.class
 io\grpc\examples\backendserver\NMessagesFromChatOrBuilder.class
 io\grpc\examples\backendserver\ServerGrpc$ServerMethodDescriptorSupplier.class
@@ -28,11 +31,13 @@ io\grpc\examples\backendserver\BackEndServerProto.class
 io\grpc\examples\backendserver\registerUserRequest$Builder.class
 org\example\cmu_project\helpers\GeneralHelper.class
 io\grpc\examples\backendserver\registerUserRequest$1.class
+io\grpc\examples\backendserver\ChatTypeRequest$1.class
 org\example\cmu_project\helpers\UserFileHelper.class
 io\grpc\examples\backendserver\CreateChatReplyOrBuilder.class
 io\grpc\examples\backendserver\registerUserRequestOrBuilder.class
 io\grpc\examples\backendserver\GetChatsRequest$1.class
 io\grpc\examples\backendserver\messagesBetweenPositionOrBuilder.class
+io\grpc\examples\backendserver\ChatTypeReply$Builder.class
 io\grpc\examples\backendserver\GetChatsRequestOrBuilder.class
 io\grpc\examples\backendserver\ServerGrpc$2.class
 io\grpc\examples\backendserver\ServerGrpc$ServerBaseDescriptorSupplier.class
@@ -57,6 +62,7 @@ io\grpc\examples\backendserver\Location.class
 io\grpc\examples\backendserver\getMessagePosition$1.class
 io\grpc\examples\backendserver\chatMessageRequest$Builder.class
 io\grpc\examples\backendserver\CreateChatReply$Builder.class
+io\grpc\examples\backendserver\ChatTypeReply.class
 io\grpc\examples\backendserver\JoinChatRequestOrBuilder.class
 io\grpc\examples\backendserver\LocationOrBuilder.class
 io\grpc\examples\backendserver\CreateChatRequest.class
@@ -78,6 +84,7 @@ io\grpc\examples\backendserver\sendingMessage$Builder.class
 io\grpc\examples\backendserver\getMessagePositionOrBuilder.class
 io\grpc\examples\backendserver\JoinChatRequest$Builder.class
 io\grpc\examples\backendserver\GetChatsRequest.class
+io\grpc\examples\backendserver\ChatTypeRequest$Builder.class
 io\grpc\examples\backendserver\ServerGrpc$ServerBlockingStub.class
 io\grpc\examples\backendserver\JoinableChatsReply$Builder.class
 org\example\cmu_project\helpers\PasswordHashingHelper.class
@@ -97,4 +104,5 @@ io\grpc\examples\backendserver\JoinableChatsReply$1.class
 org\example\cmu_project\ConversationalISTServer$ServerImpl$listenToChatroomObserver.class
 io\grpc\examples\backendserver\JoinableChatsRequest$1.class
 io\grpc\examples\backendserver\ServerGrpc$ServerFileDescriptorSupplier.class
+io\grpc\examples\backendserver\ChatTypeRequestOrBuilder.class
 io\grpc\examples\backendserver\messageResponse$Builder.class

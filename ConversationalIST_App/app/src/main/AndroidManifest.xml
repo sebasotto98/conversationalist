@@ -30,7 +30,7 @@
         android:theme="@style/Theme.CMU_Project">
         <activity
             android:name=".activities.JoinChatActivity"
-            android:exported="false" />
+            android:exported="true"></activity>
         <activity
             android:name=".activities.LoginActivity"
             android:exported="true">
@@ -40,11 +40,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".activities.ChatroomActivity"
-            android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -52,10 +47,15 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
-                    android:host="www.recipe-app.com"
-                    android:pathPrefix="/recipe"/>
+                    android:scheme="http"
+                    android:host="conversational-app.com"
+                    android:pathPrefix="/chat" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.ChatroomActivity"
+            android:exported="true">
+
         </activity>
         <activity
             android:name=".activities.ChatActivity"

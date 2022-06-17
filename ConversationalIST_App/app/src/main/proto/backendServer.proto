@@ -15,8 +15,9 @@ service Server {
   rpc getChatMessagesSincePosition (chatMessageFromPosition) returns (stream messageResponse) {}
   rpc createChat (CreateChatRequest) returns (CreateChatReply) {}
   rpc getJoinableChats (JoinableChatsRequest) returns (JoinableChatsReply) {}
+  rpc getChatType (ChatTypeRequest) returns (ChatTypeReply) {}
   rpc getAllChats (GetChatsRequest) returns (GetChatsReply) {}
-  rpc joinChat (JoinChatRequest) returns (JoinChatReply) {}
+  rpc joinChat (JoinChatRequest) returns (JoinChatReply) {}  
   rpc getLastNMessagesFromChat (NMessagesFromChat) returns (stream messageResponse) {}
   rpc getChatMessagesSincePositionMobileData (chatMessageFromPosition) returns (stream messageResponse) {}
   rpc getMessagesBetweenPositionsMobileData (messagesBetweenPosition) returns (stream messageResponse) {}
@@ -25,8 +26,8 @@ service Server {
 }
 
 message getMessagePosition {
-  string chatroom = 1;
-  int32 position = 2;
+	string chatroom = 1;
+	int32 position = 2;
 }
 
 message registerUserRequest {
@@ -86,8 +87,8 @@ message CreateChatReply {
 }
 
 message Location {
-  string latitude = 1;
-  string longitude = 2;
+ string latitude = 1;
+ string longitude = 2;
 }
 
 message NMessagesFromChat {
@@ -96,7 +97,7 @@ message NMessagesFromChat {
 }
 
 message JoinableChatsRequest {
-  string user = 1;
+ string user = 1;
 }
 
 message JoinableChatsReply {
@@ -104,18 +105,26 @@ message JoinableChatsReply {
 }
 
 message JoinChatRequest {
-  string user = 1;
-  string chat_name = 2;
+ string user = 1;
+ string chat_name = 2;
 }
 
 message JoinChatReply {
-  string ack = 1;
+ string ack = 1;
 }
 
 message GetChatsRequest {
-  string user = 1;
+ string user = 1;
 }
 
 message GetChatsReply {
-  repeated string user_chats = 1;
+ repeated string user_chats = 1;
+}
+
+message ChatTypeRequest {
+ string chat_name = 1;
+}
+
+message ChatTypeReply {
+ string chat_type = 1;
 }
