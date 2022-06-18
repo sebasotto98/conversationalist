@@ -55,6 +55,19 @@ private static final long serialVersionUID = 0L;
             user_ = s;
             break;
           }
+          case 18: {
+            io.grpc.examples.backendserver.Location.Builder subBuilder = null;
+            if (userLocation_ != null) {
+              subBuilder = userLocation_.toBuilder();
+            }
+            userLocation_ = input.readMessage(io.grpc.examples.backendserver.Location.parser(), extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(userLocation_);
+              userLocation_ = subBuilder.buildPartial();
+            }
+
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -125,6 +138,32 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int USER_LOCATION_FIELD_NUMBER = 2;
+  private io.grpc.examples.backendserver.Location userLocation_;
+  /**
+   * <code>.helloworld.Location user_location = 2;</code>
+   * @return Whether the userLocation field is set.
+   */
+  @java.lang.Override
+  public boolean hasUserLocation() {
+    return userLocation_ != null;
+  }
+  /**
+   * <code>.helloworld.Location user_location = 2;</code>
+   * @return The userLocation.
+   */
+  @java.lang.Override
+  public io.grpc.examples.backendserver.Location getUserLocation() {
+    return userLocation_ == null ? io.grpc.examples.backendserver.Location.getDefaultInstance() : userLocation_;
+  }
+  /**
+   * <code>.helloworld.Location user_location = 2;</code>
+   */
+  @java.lang.Override
+  public io.grpc.examples.backendserver.LocationOrBuilder getUserLocationOrBuilder() {
+    return getUserLocation();
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -142,6 +181,9 @@ private static final long serialVersionUID = 0L;
     if (!getUserBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, user_);
     }
+    if (userLocation_ != null) {
+      output.writeMessage(2, getUserLocation());
+    }
     unknownFields.writeTo(output);
   }
 
@@ -153,6 +195,10 @@ private static final long serialVersionUID = 0L;
     size = 0;
     if (!getUserBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, user_);
+    }
+    if (userLocation_ != null) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(2, getUserLocation());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -171,6 +217,11 @@ private static final long serialVersionUID = 0L;
 
     if (!getUser()
         .equals(other.getUser())) return false;
+    if (hasUserLocation() != other.hasUserLocation()) return false;
+    if (hasUserLocation()) {
+      if (!getUserLocation()
+          .equals(other.getUserLocation())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -184,6 +235,10 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + USER_FIELD_NUMBER;
     hash = (53 * hash) + getUser().hashCode();
+    if (hasUserLocation()) {
+      hash = (37 * hash) + USER_LOCATION_FIELD_NUMBER;
+      hash = (53 * hash) + getUserLocation().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -319,6 +374,12 @@ private static final long serialVersionUID = 0L;
       super.clear();
       user_ = "";
 
+      if (userLocationBuilder_ == null) {
+        userLocation_ = null;
+      } else {
+        userLocation_ = null;
+        userLocationBuilder_ = null;
+      }
       return this;
     }
 
@@ -346,6 +407,11 @@ private static final long serialVersionUID = 0L;
     public io.grpc.examples.backendserver.JoinableChatsRequest buildPartial() {
       io.grpc.examples.backendserver.JoinableChatsRequest result = new io.grpc.examples.backendserver.JoinableChatsRequest(this);
       result.user_ = user_;
+      if (userLocationBuilder_ == null) {
+        result.userLocation_ = userLocation_;
+      } else {
+        result.userLocation_ = userLocationBuilder_.build();
+      }
       onBuilt();
       return result;
     }
@@ -397,6 +463,9 @@ private static final long serialVersionUID = 0L;
       if (!other.getUser().isEmpty()) {
         user_ = other.user_;
         onChanged();
+      }
+      if (other.hasUserLocation()) {
+        mergeUserLocation(other.getUserLocation());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -501,6 +570,125 @@ private static final long serialVersionUID = 0L;
       user_ = value;
       onChanged();
       return this;
+    }
+
+    private io.grpc.examples.backendserver.Location userLocation_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        io.grpc.examples.backendserver.Location, io.grpc.examples.backendserver.Location.Builder, io.grpc.examples.backendserver.LocationOrBuilder> userLocationBuilder_;
+    /**
+     * <code>.helloworld.Location user_location = 2;</code>
+     * @return Whether the userLocation field is set.
+     */
+    public boolean hasUserLocation() {
+      return userLocationBuilder_ != null || userLocation_ != null;
+    }
+    /**
+     * <code>.helloworld.Location user_location = 2;</code>
+     * @return The userLocation.
+     */
+    public io.grpc.examples.backendserver.Location getUserLocation() {
+      if (userLocationBuilder_ == null) {
+        return userLocation_ == null ? io.grpc.examples.backendserver.Location.getDefaultInstance() : userLocation_;
+      } else {
+        return userLocationBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>.helloworld.Location user_location = 2;</code>
+     */
+    public Builder setUserLocation(io.grpc.examples.backendserver.Location value) {
+      if (userLocationBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        userLocation_ = value;
+        onChanged();
+      } else {
+        userLocationBuilder_.setMessage(value);
+      }
+
+      return this;
+    }
+    /**
+     * <code>.helloworld.Location user_location = 2;</code>
+     */
+    public Builder setUserLocation(
+        io.grpc.examples.backendserver.Location.Builder builderForValue) {
+      if (userLocationBuilder_ == null) {
+        userLocation_ = builderForValue.build();
+        onChanged();
+      } else {
+        userLocationBuilder_.setMessage(builderForValue.build());
+      }
+
+      return this;
+    }
+    /**
+     * <code>.helloworld.Location user_location = 2;</code>
+     */
+    public Builder mergeUserLocation(io.grpc.examples.backendserver.Location value) {
+      if (userLocationBuilder_ == null) {
+        if (userLocation_ != null) {
+          userLocation_ =
+            io.grpc.examples.backendserver.Location.newBuilder(userLocation_).mergeFrom(value).buildPartial();
+        } else {
+          userLocation_ = value;
+        }
+        onChanged();
+      } else {
+        userLocationBuilder_.mergeFrom(value);
+      }
+
+      return this;
+    }
+    /**
+     * <code>.helloworld.Location user_location = 2;</code>
+     */
+    public Builder clearUserLocation() {
+      if (userLocationBuilder_ == null) {
+        userLocation_ = null;
+        onChanged();
+      } else {
+        userLocation_ = null;
+        userLocationBuilder_ = null;
+      }
+
+      return this;
+    }
+    /**
+     * <code>.helloworld.Location user_location = 2;</code>
+     */
+    public io.grpc.examples.backendserver.Location.Builder getUserLocationBuilder() {
+      
+      onChanged();
+      return getUserLocationFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.helloworld.Location user_location = 2;</code>
+     */
+    public io.grpc.examples.backendserver.LocationOrBuilder getUserLocationOrBuilder() {
+      if (userLocationBuilder_ != null) {
+        return userLocationBuilder_.getMessageOrBuilder();
+      } else {
+        return userLocation_ == null ?
+            io.grpc.examples.backendserver.Location.getDefaultInstance() : userLocation_;
+      }
+    }
+    /**
+     * <code>.helloworld.Location user_location = 2;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        io.grpc.examples.backendserver.Location, io.grpc.examples.backendserver.Location.Builder, io.grpc.examples.backendserver.LocationOrBuilder> 
+        getUserLocationFieldBuilder() {
+      if (userLocationBuilder_ == null) {
+        userLocationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            io.grpc.examples.backendserver.Location, io.grpc.examples.backendserver.Location.Builder, io.grpc.examples.backendserver.LocationOrBuilder>(
+                getUserLocation(),
+                getParentForChildren(),
+                isClean());
+        userLocation_ = null;
+      }
+      return userLocationBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

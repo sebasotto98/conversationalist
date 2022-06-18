@@ -24,10 +24,21 @@ public class CreateChatGrpcTask extends AsyncTask<Object,Void, CreateChatReply> 
 
     WeakReference<Activity> activityReference;
     String new_chat_name;
+    String chat_latitude;
+    String chat_longitude;
+    String radius;
 
     public CreateChatGrpcTask(Activity activity,String new_chat_name) {
         this.activityReference = new WeakReference<>(activity);
         this.new_chat_name = new_chat_name;
+    }
+
+    public CreateChatGrpcTask(Activity activity,String new_chat_name,String chat_latitude,String chat_longitude,String radius) {
+        this.activityReference = new WeakReference<>(activity);
+        this.new_chat_name = new_chat_name;
+        this.chat_latitude = chat_latitude;
+        this.chat_longitude = chat_longitude;
+        this.radius = radius;
     }
 
     @Override
@@ -46,8 +57,8 @@ public class CreateChatGrpcTask extends AsyncTask<Object,Void, CreateChatReply> 
             CreateChatRequest request;
 
             if(type_of_chat.equals("GeoFanced")) {
-                Location location = Location.newBuilder().setLatitude("11.11.11").setLongitude("22.22.22").build();
-                request = CreateChatRequest.newBuilder().setChatroomName(new_chat_name).setUser(user).setTypeOfChat(type_of_chat).setLocation(location).setRadius("10").build();
+                Location location = Location.newBuilder().setLatitude(chat_latitude).setLongitude(chat_longitude).build();
+                request = CreateChatRequest.newBuilder().setChatroomName(new_chat_name).setUser(user).setTypeOfChat(type_of_chat).setLocation(location).setRadius(radius).build();
             } else {
                 request = CreateChatRequest.newBuilder().setChatroomName(new_chat_name).setUser(user).setTypeOfChat(type_of_chat).build();
             }

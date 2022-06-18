@@ -20,14 +20,19 @@ import java.util.concurrent.TimeUnit;
 
 import io.grpc.examples.backendserver.JoinableChatsReply;
 import io.grpc.examples.backendserver.JoinableChatsRequest;
+import io.grpc.examples.backendserver.Location;
 import io.grpc.examples.backendserver.ServerGrpc;
 
 public class GetAvailableChatsToJoinGrpcTask extends AsyncTask<Object,Void, JoinableChatsReply> {
 
     private final WeakReference<Activity> activityReference;
+    private double user_latitude;
+    private double user_longitude;
 
-    public GetAvailableChatsToJoinGrpcTask(Activity activity) {
+    public GetAvailableChatsToJoinGrpcTask(Activity activity,double user_latitude,double user_longitude) {
         this.activityReference = new WeakReference<>(activity);
+        this.user_latitude = user_latitude;
+        this.user_longitude = user_longitude;
 
     }
 
@@ -41,7 +46,8 @@ public class GetAvailableChatsToJoinGrpcTask extends AsyncTask<Object,Void, Join
                     = ((GlobalVariableHelper) activityReference.get().getApplication())
                     .getServerBlockingStub();
 
-            JoinableChatsRequest request = JoinableChatsRequest.newBuilder().setUser(user).build();
+            Location location = Location.newBuilder().setLatitude(String.valueOf(user_latitude)).setLongitude(String.valueOf(user_longitude)).build();
+            JoinableChatsRequest request = JoinableChatsRequest.newBuilder().setUser(user).setUserLocation(location).build();
 
             return stub.withDeadlineAfter(5, TimeUnit.SECONDS).getJoinableChats(request);
 

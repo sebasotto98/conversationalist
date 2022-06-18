@@ -31,6 +31,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\app-data-files\chatrooms\location1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\chatrooms\locationTest.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\app-data-files\chatrooms\newQ.csv">
           <value>
             <Attribute>

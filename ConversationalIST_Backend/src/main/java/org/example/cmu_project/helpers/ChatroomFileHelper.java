@@ -79,4 +79,34 @@ public class ChatroomFileHelper extends FileHelper {
 
 
     }
+
+    public List<String> getChatLocation(String chat_name) {
+
+        List<String> ret = new ArrayList<>();
+
+        try {
+            File myObj = new File(CHATROOM_FILE_INFO + FILE_FORMAT);
+            Scanner myReader = new Scanner(myObj);
+            String newLine;
+
+            while (myReader.hasNextLine()) {
+                newLine = myReader.nextLine();
+
+                String[] splited_line = newLine.split(",");
+                if (splited_line[0].equals(chat_name)) {
+                     ret.add(splited_line[3]);
+                     ret.add(splited_line[4]);
+                }
+
+
+            }
+            myReader.close();
+
+        } catch (FileNotFoundException e) {
+            logger.warning(e.getMessage());
+        }
+
+        return ret;
+
+    }
 }

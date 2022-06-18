@@ -18,4 +18,19 @@ public interface JoinableChatsRequestOrBuilder extends
    */
   com.google.protobuf.ByteString
       getUserBytes();
+
+  /**
+   * <code>.helloworld.Location user_location = 2;</code>
+   * @return Whether the userLocation field is set.
+   */
+  boolean hasUserLocation();
+  /**
+   * <code>.helloworld.Location user_location = 2;</code>
+   * @return The userLocation.
+   */
+  io.grpc.examples.backendserver.Location getUserLocation();
+  /**
+   * <code>.helloworld.Location user_location = 2;</code>
+   */
+  io.grpc.examples.backendserver.LocationOrBuilder getUserLocationOrBuilder();
 }

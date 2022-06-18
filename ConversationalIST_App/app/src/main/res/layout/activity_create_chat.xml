@@ -20,12 +20,13 @@
         android:id="@+id/create_chatroom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="160dp"
-        android:layout_marginBottom="104dp"
+        android:layout_marginEnd="172dp"
         android:onClick="create"
         android:text="Create"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.913" />
 
     <EditText
         android:id="@+id/chat_name"
@@ -80,13 +81,16 @@
             android:text="GeoFanced" />
     </RadioGroup>
 
+    <!-- here gone -->
+
     <Button
         android:id="@+id/buttonMyLocation"
         android:layout_width="121dp"
         android:layout_height="41dp"
-        android:layout_marginTop="460dp"
-        android:layout_marginEnd="272dp"
-        android:text="Mine"
+        android:layout_marginTop="484dp"
+        android:layout_marginEnd="260dp"
+        android:onClick="openLocation"
+        android:text="set"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -95,8 +99,8 @@
         android:id="@+id/textViewLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="424dp"
-        android:layout_marginEnd="320dp"
+        android:layout_marginTop="440dp"
+        android:layout_marginEnd="300dp"
         android:text="Location:"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -106,8 +110,8 @@
         android:id="@+id/textViewRadius"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="424dp"
-        android:layout_marginEnd="120dp"
+        android:layout_marginTop="448dp"
+        android:layout_marginEnd="116dp"
         android:text="Radio:"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +121,7 @@
         android:id="@+id/radiusId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="456dp"
+        android:layout_marginTop="480dp"
         android:layout_marginEnd="28dp"
         android:ems="10"
         android:inputType="number"

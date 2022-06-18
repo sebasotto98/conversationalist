@@ -155,17 +155,16 @@ public class ConversationalISTServer {
             String chatName = request.getChatroomName();
             String userName = request.getUser();
             String chatType = request.getTypeOfChat();
+            System.out.println(chatType);
 
             if(generalHelper.userExists(userName)) {
                 if(!generalHelper.chatAlreadyExists(chatName)) {
-                    Instant instant = Instant.now();
-                    String data = chatName + ", " + instant;
+                    String data = chatName + ",";
                     userFileHelper.store(data, userName);
                     chatroomFileHelper.store("", ChatroomFileHelper.CHATROOM_FILE_BEGIN + chatName);
-                    if(chatType.equalsIgnoreCase(ChatType.GEOFENCED.name())) {
+                    if(chatType.equalsIgnoreCase(ChatType.GEOFANCED.name())) {
                         chatroomFileHelper.store(chatName + "," + userName + "," + chatType + "," + request.getLocation().getLatitude() + "/" + request.getLocation().getLongitude() + "," + request.getRadius(), ChatroomFileHelper.CHATROOM_FILE_INFO);
                     } else if (chatType.equalsIgnoreCase(ChatType.PRIVATE.name())) {
-                        //TODO: (create link to the chat)
                         chatroomFileHelper.store(chatName+","+userName+ "," + chatType, ChatroomFileHelper.CHATROOM_FILE_INFO);
                     } else if (chatType.equalsIgnoreCase(ChatType.PUBLIC.name())) {
                         chatroomFileHelper.store(chatName+","+userName+ "," + chatType, ChatroomFileHelper.CHATROOM_FILE_INFO);
@@ -183,20 +182,35 @@ public class ConversationalISTServer {
         public void getJoinableChats(JoinableChatsRequest request, StreamObserver<JoinableChatsReply> responseObserver) {
 
             String user = request.getUser();
+            Location location = request.getUserLocation();
+            double longitude = Double.parseDouble(location.getLongitude());
+            double latitude = Double.parseDouble(location.getLatitude());
+
             List<String> user_chats = userFileHelper.getChats(user);
             List<String> chats_info = chatroomFileHelper.readInfoFile();
             List<String> chats_available = new ArrayList<>();
 
             for (String line: chats_info) {
 
+                System.out.println(line);
+
                 String[] split_line = line.split(",");
                 String chat_name = split_line[0];
+                String type_of_chat = split_line[2];
 
                 if(!user_chats.contains(chat_name)) {
-                    chats_available.add(chat_name);
+                    if(!type_of_chat.equals("Private")) {
+                        if(type_of_chat.equals("GeoFanced")) {
+                            if(userInChatRadio(latitude,longitude,chat_name))
+                                chats_available.add(chat_name);
+                        } else {
+                            chats_available.add(chat_name);
+                        }
+
+                    }
                 }
 
-                String type_of_chat = split_line[2];
+
             }
 
 
@@ -364,6 +378,43 @@ public class ConversationalISTServer {
             }
 
             responseObserver.onCompleted();
+        }
+
+        private boolean userInChatRadio(double user_latitude,double user_longitude,String chat_name) {
+
+            //get chat details about location
+            List<String> location_and_radius_string = chatroomFileHelper.getChatLocation(chat_name);
+            System.out.println(location_and_radius_string.get(0) + " + " + location_and_radius_string.get(1));
+            String[] split_location = location_and_radius_string.get(0).split("/");
+            double radius = Double.parseDouble(location_and_radius_string.get(1));
+            double chat_lat = Double.parseDouble(split_location[0]);
+            double chat_lon = Double.parseDouble(split_location[1]);
+
+            double el1 = 0.0;
+            double el2 = 0.0;
+
+            final int R = 6371; // Radius of the earth
+
+            double latDistance = Math.toRadians(chat_lat - user_latitude);
+            double lonDistance = Math.toRadians(chat_lon - user_longitude);
+            double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                    + Math.cos(Math.toRadians(user_latitude)) * Math.cos(Math.toRadians(chat_lat))
+                    * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            double distance = R * c * 1000; // convert to meters
+
+            double height = el1 - el2;
+
+            distance = Math.pow(distance, 2) + Math.pow(height, 2);
+
+            System.out.println("Distancia: " + Math.sqrt(distance));
+
+            if (Math.sqrt(distance) > radius)
+                return false;
+            else
+                return true;
+
+
         }
 
         //removes the image data

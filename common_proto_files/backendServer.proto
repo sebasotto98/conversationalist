@@ -98,6 +98,7 @@ message NMessagesFromChat {
 
 message JoinableChatsRequest {
  string user = 1;
+ Location user_location = 2;
 }
 
 message JoinableChatsReply {
