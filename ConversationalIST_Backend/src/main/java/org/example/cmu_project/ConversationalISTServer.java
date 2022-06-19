@@ -1,15 +1,21 @@
 package org.example.cmu_project;
 
 import io.grpc.Server;
-import io.grpc.ServerBuilder;
 import io.grpc.examples.backendserver.*;
+import io.grpc.netty.GrpcSslContexts;
+import io.grpc.netty.NettyServerBuilder;
 import io.grpc.stub.StreamObserver;
+import io.netty.handler.ssl.SslContext;
+import nl.altindag.ssl.SSLFactory;
+import nl.altindag.ssl.util.NettySslUtils;
 import org.example.cmu_project.enums.ChatType;
 import org.example.cmu_project.helpers.ChatroomFileHelper;
 import org.example.cmu_project.helpers.GeneralHelper;
 import org.example.cmu_project.helpers.UserFileHelper;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -21,18 +27,31 @@ import java.util.logging.Logger;
 public class ConversationalISTServer {
 
     private static final Logger logger = Logger.getLogger(ConversationalISTServer.class.getName());
+    private static final String KEYSTORE_DIR = "keystores/";
+    private static final String TRUSTSTORE_DIR = "truststores/";
     private static final int TIMEOUT = 30;
     private static final int PORT_NUM = 50051;
 
     //hash map where key is the chatroom name and value is a list with the StreamObserver of all the interested clients
-    private static HashMap<String, List<StreamObserver<messageResponse>>> clientSubscriptions = new HashMap<>();
+    private static HashMap<String, List<StreamObserver<messageResponse>>> clientSubscriptionsWifi = new HashMap<>();
+    private static HashMap<String, List<StreamObserver<messageResponse>>> clientSubscriptionsMobileData = new HashMap<>();
 
     private Server server;
 
     private void start() throws IOException {
+        Path identityStorePath = Paths.get(KEYSTORE_DIR + "server_KeystoreFile.jks");
+        Path trustStorePath = Paths.get(TRUSTSTORE_DIR + "server_TruststoreFile.jks");
+
+        SSLFactory sslFactory = SSLFactory.builder()
+                .withIdentityMaterial(identityStorePath, "testtest".toCharArray())
+                .withTrustMaterial(trustStorePath, "testtest".toCharArray())
+                .withNeedClientAuthentication()
+                .build();
+        SslContext sslContext = GrpcSslContexts.configure(NettySslUtils.forServer(sslFactory)).build();
         /* The port on which the server should run */
-        server = ServerBuilder.forPort(PORT_NUM)
+        server = NettyServerBuilder.forPort(PORT_NUM)
                 .addService(new ServerImpl())
+                .sslContext(sslContext)
                 .build()
                 .start();
         logger.info("Server started, listening on " + PORT_NUM);
@@ -117,7 +136,8 @@ public class ConversationalISTServer {
                     .setPosition(position)
                     .build();
 
-            sendMessageToInterestedClients(reply, chatroom);
+            sendMessageToInterestedClientsInWifi(reply, chatroom);
+            sendMessageToInterestedClientsInMobileData(reply, chatroom);
 
             responseObserver.onNext(reply);
             responseObserver.onCompleted();
@@ -155,17 +175,16 @@ public class ConversationalISTServer {
             String chatName = request.getChatroomName();
             String userName = request.getUser();
             String chatType = request.getTypeOfChat();
+            System.out.println(chatType);
 
             if(generalHelper.userExists(userName)) {
                 if(!generalHelper.chatAlreadyExists(chatName)) {
-                    Instant instant = Instant.now();
-                    String data = chatName + ", " + instant;
+                    String data = chatName + ",";
                     userFileHelper.store(data, userName);
                     chatroomFileHelper.store("", ChatroomFileHelper.CHATROOM_FILE_BEGIN + chatName);
                     if(chatType.equalsIgnoreCase(ChatType.GEOFENCED.name())) {
                         chatroomFileHelper.store(chatName + "," + userName + "," + chatType + "," + request.getLocation().getLatitude() + "/" + request.getLocation().getLongitude() + "," + request.getRadius(), ChatroomFileHelper.CHATROOM_FILE_INFO);
                     } else if (chatType.equalsIgnoreCase(ChatType.PRIVATE.name())) {
-                        //TODO: (create link to the chat)
                         chatroomFileHelper.store(chatName+","+userName+ "," + chatType, ChatroomFileHelper.CHATROOM_FILE_INFO);
                     } else if (chatType.equalsIgnoreCase(ChatType.PUBLIC.name())) {
                         chatroomFileHelper.store(chatName+","+userName+ "," + chatType, ChatroomFileHelper.CHATROOM_FILE_INFO);
@@ -183,20 +202,36 @@ public class ConversationalISTServer {
         public void getJoinableChats(JoinableChatsRequest request, StreamObserver<JoinableChatsReply> responseObserver) {
 
             String user = request.getUser();
+           // Location location = request.getUserLocation();
+            Location location = null;
+            double longitude = Double.parseDouble(location.getLongitude());
+            double latitude = Double.parseDouble(location.getLatitude());
+
             List<String> user_chats = userFileHelper.getChats(user);
             List<String> chats_info = chatroomFileHelper.readInfoFile();
             List<String> chats_available = new ArrayList<>();
 
             for (String line: chats_info) {
 
+                System.out.println(line);
+
                 String[] split_line = line.split(",");
                 String chat_name = split_line[0];
+                String type_of_chat = split_line[2];
 
                 if(!user_chats.contains(chat_name)) {
-                    chats_available.add(chat_name);
+                    if(!type_of_chat.equals("Private")) {
+                        if(type_of_chat.equals("GeoFanced")) {
+                            if(userInChatRadio(latitude,longitude,chat_name))
+                                chats_available.add(chat_name);
+                        } else {
+                            chats_available.add(chat_name);
+                        }
+
+                    }
                 }
 
-                String type_of_chat = split_line[2];
+
             }
 
 
@@ -315,6 +350,10 @@ public class ConversationalISTServer {
             return new listenToChatroomObserver(responseObserver);
         }
 
+        public StreamObserver<listenToChatroom> listenToChatroomsMobileData(StreamObserver<messageResponse> responseObserver){
+            return new listenToChatroomMobileDataObserver(responseObserver);
+        }
+
         @Override
         public void getMessageAtPosition(getMessagePosition req, StreamObserver<messageResponse> responseObserver){
             int position = req.getPosition();
@@ -366,6 +405,43 @@ public class ConversationalISTServer {
             responseObserver.onCompleted();
         }
 
+        private boolean userInChatRadio(double user_latitude,double user_longitude,String chat_name) {
+
+            //get chat details about location
+             List<String> location_and_radius_string = null;
+            System.out.println(location_and_radius_string.get(0) + " + " + location_and_radius_string.get(1));
+            String[] split_location = location_and_radius_string.get(0).split("/");
+            double radius = Double.parseDouble(location_and_radius_string.get(1));
+            double chat_lat = Double.parseDouble(split_location[0]);
+            double chat_lon = Double.parseDouble(split_location[1]);
+
+            double el1 = 0.0;
+            double el2 = 0.0;
+
+            final int R = 6371; // Radius of the earth
+
+            double latDistance = Math.toRadians(chat_lat - user_latitude);
+            double lonDistance = Math.toRadians(chat_lon - user_longitude);
+            double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                    + Math.cos(Math.toRadians(user_latitude)) * Math.cos(Math.toRadians(chat_lat))
+                    * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            double distance = R * c * 1000; // convert to meters
+
+            double height = el1 - el2;
+
+            distance = Math.pow(distance, 2) + Math.pow(height, 2);
+
+            System.out.println("Distancia: " + Math.sqrt(distance));
+
+            if (Math.sqrt(distance) > radius)
+                return false;
+            else
+                return true;
+
+
+        }
+
         //removes the image data
         private List<String> modifyMessagesToSendForMobileData(List<String> messagesToSend){
 
@@ -388,9 +464,32 @@ public class ConversationalISTServer {
             return messagesToSend;
         }
 
-        private void sendMessageToInterestedClients(messageResponse message, String chatroom) {
 
-            List<StreamObserver<messageResponse>> clients = clientSubscriptions.get(chatroom);
+        private void sendMessageToInterestedClientsInMobileData(messageResponse message, String chatroom) {
+
+            //remove data of the image
+            messageResponse mobileDataMessage = messageResponse.newBuilder()
+                    .setChatroom(message.getChatroom())
+                    .setPosition(message.getPosition())
+                    .setType(message.getType())
+                    .setData("")
+                    .setTimestamp(message.getTimestamp())
+                    .setUsername(message.getUsername())
+                    .build();
+
+            List<StreamObserver<messageResponse>> clients = clientSubscriptionsMobileData.get(chatroom);
+            if(clients == null || clients.isEmpty()){
+                logger.info("No interested Clients"); //how??
+            } else {
+                for(StreamObserver<messageResponse> client: clients){
+                    client.onNext(mobileDataMessage);
+                }
+            }
+        }
+
+        private void sendMessageToInterestedClientsInWifi(messageResponse message, String chatroom) {
+
+            List<StreamObserver<messageResponse>> clients = clientSubscriptionsWifi.get(chatroom);
             if(clients == null || clients.isEmpty()){
                 logger.info("No interested Clients"); //how??
             } else {
@@ -412,15 +511,15 @@ public class ConversationalISTServer {
             @Override
             public void onNext(listenToChatroom listenToChatroom) {
                 String chat = listenToChatroom.getChatroom();
-                logger.info("Got request from client: " + listenToChatroom);
+                logger.info("Got request from client (WiFi): " + listenToChatroom);
                 allChats.add(chat);
                 logger.info("allChats " + allChats);
-                if(clientSubscriptions.containsKey(chat)){
-                    clientSubscriptions.get(chat).add(responseObserver);
+                if(clientSubscriptionsWifi.containsKey(chat)){
+                    clientSubscriptionsWifi.get(chat).add(responseObserver);
                 } else {
                     List<StreamObserver<messageResponse>> clients = new ArrayList<>();
                     clients.add(responseObserver);
-                    clientSubscriptions.put(chat, clients);
+                    clientSubscriptionsWifi.put(chat, clients);
                 }
             }
 
@@ -437,9 +536,53 @@ public class ConversationalISTServer {
 
             private void removeClient(){
                 for(String chat: allChats){
-                    List<StreamObserver<messageResponse>> clients = clientSubscriptions.get(chat);
+                    List<StreamObserver<messageResponse>> clients = clientSubscriptionsWifi.get(chat);
                     clients.remove(responseObserver);
-                    clientSubscriptions.put(chat, clients);
+                    clientSubscriptionsWifi.put(chat, clients);
+                }
+            }
+        }
+
+        private static class listenToChatroomMobileDataObserver implements StreamObserver<listenToChatroom> {
+
+            private final StreamObserver<messageResponse> responseObserver;
+            private List<String> allChats = new ArrayList<>();
+
+            public listenToChatroomMobileDataObserver(StreamObserver<messageResponse> responseObserver) {
+                this.responseObserver = responseObserver;
+            }
+
+            @Override
+            public void onNext(listenToChatroom listenToChatroom) {
+                String chat = listenToChatroom.getChatroom();
+                logger.info("Got request from client (MobileData): " + listenToChatroom);
+                allChats.add(chat);
+                logger.info("allChats " + allChats);
+                if(clientSubscriptionsMobileData.containsKey(chat)){
+                    clientSubscriptionsMobileData.get(chat).add(responseObserver);
+                } else {
+                    List<StreamObserver<messageResponse>> clients = new ArrayList<>();
+                    clients.add(responseObserver);
+                    clientSubscriptionsMobileData.put(chat, clients);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                logger.info(throwable.getMessage());
+                removeClient();
+            }
+
+            @Override
+            public void onCompleted() {
+                removeClient();
+            }
+
+            private void removeClient(){
+                for(String chat: allChats){
+                    List<StreamObserver<messageResponse>> clients = clientSubscriptionsMobileData.get(chat);
+                    clients.remove(responseObserver);
+                    clientSubscriptionsMobileData.put(chat, clients);
                 }
             }
         }
