@@ -28,14 +28,14 @@ import java.util.List;
 public class FetchDataService extends Service {
 
     private int currentNotificationID = 0;
-    private ListenToChatroomsGrpcTask listenGrpcTask;
+    private ListenToChatroomsGrpcTask listenGrpcTask = null;
     List<String> currentChats = new ArrayList<>();
+    WifiContext wifiContext = new WifiContext();
+    MobDataContext MDContext = new MobDataContext();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        /*TODO -> Difference between listening on data and on wifi (current version is just wifi)
-        TODO listen to changes on network state and change the listening strategy*/
+        Log.d("FetchDataService", "Started");
 
         //listen to this events
         LocalBroadcastManager.getInstance(this).registerReceiver(chatListBroadcastReceiver,
@@ -50,16 +50,29 @@ public class FetchDataService extends Service {
             @Override
             public void onCapabilitiesChanged(Network network, NetworkCapabilities networkCapabilities) {
                 Log.d("FetchDataService", "New connection");
-                WifiContext wifiContext = new WifiContext();
-                MobDataContext MDContext = new MobDataContext();
+
                 if(wifiContext.conforms(FetchDataService.this.getApplicationContext())){
                     Log.d("FetchDataService", "Wifi");
+                    if(listenGrpcTask != null) {
+                        endTask();
+                    }
+                    listenGrpcTask = (ListenToChatroomsGrpcTask)
+                            new ListenToChatroomsGrpcTask(currentChats,FetchDataService.this, currentNotificationID, false)
+                                    .execute();
                 } else if (MDContext.conforms(FetchDataService.this.getApplicationContext())) {
                     Log.d("FetchDataService", "Mobile data");
+                    if(listenGrpcTask != null) {
+                        endTask();
+                    }
+                    listenGrpcTask = (ListenToChatroomsGrpcTask)
+                            new ListenToChatroomsGrpcTask(currentChats,FetchDataService.this, currentNotificationID, true)
+                                    .execute();
                 } else {
                     Log.d("FetchDataService", "Nothing");
+                    if(listenGrpcTask != null){
+                        endTask();
+                    }
                 }
-
             }
         });
 
@@ -89,9 +102,25 @@ public class FetchDataService extends Service {
             List<String> chats = intent.getStringArrayListExtra("chats");
             Log.d("FetchDataService (chatListBroadcastReceiver)", "got chat list: " + chats);
 
-            listenGrpcTask = (ListenToChatroomsGrpcTask)
-                    new ListenToChatroomsGrpcTask(chats,FetchDataService.this, currentNotificationID)
-                            .execute();
+            if(wifiContext.conforms(FetchDataService.this.getApplicationContext())){
+                Log.d("FetchDataService", "Wifi");
+                if(listenGrpcTask != null) {
+                    endTask();
+                }
+                listenGrpcTask = (ListenToChatroomsGrpcTask)
+                        new ListenToChatroomsGrpcTask(currentChats,FetchDataService.this, currentNotificationID, false)
+                                .execute();
+            } else if (MDContext.conforms(FetchDataService.this.getApplicationContext())) {
+                Log.d("FetchDataService", "Mobile data");
+                if(listenGrpcTask != null) {
+                    endTask();
+                }
+                listenGrpcTask = (ListenToChatroomsGrpcTask)
+                        new ListenToChatroomsGrpcTask(currentChats,FetchDataService.this, currentNotificationID, true)
+                                .execute();
+            } else {
+                Log.d("FetchDataService", "Nothing");
+            }
 
             currentChats.addAll(chats);
         }

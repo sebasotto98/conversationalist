@@ -23,6 +23,7 @@ service Server {
   rpc getMessagesBetweenPositionsMobileData (messagesBetweenPosition) returns (stream messageResponse) {}
   rpc listenToChatrooms (stream listenToChatroom) returns (stream messageResponse) {}
   rpc getMessageAtPosition (getMessagePosition) returns (messageResponse) {}
+  rpc listenToChatroomsMobileData (stream listenToChatroom) returns (stream messageResponse) {}
 }
 
 message getMessagePosition {

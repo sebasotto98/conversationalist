@@ -91,6 +91,7 @@ org\example\cmu_project\helpers\PasswordHashingHelper.class
 io\grpc\examples\backendserver\JoinableChatsReply.class
 io\grpc\examples\backendserver\NMessagesFromChat$Builder.class
 io\grpc\examples\backendserver\NMessagesFromChat$1.class
+org\example\cmu_project\ConversationalISTServer$ServerImpl$listenToChatroomMobileDataObserver.class
 io\grpc\examples\backendserver\CreateChatReply.class
 io\grpc\examples\backendserver\getMessagePosition$Builder.class
 io\grpc\examples\backendserver\messagesBetweenPosition$1.class

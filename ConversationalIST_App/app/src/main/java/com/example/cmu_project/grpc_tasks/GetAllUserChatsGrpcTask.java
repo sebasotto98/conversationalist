@@ -83,6 +83,8 @@ public class GetAllUserChatsGrpcTask extends AsyncTask<Object,Void, GetChatsRepl
             intent.putStringArrayListExtra("chats", chatsToListen);
 
             LocalBroadcastManager.getInstance(context.get()).sendBroadcast(intent);
+
+            Log.d("GetAllUserChatsGrpcTask", "Send chatsToListen: " + chatsToListen);
         } else {
             Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
                     Toast.LENGTH_SHORT).show();

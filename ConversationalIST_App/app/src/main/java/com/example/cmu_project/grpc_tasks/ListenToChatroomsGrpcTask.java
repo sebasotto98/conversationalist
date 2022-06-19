@@ -40,11 +40,13 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
     private int currentNotificationID;
     private RecyclerView messageRecycler;
     private MessageAdapter messageAdapter;
+    private boolean isMobileData;
 
-    public ListenToChatroomsGrpcTask(List<String> userChats, Context context, int currentNotificationID) {
+    public ListenToChatroomsGrpcTask(List<String> userChats, Context context, int currentNotificationID, boolean isMobileData) {
         this.userChats = userChats;
         this.context = new WeakReference<>(context);
         this.currentNotificationID = currentNotificationID;
+        this.isMobileData = isMobileData;
     }
 
     @Override
@@ -134,8 +136,11 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
                 }
             };
 
-            requestObserver = nonBlockingStub.listenToChatrooms(responseMessages);
-
+            if(isMobileData){
+                requestObserver = nonBlockingStub.listenToChatroomsMobileData(responseMessages);
+            } else {
+                requestObserver = nonBlockingStub.listenToChatrooms(responseMessages);
+            }
             for(String chat: userChats){
                 listenToChatroom newChat = listenToChatroom.newBuilder()
                         .setChatroom(chat)

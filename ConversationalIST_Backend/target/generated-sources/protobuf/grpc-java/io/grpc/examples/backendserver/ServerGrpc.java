@@ -452,6 +452,37 @@ public final class ServerGrpc {
     return getGetMessageAtPositionMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.listenToChatroom,
+      io.grpc.examples.backendserver.messageResponse> getListenToChatroomsMobileDataMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "listenToChatroomsMobileData",
+      requestType = io.grpc.examples.backendserver.listenToChatroom.class,
+      responseType = io.grpc.examples.backendserver.messageResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.BIDI_STREAMING)
+  public static io.grpc.MethodDescriptor<io.grpc.examples.backendserver.listenToChatroom,
+      io.grpc.examples.backendserver.messageResponse> getListenToChatroomsMobileDataMethod() {
+    io.grpc.MethodDescriptor<io.grpc.examples.backendserver.listenToChatroom, io.grpc.examples.backendserver.messageResponse> getListenToChatroomsMobileDataMethod;
+    if ((getListenToChatroomsMobileDataMethod = ServerGrpc.getListenToChatroomsMobileDataMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getListenToChatroomsMobileDataMethod = ServerGrpc.getListenToChatroomsMobileDataMethod) == null) {
+          ServerGrpc.getListenToChatroomsMobileDataMethod = getListenToChatroomsMobileDataMethod =
+              io.grpc.MethodDescriptor.<io.grpc.examples.backendserver.listenToChatroom, io.grpc.examples.backendserver.messageResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.BIDI_STREAMING)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "listenToChatroomsMobileData"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.listenToChatroom.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.messageResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("listenToChatroomsMobileData"))
+              .build();
+        }
+      }
+    }
+    return getListenToChatroomsMobileDataMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -601,6 +632,13 @@ public final class ServerGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetMessageAtPositionMethod(), responseObserver);
     }
 
+    /**
+     */
+    public io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.listenToChatroom> listenToChatroomsMobileData(
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
+      return io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall(getListenToChatroomsMobileDataMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -701,6 +739,13 @@ public final class ServerGrpc {
                 io.grpc.examples.backendserver.getMessagePosition,
                 io.grpc.examples.backendserver.messageResponse>(
                   this, METHODID_GET_MESSAGE_AT_POSITION)))
+          .addMethod(
+            getListenToChatroomsMobileDataMethod(),
+            io.grpc.stub.ServerCalls.asyncBidiStreamingCall(
+              new MethodHandlers<
+                io.grpc.examples.backendserver.listenToChatroom,
+                io.grpc.examples.backendserver.messageResponse>(
+                  this, METHODID_LISTEN_TO_CHATROOMS_MOBILE_DATA)))
           .build();
     }
   }
@@ -832,6 +877,14 @@ public final class ServerGrpc {
         io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetMessageAtPositionMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.listenToChatroom> listenToChatroomsMobileData(
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
+      return io.grpc.stub.ClientCalls.asyncBidiStreamingCall(
+          getChannel().newCall(getListenToChatroomsMobileDataMethod(), getCallOptions()), responseObserver);
     }
   }
 
@@ -1045,6 +1098,7 @@ public final class ServerGrpc {
   private static final int METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA = 11;
   private static final int METHODID_GET_MESSAGE_AT_POSITION = 12;
   private static final int METHODID_LISTEN_TO_CHATROOMS = 13;
+  private static final int METHODID_LISTEN_TO_CHATROOMS_MOBILE_DATA = 14;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -1128,6 +1182,9 @@ public final class ServerGrpc {
         case METHODID_LISTEN_TO_CHATROOMS:
           return (io.grpc.stub.StreamObserver<Req>) serviceImpl.listenToChatrooms(
               (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse>) responseObserver);
+        case METHODID_LISTEN_TO_CHATROOMS_MOBILE_DATA:
+          return (io.grpc.stub.StreamObserver<Req>) serviceImpl.listenToChatroomsMobileData(
+              (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse>) responseObserver);
         default:
           throw new AssertionError();
       }
@@ -1193,6 +1250,7 @@ public final class ServerGrpc {
               .addMethod(getGetMessagesBetweenPositionsMobileDataMethod())
               .addMethod(getListenToChatroomsMethod())
               .addMethod(getGetMessageAtPositionMethod())
+              .addMethod(getListenToChatroomsMobileDataMethod())
               .build();
         }
       }

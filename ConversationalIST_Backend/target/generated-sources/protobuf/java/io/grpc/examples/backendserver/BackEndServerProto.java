@@ -159,7 +159,7 @@ public final class BackEndServerProto {
       " \001(\t\"\037\n\017GetChatsRequest\022\014\n\004user\030\001 \001(\t\"#\n" +
       "\rGetChatsReply\022\022\n\nuser_chats\030\001 \003(\t\"$\n\017Ch" +
       "atTypeRequest\022\021\n\tchat_name\030\001 \001(\t\"\"\n\rChat" +
-      "TypeReply\022\021\n\tchat_type\030\001 \001(\t2\305\t\n\006Server\022" +
+      "TypeReply\022\021\n\tchat_type\030\001 \001(\t2\245\n\n\006Server\022" +
       "P\n\014registerUser\022\037.helloworld.registerUse" +
       "rRequest\032\035.helloworld.registerUserReply\"" +
       "\000\022H\n\013sendMessage\022\032.helloworld.sendingMes" +
@@ -190,9 +190,11 @@ public final class BackEndServerProto {
       "ToChatroom\032\033.helloworld.messageResponse\"" +
       "\000(\0010\001\022U\n\024getMessageAtPosition\022\036.hellowor" +
       "ld.getMessagePosition\032\033.helloworld.messa" +
-      "geResponse\"\000B<\n\036io.grpc.examples.backend" +
-      "serverB\022BackEndServerProtoP\001\242\002\003HLWb\006prot" +
-      "o3"
+      "geResponse\"\000\022^\n\033listenToChatroomsMobileD" +
+      "ata\022\034.helloworld.listenToChatroom\032\033.hell" +
+      "oworld.messageResponse\"\000(\0010\001B<\n\036io.grpc." +
+      "examples.backendserverB\022BackEndServerPro" +
+      "toP\001\242\002\003HLWb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

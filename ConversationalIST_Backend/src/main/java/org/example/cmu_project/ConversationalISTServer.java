@@ -25,7 +25,8 @@ public class ConversationalISTServer {
     private static final int PORT_NUM = 50051;
 
     //hash map where key is the chatroom name and value is a list with the StreamObserver of all the interested clients
-    private static HashMap<String, List<StreamObserver<messageResponse>>> clientSubscriptions = new HashMap<>();
+    private static HashMap<String, List<StreamObserver<messageResponse>>> clientSubscriptionsWifi = new HashMap<>();
+    private static HashMap<String, List<StreamObserver<messageResponse>>> clientSubscriptionsMobileData = new HashMap<>();
 
     private Server server;
 
@@ -117,7 +118,8 @@ public class ConversationalISTServer {
                     .setPosition(position)
                     .build();
 
-            sendMessageToInterestedClients(reply, chatroom);
+            sendMessageToInterestedClientsInWifi(reply, chatroom);
+            sendMessageToInterestedClientsInMobileData(reply, chatroom);
 
             responseObserver.onNext(reply);
             responseObserver.onCompleted();
@@ -330,6 +332,11 @@ public class ConversationalISTServer {
         }
 
         @Override
+        public StreamObserver<listenToChatroom> listenToChatroomsMobileData(StreamObserver<messageResponse> responseObserver){
+            return new listenToChatroomMobileDataObserver(responseObserver);
+        }
+
+        @Override
         public void getMessageAtPosition(getMessagePosition req, StreamObserver<messageResponse> responseObserver){
             int position = req.getPosition();
             String chatroom = req.getChatroom();
@@ -439,9 +446,32 @@ public class ConversationalISTServer {
             return messagesToSend;
         }
 
-        private void sendMessageToInterestedClients(messageResponse message, String chatroom) {
 
-            List<StreamObserver<messageResponse>> clients = clientSubscriptions.get(chatroom);
+        private void sendMessageToInterestedClientsInMobileData(messageResponse message, String chatroom) {
+
+            //remove data of the image
+            messageResponse mobileDataMessage = messageResponse.newBuilder()
+                    .setChatroom(message.getChatroom())
+                    .setPosition(message.getPosition())
+                    .setType(message.getType())
+                    .setData("")
+                    .setTimestamp(message.getTimestamp())
+                    .setUsername(message.getUsername())
+                    .build();
+
+            List<StreamObserver<messageResponse>> clients = clientSubscriptionsMobileData.get(chatroom);
+            if(clients == null || clients.isEmpty()){
+                logger.info("No interested Clients"); //how??
+            } else {
+                for(StreamObserver<messageResponse> client: clients){
+                    client.onNext(mobileDataMessage);
+                }
+            }
+        }
+
+        private void sendMessageToInterestedClientsInWifi(messageResponse message, String chatroom) {
+
+            List<StreamObserver<messageResponse>> clients = clientSubscriptionsWifi.get(chatroom);
             if(clients == null || clients.isEmpty()){
                 logger.info("No interested Clients"); //how??
             } else {
@@ -463,15 +493,15 @@ public class ConversationalISTServer {
             @Override
             public void onNext(listenToChatroom listenToChatroom) {
                 String chat = listenToChatroom.getChatroom();
-                logger.info("Got request from client: " + listenToChatroom);
+                logger.info("Got request from client (WiFi): " + listenToChatroom);
                 allChats.add(chat);
                 logger.info("allChats " + allChats);
-                if(clientSubscriptions.containsKey(chat)){
-                    clientSubscriptions.get(chat).add(responseObserver);
+                if(clientSubscriptionsWifi.containsKey(chat)){
+                    clientSubscriptionsWifi.get(chat).add(responseObserver);
                 } else {
                     List<StreamObserver<messageResponse>> clients = new ArrayList<>();
                     clients.add(responseObserver);
-                    clientSubscriptions.put(chat, clients);
+                    clientSubscriptionsWifi.put(chat, clients);
                 }
             }
 
@@ -488,9 +518,53 @@ public class ConversationalISTServer {
 
             private void removeClient(){
                 for(String chat: allChats){
-                    List<StreamObserver<messageResponse>> clients = clientSubscriptions.get(chat);
+                    List<StreamObserver<messageResponse>> clients = clientSubscriptionsWifi.get(chat);
                     clients.remove(responseObserver);
-                    clientSubscriptions.put(chat, clients);
+                    clientSubscriptionsWifi.put(chat, clients);
+                }
+            }
+        }
+
+        private static class listenToChatroomMobileDataObserver implements StreamObserver<listenToChatroom> {
+
+            private final StreamObserver<messageResponse> responseObserver;
+            private List<String> allChats = new ArrayList<>();
+
+            public listenToChatroomMobileDataObserver(StreamObserver<messageResponse> responseObserver) {
+                this.responseObserver = responseObserver;
+            }
+
+            @Override
+            public void onNext(listenToChatroom listenToChatroom) {
+                String chat = listenToChatroom.getChatroom();
+                logger.info("Got request from client (MobileData): " + listenToChatroom);
+                allChats.add(chat);
+                logger.info("allChats " + allChats);
+                if(clientSubscriptionsMobileData.containsKey(chat)){
+                    clientSubscriptionsMobileData.get(chat).add(responseObserver);
+                } else {
+                    List<StreamObserver<messageResponse>> clients = new ArrayList<>();
+                    clients.add(responseObserver);
+                    clientSubscriptionsMobileData.put(chat, clients);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                logger.info(throwable.getMessage());
+                removeClient();
+            }
+
+            @Override
+            public void onCompleted() {
+                removeClient();
+            }
+
+            private void removeClient(){
+                for(String chat: allChats){
+                    List<StreamObserver<messageResponse>> clients = clientSubscriptionsMobileData.get(chat);
+                    clients.remove(responseObserver);
+                    clientSubscriptionsMobileData.put(chat, clients);
                 }
             }
         }

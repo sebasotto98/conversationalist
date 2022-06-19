@@ -60,7 +60,7 @@ public class ChatroomActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new GetAllUserChatsGrpcTask(this,my_chats_list).execute(username);
+        //new GetAllUserChatsGrpcTask(this,my_chats_list).execute(username);
     }
     
 
