@@ -1,5 +1,7 @@
 package com.example.cmu_project.activities;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,9 +51,10 @@ public class ChatroomActivity extends AppCompatActivity {
         my_chats_list = (ListView) findViewById(R.id.my_chat_list);
         new GetAllUserChatsGrpcTask(this,my_chats_list).execute(username);
 
-
-        startService(new Intent(this, FetchDataService.class));
-
+        //only start service if it is not running
+        if(!isMyServiceRunning(FetchDataService.class)){
+            startService(new Intent(this, FetchDataService.class));
+        }
     }
 
     @Override
@@ -69,5 +72,15 @@ public class ChatroomActivity extends AppCompatActivity {
     public void join_chatroom(View view) {
         Intent myIntent = new Intent(ChatroomActivity.this, JoinChatActivity.class);
         ChatroomActivity.this.startActivity(myIntent);
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

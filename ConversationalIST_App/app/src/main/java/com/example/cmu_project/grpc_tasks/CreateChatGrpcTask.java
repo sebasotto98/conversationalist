@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.example.cmu_project.activities.ChatActivity;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 
@@ -86,6 +88,11 @@ public class CreateChatGrpcTask extends AsyncTask<Object,Void, CreateChatReply> 
             return;
         }
         if(reply != null) {
+
+            //say to the service that we want to listen a new chat
+            Intent intent = new Intent("NEWchat");
+            intent.putExtra("chat", new_chat_name);
+            LocalBroadcastManager.getInstance(activity.getApplicationContext()).sendBroadcast(intent);
 
             //jump to the chat activity
             ((GlobalVariableHelper) activity.getApplication()).setCurrentChatroomName(new_chat_name);

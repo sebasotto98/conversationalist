@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.example.cmu_project.activities.ChatActivity;
 import com.example.cmu_project.activities.ChatroomActivity;
 import com.example.cmu_project.activities.JoinChatActivity;
@@ -69,6 +71,11 @@ public class JoinChatGrpcTask extends AsyncTask<Object,Void, JoinChatReply> {
             Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
                     Toast.LENGTH_SHORT).show();
         } else {
+
+            //say to the service that we want to listen a new chat
+            Intent intent = new Intent("NEWchat");
+            intent.putExtra("chat", current_chat_to_join);
+            LocalBroadcastManager.getInstance(activity.getApplicationContext()).sendBroadcast(intent);
 
             //jump to the chat activity
             ((GlobalVariableHelper) activity.getApplication()).setCurrentChatroomName(current_chat_to_join);

@@ -96,6 +96,7 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
                     String currentChatroom = ((GlobalVariableHelper) context.get().getApplicationContext())
                             .getCurrentChatroomName();
 
+                    //if message is for current opened chatroom
                     if (messageRecycler != null && messageAdapter != null && Objects.equals(currentChatroom, message.getChatroom())) {
 
                         messageAdapter.addToMessageList(message);
@@ -156,6 +157,13 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
     public int complete(){
         requestObserver.onCompleted();
         return currentNotificationID;
+    }
+
+    public void listenNewChat(String chat){
+        listenToChatroom newChat = listenToChatroom.newBuilder()
+                .setChatroom(chat)
+                .build();
+        requestObserver.onNext(newChat);
     }
 
     private void pushNotification(String Title, String Text, PendingIntent intent){

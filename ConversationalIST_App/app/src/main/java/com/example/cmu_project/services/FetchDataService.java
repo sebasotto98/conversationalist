@@ -21,6 +21,7 @@ import com.example.cmu_project.contexts.WifiContext;
 import com.example.cmu_project.grpc_tasks.ListenToChatroomsGrpcTask;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,21 +29,20 @@ public class FetchDataService extends Service {
 
     private int currentNotificationID = 0;
     private ListenToChatroomsGrpcTask listenGrpcTask;
+    List<String> currentChats = new ArrayList<>();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        //TODO -> Fetch chatrooms from DB or from server (which one?)
         /*TODO -> Difference between listening on data and on wifi (current version is just wifi)
         TODO listen to changes on network state and change the listening strategy*/
-        List<String> chats = Collections.singletonList("sala1");
 
-        listenGrpcTask = (ListenToChatroomsGrpcTask)
-                new ListenToChatroomsGrpcTask(chats,this, currentNotificationID)
-                .execute();
+        //listen to this events
+        LocalBroadcastManager.getInstance(this).registerReceiver(chatListBroadcastReceiver,
+                new IntentFilter("chats"));
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(networkChangeBroadcastReceiver,
-                new IntentFilter(ConnectivityManager.EXTRA_NO_CONNECTIVITY));
+        LocalBroadcastManager.getInstance(this).registerReceiver(listenToNewChat,
+                new IntentFilter("NEWchat"));
 
         ConnectivityManager connectivityManager = getSystemService(ConnectivityManager.class);
         connectivityManager.registerDefaultNetworkCallback(new ConnectivityManager.NetworkCallback() {
@@ -69,6 +69,7 @@ public class FetchDataService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(chatListBroadcastReceiver);
     }
 
     @Nullable
@@ -81,14 +82,35 @@ public class FetchDataService extends Service {
         currentNotificationID = listenGrpcTask.complete();
     }
 
-    private final BroadcastReceiver networkChangeBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver chatListBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
-            Toast.makeText(FetchDataService.this.getApplicationContext(), "NetWork Changed",
-                    Toast.LENGTH_SHORT).show();
+            List<String> chats = intent.getStringArrayListExtra("chats");
+            Log.d("FetchDataService (chatListBroadcastReceiver)", "got chat list: " + chats);
+
+            listenGrpcTask = (ListenToChatroomsGrpcTask)
+                    new ListenToChatroomsGrpcTask(chats,FetchDataService.this, currentNotificationID)
+                            .execute();
+
+            currentChats.addAll(chats);
         }
     };
+
+    private final BroadcastReceiver listenToNewChat = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String chat = intent.getStringExtra("chat");
+            Log.d("FetchDataService (listenToNewChat)", "got new chat: " + chat);
+
+            listenGrpcTask.listenNewChat(chat);
+
+            currentChats.add(chat);
+        }
+    };
+
+
 
 
 }
