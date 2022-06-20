@@ -1,15 +1,21 @@
 package org.example.cmu_project;
 
 import io.grpc.Server;
-import io.grpc.ServerBuilder;
 import io.grpc.examples.backendserver.*;
+import io.grpc.netty.GrpcSslContexts;
+import io.grpc.netty.NettyServerBuilder;
 import io.grpc.stub.StreamObserver;
+import io.netty.handler.ssl.SslContext;
+import nl.altindag.ssl.SSLFactory;
+import nl.altindag.ssl.util.NettySslUtils;
 import org.example.cmu_project.enums.ChatType;
 import org.example.cmu_project.helpers.ChatroomFileHelper;
 import org.example.cmu_project.helpers.GeneralHelper;
 import org.example.cmu_project.helpers.UserFileHelper;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -21,19 +27,30 @@ import java.util.logging.Logger;
 public class ConversationalISTServer {
 
     private static final Logger logger = Logger.getLogger(ConversationalISTServer.class.getName());
+    private static final String KEYSTORE_DIR = "keystores/";
+    private static final String TRUSTSTORE_DIR = "truststores/";
     private static final int TIMEOUT = 30;
     private static final int PORT_NUM = 50051;
 
     //hash map where key is the chatroom name and value is a list with the StreamObserver of all the interested clients
-    private static HashMap<String, List<StreamObserver<messageResponse>>> clientSubscriptionsWifi = new HashMap<>();
-    private static HashMap<String, List<StreamObserver<messageResponse>>> clientSubscriptionsMobileData = new HashMap<>();
+    private static final HashMap<String, List<StreamObserver<messageResponse>>> clientSubscriptionsWifi = new HashMap<>();
+    private static final HashMap<String, List<StreamObserver<messageResponse>>> clientSubscriptionsMobileData = new HashMap<>();
 
     private Server server;
 
     private void start() throws IOException {
+        Path identityStorePath = Paths.get(KEYSTORE_DIR + "server_KeystoreFile.jks");
+        Path trustStorePath = Paths.get(TRUSTSTORE_DIR + "server_TruststoreFile.jks");
+
+        SSLFactory sslFactory = SSLFactory.builder()
+                .withIdentityMaterial(identityStorePath, "testtest".toCharArray())
+                .withTrustMaterial(trustStorePath, "testtest".toCharArray())
+                .build();
+        SslContext sslContext = GrpcSslContexts.configure(NettySslUtils.forServer(sslFactory)).build();
         /* The port on which the server should run */
-        server = ServerBuilder.forPort(PORT_NUM)
+        server = NettyServerBuilder.forPort(PORT_NUM)
                 .addService(new ServerImpl())
+                .sslContext(sslContext)
                 .build()
                 .start();
         logger.info("Server started, listening on " + PORT_NUM);
@@ -87,11 +104,9 @@ public class ConversationalISTServer {
             //create a csv file for this new user
             userFileHelper.store("",user);
 
-
             registerUserReply response = registerUserReply.newBuilder().setAck("OK").build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
-
         }
 
         @Override
@@ -148,7 +163,6 @@ public class ConversationalISTServer {
             List<String> remainMessages = messages.subList(position, messages.size());
 
             sendMessageStreamToClient(responseObserver, remainMessages);
-
         }
 
         @Override
@@ -177,7 +191,6 @@ public class ConversationalISTServer {
             CreateChatReply response = CreateChatReply.newBuilder().setAck("OK").build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
-
         }
 
         @Override
@@ -201,8 +214,8 @@ public class ConversationalISTServer {
                 String type_of_chat = split_line[2];
 
                 if(!user_chats.contains(chat_name)) {
-                    if(!type_of_chat.equalsIgnoreCase(ChatType.PRIVATE.name())) {
-                        if(type_of_chat.equalsIgnoreCase(ChatType.GEOFENCED.name())) {
+                    if(!type_of_chat.equals("Private")) {
+                        if(type_of_chat.equals("GeoFanced")) {
                             if(userInChatRadio(latitude,longitude,chat_name))
                                 chats_available.add(chat_name);
                         } else {
@@ -215,13 +228,9 @@ public class ConversationalISTServer {
 
             }
 
-
             JoinableChatsReply response = JoinableChatsReply.newBuilder().addAllChats(chats_available).build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
-
-
-
         }
 
         @Override
@@ -235,7 +244,6 @@ public class ConversationalISTServer {
             JoinChatReply response = JoinChatReply.newBuilder().setAck("OK").build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
-
         }
 
         @Override
@@ -244,14 +252,13 @@ public class ConversationalISTServer {
             String user = request.getUser();
 
             List<String> user_chats = userFileHelper.getChats(user);
-            for (int i = 0;i<user_chats.size();i++) {
-                System.out.println(user_chats.get(i));
+            for (String user_chat : user_chats) {
+                logger.info(user_chat);
             }
 
             GetChatsReply response = GetChatsReply.newBuilder().addAllUserChats(user_chats).build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
-
         }
 
         @Override
@@ -264,7 +271,6 @@ public class ConversationalISTServer {
             ChatTypeReply response = ChatTypeReply.newBuilder().setChatType(chat_type).build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
-
         }
 
         @Override
@@ -331,7 +337,6 @@ public class ConversationalISTServer {
             return new listenToChatroomObserver(responseObserver);
         }
 
-        @Override
         public StreamObserver<listenToChatroom> listenToChatroomsMobileData(StreamObserver<messageResponse> responseObserver){
             return new listenToChatroomMobileDataObserver(responseObserver);
         }
@@ -390,7 +395,7 @@ public class ConversationalISTServer {
         private boolean userInChatRadio(double user_latitude,double user_longitude,String chat_name) {
 
             //get chat details about location
-            List<String> location_and_radius_string = chatroomFileHelper.getChatLocation(chat_name);
+             List<String> location_and_radius_string = null;
             System.out.println(location_and_radius_string.get(0) + " + " + location_and_radius_string.get(1));
             String[] split_location = location_and_radius_string.get(0).split("/");
             double radius = Double.parseDouble(location_and_radius_string.get(1));
@@ -416,11 +421,7 @@ public class ConversationalISTServer {
 
             System.out.println("Distancia: " + Math.sqrt(distance));
 
-            if (Math.sqrt(distance) > radius)
-                return false;
-            else
-                return true;
-
+            return !(Math.sqrt(distance) > radius);
 
         }
 

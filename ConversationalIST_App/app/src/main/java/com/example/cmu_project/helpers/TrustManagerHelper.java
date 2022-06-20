@@ -1,7 +1,5 @@
 package com.example.cmu_project.helpers;
 
-import android.util.Log;
-
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.cert.CertificateException;
