@@ -45,7 +45,6 @@ public class ConversationalISTServer {
         SSLFactory sslFactory = SSLFactory.builder()
                 .withIdentityMaterial(identityStorePath, "testtest".toCharArray())
                 .withTrustMaterial(trustStorePath, "testtest".toCharArray())
-                .withNeedClientAuthentication()
                 .build();
         SslContext sslContext = GrpcSslContexts.configure(NettySslUtils.forServer(sslFactory)).build();
         /* The port on which the server should run */

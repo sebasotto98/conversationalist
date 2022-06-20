@@ -102,8 +102,7 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
 
                         int position = messageAdapter.getItemCount() - 1;
 
-                        Intent intent = new Intent(((GlobalVariableHelper)context.get().getApplicationContext())
-                                .getBROADCAST_MESSAGE_INSERTED());
+                        Intent intent = new Intent("new_message_in_adapter");
                         intent.putExtra("position", position);
 
                         LocalBroadcastManager.getInstance(context.get()).sendBroadcast(intent);
