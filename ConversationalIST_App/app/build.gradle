@@ -37,6 +37,11 @@ android {
         }
     }
 
+    packagingOptions {
+        pickFirst 'META-INF/io.netty.versions.properties'
+        pickFirst 'META-INF/INDEX.LIST'
+    }
+
     protobuf {
         protoc { artifact = 'com.google.protobuf:protoc:3.12.0' }
         plugins {
@@ -63,16 +68,21 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-    implementation 'io.grpc:grpc-okhttp:1.46.0'
+    implementation 'io.netty:netty-handler:4.1.72.Final'
+
+    implementation 'io.grpc:grpc-okhttp:1.47.0'
     implementation 'io.grpc:grpc-protobuf-lite:1.46.0'
     implementation 'io.grpc:grpc-stub:1.46.0'
+    implementation 'io.github.hakky54:sslcontext-kickstart-for-netty:7.4.3'
 
     implementation 'org.apache.tomcat:annotations-api:6.0.53'
-    implementation 'com.google.android.gms:play-services-maps:18.0.2'
+
+    implementation 'io.netty:netty-tcnative-boringssl-static:2.0.46.Final'
 
     implementation 'com.adevinta.android:leku:9.1.4'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.google.android.gms:play-services-location:20.0.0'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
 
     testImplementation group: 'junit', name: 'junit', version: '4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

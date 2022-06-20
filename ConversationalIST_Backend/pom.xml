@@ -27,30 +27,31 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.github.hakky54</groupId>
+            <artifactId>sslcontext-kickstart-for-netty</artifactId>
+            <version>7.4.3</version>
+        </dependency>
+        <dependency>
             <groupId>io.opentracing.contrib</groupId>
             <artifactId>opentracing-grpc</artifactId>
             <version>0.2.3</version>
         </dependency>
         <dependency>
             <groupId>io.grpc</groupId>
-            <artifactId>grpc-netty-shaded</artifactId>
-            <version>1.46.0</version>
-            <scope>runtime</scope>
+            <artifactId>grpc-netty</artifactId>
         </dependency>
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-protobuf</artifactId>
-            <version>1.46.0</version>
         </dependency>
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-stub</artifactId>
-            <version>1.46.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java-util</artifactId>
-            <version>3.20.1</version>
+            <version>3.21.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -66,7 +67,7 @@
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-testing</artifactId>
-            <version>1.46.0</version>
+            <version>1.47.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -83,7 +84,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>4.5.1</version>
+            <version>4.6.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

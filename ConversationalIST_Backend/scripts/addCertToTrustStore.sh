@@ -1,0 +1,1 @@
+keytool -export -alias client -file ../truststores/client_Certificate.cer -keystore ../truststores/server_TruststoreFile.jks

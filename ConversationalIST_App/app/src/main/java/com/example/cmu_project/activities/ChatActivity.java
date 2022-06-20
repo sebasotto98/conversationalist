@@ -81,7 +81,7 @@ public class ChatActivity extends AppCompatActivity {
 
         //listen to this events
         LocalBroadcastManager.getInstance(this).registerReceiver(messageAdapterBroadcastReceiver,
-                new IntentFilter(((GlobalVariableHelper) getApplication()).getBROADCAST_MESSAGE_INSERTED()));
+                new IntentFilter("new_message_in_adapter"));
 
         messageAdapter = new MessageAdapter(this, messageList);
 
