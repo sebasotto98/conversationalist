@@ -16,12 +16,7 @@ import android.widget.Toast;
 
 import com.example.cmu_project.R;
 import com.example.cmu_project.grpc_tasks.RegisterUserGrpcTask;
-import com.example.cmu_project.helpers.GlobalVariableHelper;
 import com.example.cmu_project.helpers.LinkHelper;
-
-import io.grpc.examples.backendserver.ServerGrpc;
-import io.grpc.examples.backendserver.registerUserReply;
-import io.grpc.examples.backendserver.registerUserRequest;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -51,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
         tx1.setVisibility(View.GONE);
 
         quitButton.setOnClickListener(v -> finish());
-
 
         // ATTENTION: This was auto-generated to handle app links.
         Intent appLinkIntent = getIntent();
@@ -99,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void register(View view) {
         if (TextUtils.isEmpty(ed1.getText().toString())) {
-            //TODO: Do stronger validity Rcheck
+            //TODO: Do stronger validity check
             new AlertDialog.Builder(LoginActivity.this)
                     .setMessage("Please input a valid username.")
                     .setCancelable(true)
@@ -107,8 +101,6 @@ public class LoginActivity extends AppCompatActivity {
         } else {
 
             new RegisterUserGrpcTask(this,ed1.getText().toString(),link_helper).execute();
-
-
 
         }
     }

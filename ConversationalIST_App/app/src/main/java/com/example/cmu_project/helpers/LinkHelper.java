@@ -31,6 +31,4 @@ public class LinkHelper {
         this.chat_to_go = null;
     }
 
-
-
 }

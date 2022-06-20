@@ -64,21 +64,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
-            android:text="Public" />
+            android:text="@string/public_chat" />
 
         <RadioButton
             android:id="@+id/radio_private"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
-            android:text="Private" />
+            android:text="@string/private_chat" />
 
         <RadioButton
-            android:id="@+id/radio_geofanced"
+            android:id="@+id/radio_geofenced"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
-            android:text="GeoFanced" />
+            android:text="@string/geofenced_chat" />
     </RadioGroup>
 
     <!-- here gone -->
@@ -89,7 +89,7 @@
         android:layout_height="41dp"
         android:layout_marginTop="484dp"
         android:layout_marginEnd="260dp"
-        android:onClick="openLocation"
+        android:onClick="openMapOnCurrentLocation"
         android:text="set"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="448dp"
         android:layout_marginEnd="116dp"
-        android:text="Radio:"
+        android:text="@string/radius"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

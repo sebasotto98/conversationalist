@@ -21,7 +21,6 @@ import io.grpc.examples.backendserver.CreateChatRequest;
 import io.grpc.examples.backendserver.Location;
 import io.grpc.examples.backendserver.ServerGrpc;
 
-
 public class CreateChatGrpcTask extends AsyncTask<Object,Void, CreateChatReply> {
 
     WeakReference<Activity> activityReference;
@@ -76,7 +75,6 @@ public class CreateChatGrpcTask extends AsyncTask<Object,Void, CreateChatReply> 
             Log.d("CreateChatGrpcTask", sw.toString());
             return null;
         }
-
 
     }
 

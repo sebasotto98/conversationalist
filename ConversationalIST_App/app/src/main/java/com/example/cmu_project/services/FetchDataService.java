@@ -6,12 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.net.LinkProperties;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -19,10 +17,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.example.cmu_project.contexts.MobDataContext;
 import com.example.cmu_project.contexts.WifiContext;
 import com.example.cmu_project.grpc_tasks.ListenToChatroomsGrpcTask;
-import com.example.cmu_project.helpers.GlobalVariableHelper;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class FetchDataService extends Service {
@@ -138,8 +134,5 @@ public class FetchDataService extends Service {
             currentChats.add(chat);
         }
     };
-
-
-
 
 }

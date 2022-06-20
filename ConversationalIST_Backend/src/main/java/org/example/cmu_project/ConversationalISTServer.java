@@ -164,7 +164,7 @@ public class ConversationalISTServer {
                     String data = chatName + ",";
                     userFileHelper.store(data, userName);
                     chatroomFileHelper.store("", ChatroomFileHelper.CHATROOM_FILE_BEGIN + chatName);
-                    if(chatType.equalsIgnoreCase(ChatType.GEOFANCED.name())) {
+                    if(chatType.equalsIgnoreCase(ChatType.GEOFENCED.name())) {
                         chatroomFileHelper.store(chatName + "," + userName + "," + chatType + "," + request.getLocation().getLatitude() + "/" + request.getLocation().getLongitude() + "," + request.getRadius(), ChatroomFileHelper.CHATROOM_FILE_INFO);
                     } else if (chatType.equalsIgnoreCase(ChatType.PRIVATE.name())) {
                         chatroomFileHelper.store(chatName+","+userName+ "," + chatType, ChatroomFileHelper.CHATROOM_FILE_INFO);
@@ -201,8 +201,8 @@ public class ConversationalISTServer {
                 String type_of_chat = split_line[2];
 
                 if(!user_chats.contains(chat_name)) {
-                    if(!type_of_chat.equals("Private")) {
-                        if(type_of_chat.equals("GeoFanced")) {
+                    if(!type_of_chat.equalsIgnoreCase(ChatType.PRIVATE.name())) {
+                        if(type_of_chat.equalsIgnoreCase(ChatType.GEOFENCED.name())) {
                             if(userInChatRadio(latitude,longitude,chat_name))
                                 chats_available.add(chat_name);
                         } else {

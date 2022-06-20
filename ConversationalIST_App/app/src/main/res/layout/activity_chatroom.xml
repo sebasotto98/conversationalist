@@ -12,14 +12,14 @@
         android:layout_centerHorizontal = "true" />
 
     <TextView
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:text = "@string/conversationalist"
-        android:id = "@+id/app_name"
-        android:layout_below = "@+id/textview"
-        android:layout_centerHorizontal = "true"
-        android:textColor = "#ff7aff24"
-        android:textSize = "35sp" />
+        android:id="@+id/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textview"
+        android:layout_centerHorizontal="true"
+        android:text="@string/conversationalist"
+        android:textColor="#689F38"
+        android:textSize="35sp" />
 
     <TextView
         android:layout_width = "wrap_content"

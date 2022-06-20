@@ -3,14 +3,12 @@ package com.example.cmu_project.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +26,6 @@ import com.google.android.gms.location.LocationServices;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
-
 public class CreateChatActivity extends AppCompatActivity {
 
     private static final Logger logger = Logger.getLogger(CreateChatActivity.class.getName());
@@ -38,9 +35,8 @@ public class CreateChatActivity extends AppCompatActivity {
     EditText chat_name;
     RadioButton current_checked;
 
-     double chat_latitude;
-     double chat_longitude;
-
+    double chat_latitude;
+    double chat_longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +48,6 @@ public class CreateChatActivity extends AppCompatActivity {
 
         //TextFields
         chat_name = (EditText) findViewById(R.id.chat_name);
-
 
     }
 
@@ -75,7 +70,6 @@ public class CreateChatActivity extends AppCompatActivity {
         }
     }
 
-
     public void create(View view) {
 
         String new_chat_name = chat_name.getText().toString();
@@ -88,10 +82,7 @@ public class CreateChatActivity extends AppCompatActivity {
         } else {
             new CreateChatGrpcTask(this,new_chat_name).execute(((GlobalVariableHelper) this.getApplication()).getUsername(),type_of_chat);
         }
-
-
     }
-
 
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
@@ -117,9 +108,9 @@ public class CreateChatActivity extends AppCompatActivity {
                     findViewById(R.id.buttonMyLocation).setVisibility(View.GONE);
                 }
                 break;
-            case R.id.radio_geofanced:
+            case R.id.radio_geofenced:
                 if (checked) {
-                    current_checked = (RadioButton) findViewById(R.id.radio_geofanced);
+                    current_checked = (RadioButton) findViewById(R.id.radio_geofenced);
                     findViewById(R.id.radiusId).setVisibility(View.VISIBLE);
                     findViewById(R.id.textViewRadius).setVisibility(View.VISIBLE);
                     findViewById(R.id.textViewLocation).setVisibility(View.VISIBLE);
@@ -129,16 +120,39 @@ public class CreateChatActivity extends AppCompatActivity {
         }
     }
 
-    public void openLocation(View view) throws PackageManager.NameNotFoundException {
+    public void openMapOnCurrentLocation(View view) throws PackageManager.NameNotFoundException {
 
-        AtomicReference<Double>[] coordinates = getUserCoord();
+        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
+        AtomicReference<Double> userX = new AtomicReference<>((double) 0);
+        AtomicReference<Double> userY = new AtomicReference<>((double) 0);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            openMap(userX.get(), userY.get());
+        }
+
+        mFusedLocationClient.getLastLocation().addOnCompleteListener(location -> {
+            if (location.getResult() != null) {
+                userX.set(location.getResult().getLatitude());
+                userY.set(location.getResult().getLongitude());
+
+                try {
+                    openMap(userX.get(), userY.get());
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    private void openMap(Double userX, Double userY) throws PackageManager.NameNotFoundException {
         ApplicationInfo applicationInfo = getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
         Bundle bundle = applicationInfo.metaData;
         String apiKey = bundle.getString("com.google.android.geo.API_KEY");
 
         Intent locationPickerIntent = new LocationPickerActivity.Builder()
-                .withLocation(coordinates[0].get(), coordinates[1].get())
+                .withLocation(userX, userY)
                 .withGeolocApiKey(apiKey)
                 .withSearchZone("en_EN")
                 .withDefaultLocaleSearchZone()
@@ -157,40 +171,6 @@ public class CreateChatActivity extends AppCompatActivity {
         } catch (ActivityNotFoundException e) {
             logger.warning(e.getMessage());
         }
-
     }
-
-    public AtomicReference<Double>[] getUserCoord() {
-
-        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        AtomicReference<Double> userX = new AtomicReference<>((double) 0);
-        AtomicReference<Double> userY = new AtomicReference<>((double) 0);
-        AtomicReference<Double>[] ret = new AtomicReference[2];
-        ret[0] = userX;
-        ret[1] = userY;
-
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            System.out.println("dentro do if");
-            return ret;
-        }
-
-
-        mFusedLocationClient.getLastLocation().addOnSuccessListener(this,location -> {
-            if (location != null) {
-                userX.set(location.getLatitude());
-                userY.set(location.getLongitude());
-            }
-        });
-
-        AtomicReference<Double>[] ret_coord = new AtomicReference[2];
-        ret_coord[0] = userX;
-        ret_coord[1] = userY;
-
-        return ret_coord;
-
-    }
-
 
 }

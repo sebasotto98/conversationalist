@@ -10,6 +10,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\app-data-files\chatrooms\AnotherServiceTest.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\app-data-files\chatrooms\CMU Chat.csv">
           <value>
             <Attribute>
@@ -39,6 +46,13 @@
           </value>
         </entry>
         <entry key="\app-data-files\chatrooms\locationTest.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\chatrooms\mygeofenc.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -81,6 +95,20 @@
           </value>
         </entry>
         <entry key="\app-data-files\chatrooms_info.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\sample_chatrooms_info.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\sample_passwords.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

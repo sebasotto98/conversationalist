@@ -44,8 +44,6 @@ public class ChatroomActivity extends AppCompatActivity {
         tx1.setText(welcomeMessage);
         tx1.setVisibility(View.VISIBLE);
 
-
-
         ((GlobalVariableHelper) this.getApplication()).setUsername(username);
 
         my_chats_list = (ListView) findViewById(R.id.my_chat_list);
@@ -62,7 +60,6 @@ public class ChatroomActivity extends AppCompatActivity {
         super.onResume();
         //new GetAllUserChatsGrpcTask(this,my_chats_list).execute(username);
     }
-    
 
     public void create_chatroom(View view) {
         Intent myIntent = new Intent(ChatroomActivity.this, CreateChatActivity.class);

@@ -22,4 +22,8 @@
     <string name="send_geolocation">Send Geolocation</string>
     <string name="send_message">Send Message</string>
     <string name="aa">Aa</string>
+    <string name="geofenced_chat">Geofenced</string>
+    <string name="private_chat">Private</string>
+    <string name="public_chat">Public</string>
+    <string name="radius">Radius:</string>
 </resources>
