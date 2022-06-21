@@ -1,11 +1,15 @@
 package org.example.cmu_project.helpers;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class UserFileHelper extends FileHelper {
 
     private static final String USER_FILES_PATH = "app-data-files/users/";
+    public static final String USER_FILE_INFO = "app-data-files/users_info";
 
     @Override
     public List<String> parseToClient(List<String> fileId) {
@@ -22,6 +26,11 @@ public class UserFileHelper extends FileHelper {
         super.store(data,USER_FILES_PATH + fileId);
     }
 
+    public void store_info(String data) {
+        super.store(data,USER_FILE_INFO);
+    }
+
+
     public List<String> getChats(String fileId) {
 
         List<String> userData = super.read(USER_FILES_PATH + fileId);
@@ -35,5 +44,60 @@ public class UserFileHelper extends FileHelper {
 
         return userChats;
     }
+
+    public boolean userExists(String user) {
+
+        try {
+            File myObj = new File(USER_FILE_INFO + FILE_FORMAT);
+            Scanner myReader = new Scanner(myObj);
+            String newLine;
+
+            while (myReader.hasNextLine()) {
+                newLine = myReader.nextLine();
+
+                String[] splited_line = newLine.split(",");
+                if (splited_line[0].equals(user)) {
+                    return true;
+                }
+
+            }
+            myReader.close();
+
+        } catch (FileNotFoundException e) {
+            logger.warning(e.getMessage());
+        }
+        return false;
+
+    }
+
+    public boolean checkPassword(String user, String password_hashed) {
+
+
+        try {
+            File myObj = new File(USER_FILE_INFO + FILE_FORMAT);
+            Scanner myReader = new Scanner(myObj);
+            String newLine;
+
+            while (myReader.hasNextLine()) {
+                newLine = myReader.nextLine();
+
+                String[] splited_line = newLine.split(",");
+                if (splited_line[0].equals(user)) {
+                    if (splited_line[1].equals(password_hashed))
+                        return true;
+                    else
+                        return false;
+                }
+
+            }
+            myReader.close();
+
+        } catch (FileNotFoundException e) {
+            logger.warning(e.getMessage());
+        }
+        return false;
+
+    }
+
 
 }

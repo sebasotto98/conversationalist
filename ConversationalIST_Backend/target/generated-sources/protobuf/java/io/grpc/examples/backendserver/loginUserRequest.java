@@ -4,18 +4,18 @@
 package io.grpc.examples.backendserver;
 
 /**
- * Protobuf type {@code helloworld.registerUserRequest}
+ * Protobuf type {@code helloworld.loginUserRequest}
  */
-public final class registerUserRequest extends
+public final class loginUserRequest extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:helloworld.registerUserRequest)
-    registerUserRequestOrBuilder {
+    // @@protoc_insertion_point(message_implements:helloworld.loginUserRequest)
+    loginUserRequestOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use registerUserRequest.newBuilder() to construct.
-  private registerUserRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use loginUserRequest.newBuilder() to construct.
+  private loginUserRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private registerUserRequest() {
+  private loginUserRequest() {
     user_ = "";
     passwordHash_ = "";
   }
@@ -24,7 +24,7 @@ private static final long serialVersionUID = 0L;
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new registerUserRequest();
+    return new loginUserRequest();
   }
 
   @java.lang.Override
@@ -32,7 +32,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private registerUserRequest(
+  private loginUserRequest(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -83,15 +83,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_registerUserRequest_descriptor;
+    return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_loginUserRequest_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_registerUserRequest_fieldAccessorTable
+    return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_loginUserRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            io.grpc.examples.backendserver.registerUserRequest.class, io.grpc.examples.backendserver.registerUserRequest.Builder.class);
+            io.grpc.examples.backendserver.loginUserRequest.class, io.grpc.examples.backendserver.loginUserRequest.Builder.class);
   }
 
   public static final int USER_FIELD_NUMBER = 1;
@@ -215,10 +215,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof io.grpc.examples.backendserver.registerUserRequest)) {
+    if (!(obj instanceof io.grpc.examples.backendserver.loginUserRequest)) {
       return super.equals(obj);
     }
-    io.grpc.examples.backendserver.registerUserRequest other = (io.grpc.examples.backendserver.registerUserRequest) obj;
+    io.grpc.examples.backendserver.loginUserRequest other = (io.grpc.examples.backendserver.loginUserRequest) obj;
 
     if (!getUser()
         .equals(other.getUser())) return false;
@@ -244,69 +244,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserRequest parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserRequest parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserRequest parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserRequest parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(byte[] data)
+  public static io.grpc.examples.backendserver.loginUserRequest parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserRequest parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(java.io.InputStream input)
+  public static io.grpc.examples.backendserver.loginUserRequest parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserRequest parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseDelimitedFrom(java.io.InputStream input)
+  public static io.grpc.examples.backendserver.loginUserRequest parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseDelimitedFrom(
+  public static io.grpc.examples.backendserver.loginUserRequest parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserRequest parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserRequest parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -319,7 +319,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(io.grpc.examples.backendserver.registerUserRequest prototype) {
+  public static Builder newBuilder(io.grpc.examples.backendserver.loginUserRequest prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -335,26 +335,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code helloworld.registerUserRequest}
+   * Protobuf type {@code helloworld.loginUserRequest}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:helloworld.registerUserRequest)
-      io.grpc.examples.backendserver.registerUserRequestOrBuilder {
+      // @@protoc_insertion_point(builder_implements:helloworld.loginUserRequest)
+      io.grpc.examples.backendserver.loginUserRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_registerUserRequest_descriptor;
+      return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_loginUserRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_registerUserRequest_fieldAccessorTable
+      return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_loginUserRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              io.grpc.examples.backendserver.registerUserRequest.class, io.grpc.examples.backendserver.registerUserRequest.Builder.class);
+              io.grpc.examples.backendserver.loginUserRequest.class, io.grpc.examples.backendserver.loginUserRequest.Builder.class);
     }
 
-    // Construct using io.grpc.examples.backendserver.registerUserRequest.newBuilder()
+    // Construct using io.grpc.examples.backendserver.loginUserRequest.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -382,17 +382,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_registerUserRequest_descriptor;
+      return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_loginUserRequest_descriptor;
     }
 
     @java.lang.Override
-    public io.grpc.examples.backendserver.registerUserRequest getDefaultInstanceForType() {
-      return io.grpc.examples.backendserver.registerUserRequest.getDefaultInstance();
+    public io.grpc.examples.backendserver.loginUserRequest getDefaultInstanceForType() {
+      return io.grpc.examples.backendserver.loginUserRequest.getDefaultInstance();
     }
 
     @java.lang.Override
-    public io.grpc.examples.backendserver.registerUserRequest build() {
-      io.grpc.examples.backendserver.registerUserRequest result = buildPartial();
+    public io.grpc.examples.backendserver.loginUserRequest build() {
+      io.grpc.examples.backendserver.loginUserRequest result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -400,8 +400,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public io.grpc.examples.backendserver.registerUserRequest buildPartial() {
-      io.grpc.examples.backendserver.registerUserRequest result = new io.grpc.examples.backendserver.registerUserRequest(this);
+    public io.grpc.examples.backendserver.loginUserRequest buildPartial() {
+      io.grpc.examples.backendserver.loginUserRequest result = new io.grpc.examples.backendserver.loginUserRequest(this);
       result.user_ = user_;
       result.passwordHash_ = passwordHash_;
       onBuilt();
@@ -442,16 +442,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof io.grpc.examples.backendserver.registerUserRequest) {
-        return mergeFrom((io.grpc.examples.backendserver.registerUserRequest)other);
+      if (other instanceof io.grpc.examples.backendserver.loginUserRequest) {
+        return mergeFrom((io.grpc.examples.backendserver.loginUserRequest)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(io.grpc.examples.backendserver.registerUserRequest other) {
-      if (other == io.grpc.examples.backendserver.registerUserRequest.getDefaultInstance()) return this;
+    public Builder mergeFrom(io.grpc.examples.backendserver.loginUserRequest other) {
+      if (other == io.grpc.examples.backendserver.loginUserRequest.getDefaultInstance()) return this;
       if (!other.getUser().isEmpty()) {
         user_ = other.user_;
         onChanged();
@@ -475,11 +475,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      io.grpc.examples.backendserver.registerUserRequest parsedMessage = null;
+      io.grpc.examples.backendserver.loginUserRequest parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (io.grpc.examples.backendserver.registerUserRequest) e.getUnfinishedMessage();
+        parsedMessage = (io.grpc.examples.backendserver.loginUserRequest) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -653,41 +653,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:helloworld.registerUserRequest)
+    // @@protoc_insertion_point(builder_scope:helloworld.loginUserRequest)
   }
 
-  // @@protoc_insertion_point(class_scope:helloworld.registerUserRequest)
-  private static final io.grpc.examples.backendserver.registerUserRequest DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:helloworld.loginUserRequest)
+  private static final io.grpc.examples.backendserver.loginUserRequest DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new io.grpc.examples.backendserver.registerUserRequest();
+    DEFAULT_INSTANCE = new io.grpc.examples.backendserver.loginUserRequest();
   }
 
-  public static io.grpc.examples.backendserver.registerUserRequest getDefaultInstance() {
+  public static io.grpc.examples.backendserver.loginUserRequest getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<registerUserRequest>
-      PARSER = new com.google.protobuf.AbstractParser<registerUserRequest>() {
+  private static final com.google.protobuf.Parser<loginUserRequest>
+      PARSER = new com.google.protobuf.AbstractParser<loginUserRequest>() {
     @java.lang.Override
-    public registerUserRequest parsePartialFrom(
+    public loginUserRequest parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new registerUserRequest(input, extensionRegistry);
+      return new loginUserRequest(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<registerUserRequest> parser() {
+  public static com.google.protobuf.Parser<loginUserRequest> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<registerUserRequest> getParserForType() {
+  public com.google.protobuf.Parser<loginUserRequest> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public io.grpc.examples.backendserver.registerUserRequest getDefaultInstanceForType() {
+  public io.grpc.examples.backendserver.loginUserRequest getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

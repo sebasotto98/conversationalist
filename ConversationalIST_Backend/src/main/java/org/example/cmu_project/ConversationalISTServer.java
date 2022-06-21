@@ -100,13 +100,49 @@ public class ConversationalISTServer {
         public void registerUser(registerUserRequest request,StreamObserver<registerUserReply> responseObserver) {
 
             String user = request.getUser();
+            String password_hashed = request.getPasswordHash();
+            String ack;
 
-            //create a csv file for this new user
-            userFileHelper.store("",user);
+            if(userFileHelper.userExists(user))
+                ack = "User name already in use";
+            else {
+                //add new user to users_info
+                userFileHelper.store_info(user + "," + password_hashed);
 
-            registerUserReply response = registerUserReply.newBuilder().setAck("OK").build();
+                //create a csv file for this new user
+                userFileHelper.store("",user);
+
+                //set ack to OK
+                ack = "OK";
+            }
+
+            registerUserReply response = registerUserReply.newBuilder().setAck(ack).build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
+
+        }
+
+        @Override
+        public void loginUser(loginUserRequest request,StreamObserver<loginUserReply> responseObserver) {
+
+            String username = request.getUser();
+            String password_hashed = request.getPasswordHash();
+            String ack;
+
+            if (!userFileHelper.userExists(username)) {
+                ack = "Username doesnt exist";
+            } else {
+                if (!userFileHelper.checkPassword(username,password_hashed)) {
+                    ack = "Password is Wrong";
+                } else  {
+                    ack = "OK";
+                }
+            }
+
+            loginUserReply response = loginUserReply.newBuilder().setAck(ack).build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+
         }
 
         @Override

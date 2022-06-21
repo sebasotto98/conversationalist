@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cmu_project.R;
+import com.example.cmu_project.grpc_tasks.LoginUserGrpcTask;
 import com.example.cmu_project.grpc_tasks.RegisterUserGrpcTask;
 import com.example.cmu_project.helpers.LinkHelper;
 
@@ -70,37 +71,25 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
-        //TODO: Retrieve users from backend
-        if (ed1.getText().toString().equals("admin") &&
-                ed2.getText().toString().equals("admin")) {
-            Toast.makeText(getApplicationContext(),
-                    "Redirecting...", Toast.LENGTH_SHORT).show();
-            Intent myIntent = new Intent(LoginActivity.this, ChatroomActivity.class);
-            myIntent.putExtra("username", ed1.getText().toString());
-            LoginActivity.this.startActivity(myIntent);
-        } else {
-            Toast.makeText(getApplicationContext(), "Wrong Credentials", Toast.LENGTH_SHORT).show();
-            tx1.setVisibility(View.VISIBLE);
-            tx1.setBackgroundColor(Color.RED);
-            counter--;
-            tx1.setText(Integer.toString(counter));
 
-            if (counter == 0) {
-                loginButton.setEnabled(false);
-            }
+        if (ed1.getText().toString().matches("") || ed2.getText().toString().matches("")) {
+            Toast.makeText(getApplicationContext(),
+                    "Username or Password fields missing", Toast.LENGTH_SHORT).show();
+        } else {
+            String username = ed1.getText().toString();
+            String password = ed2.getText().toString();
+            new LoginUserGrpcTask(this,link_helper,username).execute(password);
         }
+
     }
 
     public void register(View view) {
-        if (TextUtils.isEmpty(ed1.getText().toString())) {
-            //TODO: Do stronger validity check
-            new AlertDialog.Builder(LoginActivity.this)
-                    .setMessage("Please input a valid username.")
-                    .setCancelable(true)
-                    .show();
+        if (ed1.getText().toString().matches("") || ed2.getText().toString().matches("")) {
+            Toast.makeText(getApplicationContext(),
+                    "Username or Password fields missing", Toast.LENGTH_SHORT).show();
         } else {
 
-            new RegisterUserGrpcTask(this,ed1.getText().toString(),link_helper).execute();
+            new RegisterUserGrpcTask(this,ed1.getText().toString(),link_helper).execute(ed2.getText().toString());
 
         }
     }

@@ -3,8 +3,8 @@
 
 package io.grpc.examples.backendserver;
 
-public interface registerUserRequestOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:helloworld.registerUserRequest)
+public interface loginUserRequestOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:helloworld.loginUserRequest)
     com.google.protobuf.MessageOrBuilder {
 
   /**

@@ -7,6 +7,7 @@ import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -52,6 +53,16 @@ public class CryptographyHelper {
         PrivateKey priv = keyFacPriv.generatePrivate(privSpec);
 
         return priv;
+    }
+
+    public static String hash_string(String stringToHash) throws NoSuchAlgorithmException {
+
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+        messageDigest.update(stringToHash.getBytes());
+        String stringHash = new String(messageDigest.digest());
+
+        return stringHash;
+
     }
 
     private static PrivateKey getPrivateKey(String username, Scanner sc) {

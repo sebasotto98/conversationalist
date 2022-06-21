@@ -4,27 +4,26 @@
 package io.grpc.examples.backendserver;
 
 /**
- * Protobuf type {@code helloworld.registerUserRequest}
+ * Protobuf type {@code helloworld.loginUserReply}
  */
-public final class registerUserRequest extends
+public final class loginUserReply extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:helloworld.registerUserRequest)
-    registerUserRequestOrBuilder {
+    // @@protoc_insertion_point(message_implements:helloworld.loginUserReply)
+    loginUserReplyOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use registerUserRequest.newBuilder() to construct.
-  private registerUserRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use loginUserReply.newBuilder() to construct.
+  private loginUserReply(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private registerUserRequest() {
-    user_ = "";
-    passwordHash_ = "";
+  private loginUserReply() {
+    ack_ = "";
   }
 
   @java.lang.Override
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new registerUserRequest();
+    return new loginUserReply();
   }
 
   @java.lang.Override
@@ -32,7 +31,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private registerUserRequest(
+  private loginUserReply(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -53,13 +52,7 @@ private static final long serialVersionUID = 0L;
           case 10: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            user_ = s;
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            passwordHash_ = s;
+            ack_ = s;
             break;
           }
           default: {
@@ -83,87 +76,49 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_registerUserRequest_descriptor;
+    return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_loginUserReply_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_registerUserRequest_fieldAccessorTable
+    return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_loginUserReply_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            io.grpc.examples.backendserver.registerUserRequest.class, io.grpc.examples.backendserver.registerUserRequest.Builder.class);
+            io.grpc.examples.backendserver.loginUserReply.class, io.grpc.examples.backendserver.loginUserReply.Builder.class);
   }
 
-  public static final int USER_FIELD_NUMBER = 1;
-  private volatile java.lang.Object user_;
+  public static final int ACK_FIELD_NUMBER = 1;
+  private volatile java.lang.Object ack_;
   /**
-   * <code>string user = 1;</code>
-   * @return The user.
+   * <code>string ack = 1;</code>
+   * @return The ack.
    */
   @java.lang.Override
-  public java.lang.String getUser() {
-    java.lang.Object ref = user_;
+  public java.lang.String getAck() {
+    java.lang.Object ref = ack_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      user_ = s;
+      ack_ = s;
       return s;
     }
   }
   /**
-   * <code>string user = 1;</code>
-   * @return The bytes for user.
+   * <code>string ack = 1;</code>
+   * @return The bytes for ack.
    */
   @java.lang.Override
   public com.google.protobuf.ByteString
-      getUserBytes() {
-    java.lang.Object ref = user_;
+      getAckBytes() {
+    java.lang.Object ref = ack_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      user_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
-  public static final int PASSWORD_HASH_FIELD_NUMBER = 2;
-  private volatile java.lang.Object passwordHash_;
-  /**
-   * <code>string password_hash = 2;</code>
-   * @return The passwordHash.
-   */
-  @java.lang.Override
-  public java.lang.String getPasswordHash() {
-    java.lang.Object ref = passwordHash_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      passwordHash_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string password_hash = 2;</code>
-   * @return The bytes for passwordHash.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getPasswordHashBytes() {
-    java.lang.Object ref = passwordHash_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      passwordHash_ = b;
+      ack_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -184,11 +139,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!getUserBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, user_);
-    }
-    if (!getPasswordHashBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, passwordHash_);
+    if (!getAckBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, ack_);
     }
     unknownFields.writeTo(output);
   }
@@ -199,11 +151,8 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!getUserBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, user_);
-    }
-    if (!getPasswordHashBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, passwordHash_);
+    if (!getAckBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, ack_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -215,15 +164,13 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof io.grpc.examples.backendserver.registerUserRequest)) {
+    if (!(obj instanceof io.grpc.examples.backendserver.loginUserReply)) {
       return super.equals(obj);
     }
-    io.grpc.examples.backendserver.registerUserRequest other = (io.grpc.examples.backendserver.registerUserRequest) obj;
+    io.grpc.examples.backendserver.loginUserReply other = (io.grpc.examples.backendserver.loginUserReply) obj;
 
-    if (!getUser()
-        .equals(other.getUser())) return false;
-    if (!getPasswordHash()
-        .equals(other.getPasswordHash())) return false;
+    if (!getAck()
+        .equals(other.getAck())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -235,78 +182,76 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + USER_FIELD_NUMBER;
-    hash = (53 * hash) + getUser().hashCode();
-    hash = (37 * hash) + PASSWORD_HASH_FIELD_NUMBER;
-    hash = (53 * hash) + getPasswordHash().hashCode();
+    hash = (37 * hash) + ACK_FIELD_NUMBER;
+    hash = (53 * hash) + getAck().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserReply parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserReply parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserReply parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserReply parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(byte[] data)
+  public static io.grpc.examples.backendserver.loginUserReply parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserReply parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(java.io.InputStream input)
+  public static io.grpc.examples.backendserver.loginUserReply parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserReply parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseDelimitedFrom(java.io.InputStream input)
+  public static io.grpc.examples.backendserver.loginUserReply parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseDelimitedFrom(
+  public static io.grpc.examples.backendserver.loginUserReply parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserReply parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static io.grpc.examples.backendserver.registerUserRequest parseFrom(
+  public static io.grpc.examples.backendserver.loginUserReply parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -319,7 +264,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(io.grpc.examples.backendserver.registerUserRequest prototype) {
+  public static Builder newBuilder(io.grpc.examples.backendserver.loginUserReply prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -335,26 +280,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code helloworld.registerUserRequest}
+   * Protobuf type {@code helloworld.loginUserReply}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:helloworld.registerUserRequest)
-      io.grpc.examples.backendserver.registerUserRequestOrBuilder {
+      // @@protoc_insertion_point(builder_implements:helloworld.loginUserReply)
+      io.grpc.examples.backendserver.loginUserReplyOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_registerUserRequest_descriptor;
+      return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_loginUserReply_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_registerUserRequest_fieldAccessorTable
+      return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_loginUserReply_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              io.grpc.examples.backendserver.registerUserRequest.class, io.grpc.examples.backendserver.registerUserRequest.Builder.class);
+              io.grpc.examples.backendserver.loginUserReply.class, io.grpc.examples.backendserver.loginUserReply.Builder.class);
     }
 
-    // Construct using io.grpc.examples.backendserver.registerUserRequest.newBuilder()
+    // Construct using io.grpc.examples.backendserver.loginUserReply.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -372,9 +317,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      user_ = "";
-
-      passwordHash_ = "";
+      ack_ = "";
 
       return this;
     }
@@ -382,17 +325,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_registerUserRequest_descriptor;
+      return io.grpc.examples.backendserver.BackEndServerProto.internal_static_helloworld_loginUserReply_descriptor;
     }
 
     @java.lang.Override
-    public io.grpc.examples.backendserver.registerUserRequest getDefaultInstanceForType() {
-      return io.grpc.examples.backendserver.registerUserRequest.getDefaultInstance();
+    public io.grpc.examples.backendserver.loginUserReply getDefaultInstanceForType() {
+      return io.grpc.examples.backendserver.loginUserReply.getDefaultInstance();
     }
 
     @java.lang.Override
-    public io.grpc.examples.backendserver.registerUserRequest build() {
-      io.grpc.examples.backendserver.registerUserRequest result = buildPartial();
+    public io.grpc.examples.backendserver.loginUserReply build() {
+      io.grpc.examples.backendserver.loginUserReply result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -400,10 +343,9 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public io.grpc.examples.backendserver.registerUserRequest buildPartial() {
-      io.grpc.examples.backendserver.registerUserRequest result = new io.grpc.examples.backendserver.registerUserRequest(this);
-      result.user_ = user_;
-      result.passwordHash_ = passwordHash_;
+    public io.grpc.examples.backendserver.loginUserReply buildPartial() {
+      io.grpc.examples.backendserver.loginUserReply result = new io.grpc.examples.backendserver.loginUserReply(this);
+      result.ack_ = ack_;
       onBuilt();
       return result;
     }
@@ -442,22 +384,18 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof io.grpc.examples.backendserver.registerUserRequest) {
-        return mergeFrom((io.grpc.examples.backendserver.registerUserRequest)other);
+      if (other instanceof io.grpc.examples.backendserver.loginUserReply) {
+        return mergeFrom((io.grpc.examples.backendserver.loginUserReply)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(io.grpc.examples.backendserver.registerUserRequest other) {
-      if (other == io.grpc.examples.backendserver.registerUserRequest.getDefaultInstance()) return this;
-      if (!other.getUser().isEmpty()) {
-        user_ = other.user_;
-        onChanged();
-      }
-      if (!other.getPasswordHash().isEmpty()) {
-        passwordHash_ = other.passwordHash_;
+    public Builder mergeFrom(io.grpc.examples.backendserver.loginUserReply other) {
+      if (other == io.grpc.examples.backendserver.loginUserReply.getDefaultInstance()) return this;
+      if (!other.getAck().isEmpty()) {
+        ack_ = other.ack_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -475,11 +413,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      io.grpc.examples.backendserver.registerUserRequest parsedMessage = null;
+      io.grpc.examples.backendserver.loginUserReply parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (io.grpc.examples.backendserver.registerUserRequest) e.getUnfinishedMessage();
+        parsedMessage = (io.grpc.examples.backendserver.loginUserReply) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -489,154 +427,78 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object user_ = "";
+    private java.lang.Object ack_ = "";
     /**
-     * <code>string user = 1;</code>
-     * @return The user.
+     * <code>string ack = 1;</code>
+     * @return The ack.
      */
-    public java.lang.String getUser() {
-      java.lang.Object ref = user_;
+    public java.lang.String getAck() {
+      java.lang.Object ref = ack_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        user_ = s;
+        ack_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string user = 1;</code>
-     * @return The bytes for user.
+     * <code>string ack = 1;</code>
+     * @return The bytes for ack.
      */
     public com.google.protobuf.ByteString
-        getUserBytes() {
-      java.lang.Object ref = user_;
+        getAckBytes() {
+      java.lang.Object ref = ack_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        user_ = b;
+        ack_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string user = 1;</code>
-     * @param value The user to set.
+     * <code>string ack = 1;</code>
+     * @param value The ack to set.
      * @return This builder for chaining.
      */
-    public Builder setUser(
+    public Builder setAck(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      user_ = value;
+      ack_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string user = 1;</code>
+     * <code>string ack = 1;</code>
      * @return This builder for chaining.
      */
-    public Builder clearUser() {
+    public Builder clearAck() {
       
-      user_ = getDefaultInstance().getUser();
+      ack_ = getDefaultInstance().getAck();
       onChanged();
       return this;
     }
     /**
-     * <code>string user = 1;</code>
-     * @param value The bytes for user to set.
+     * <code>string ack = 1;</code>
+     * @param value The bytes for ack to set.
      * @return This builder for chaining.
      */
-    public Builder setUserBytes(
+    public Builder setAckBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      user_ = value;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object passwordHash_ = "";
-    /**
-     * <code>string password_hash = 2;</code>
-     * @return The passwordHash.
-     */
-    public java.lang.String getPasswordHash() {
-      java.lang.Object ref = passwordHash_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        passwordHash_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string password_hash = 2;</code>
-     * @return The bytes for passwordHash.
-     */
-    public com.google.protobuf.ByteString
-        getPasswordHashBytes() {
-      java.lang.Object ref = passwordHash_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        passwordHash_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string password_hash = 2;</code>
-     * @param value The passwordHash to set.
-     * @return This builder for chaining.
-     */
-    public Builder setPasswordHash(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      passwordHash_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string password_hash = 2;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearPasswordHash() {
-      
-      passwordHash_ = getDefaultInstance().getPasswordHash();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string password_hash = 2;</code>
-     * @param value The bytes for passwordHash to set.
-     * @return This builder for chaining.
-     */
-    public Builder setPasswordHashBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      passwordHash_ = value;
+      ack_ = value;
       onChanged();
       return this;
     }
@@ -653,41 +515,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:helloworld.registerUserRequest)
+    // @@protoc_insertion_point(builder_scope:helloworld.loginUserReply)
   }
 
-  // @@protoc_insertion_point(class_scope:helloworld.registerUserRequest)
-  private static final io.grpc.examples.backendserver.registerUserRequest DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:helloworld.loginUserReply)
+  private static final io.grpc.examples.backendserver.loginUserReply DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new io.grpc.examples.backendserver.registerUserRequest();
+    DEFAULT_INSTANCE = new io.grpc.examples.backendserver.loginUserReply();
   }
 
-  public static io.grpc.examples.backendserver.registerUserRequest getDefaultInstance() {
+  public static io.grpc.examples.backendserver.loginUserReply getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<registerUserRequest>
-      PARSER = new com.google.protobuf.AbstractParser<registerUserRequest>() {
+  private static final com.google.protobuf.Parser<loginUserReply>
+      PARSER = new com.google.protobuf.AbstractParser<loginUserReply>() {
     @java.lang.Override
-    public registerUserRequest parsePartialFrom(
+    public loginUserReply parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new registerUserRequest(input, extensionRegistry);
+      return new loginUserReply(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<registerUserRequest> parser() {
+  public static com.google.protobuf.Parser<loginUserReply> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<registerUserRequest> getParserForType() {
+  public com.google.protobuf.Parser<loginUserReply> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public io.grpc.examples.backendserver.registerUserRequest getDefaultInstanceForType() {
+  public io.grpc.examples.backendserver.loginUserReply getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

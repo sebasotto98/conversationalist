@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.cmu_project.R;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.example.cmu_project.activities.ChatActivity;
 import com.example.cmu_project.activities.ChatroomActivity;
 import com.example.cmu_project.helpers.CryptographyHelper;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
@@ -16,52 +17,65 @@ import com.example.cmu_project.helpers.LinkHelper;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 
 import io.grpc.examples.backendserver.ServerGrpc;
+import io.grpc.examples.backendserver.loginUserReply;
+import io.grpc.examples.backendserver.loginUserRequest;
 import io.grpc.examples.backendserver.registerUserReply;
-import io.grpc.examples.backendserver.registerUserRequest;
 
-public class RegisterUserGrpcTask extends AsyncTask<Object,Void, registerUserReply> {
+public class LoginUserGrpcTask extends AsyncTask<Object,Void, loginUserReply> {
 
     WeakReference<Activity> activityReference;
-    String new_user;
     LinkHelper linkHelper;
+    String user;
 
-    public RegisterUserGrpcTask(Activity activity, String new_user, LinkHelper linkHelper) {
+    public LoginUserGrpcTask(Activity activity,LinkHelper linkHelper,String user) {
         this.activityReference = new WeakReference<>(activity);
-        this.new_user = new_user;
         this.linkHelper = linkHelper;
+        this.user = user;
     }
 
-    @Override
-    protected registerUserReply doInBackground(Object... params) {
 
+    @Override
+    protected loginUserReply doInBackground(Object... params) {
+
+        String user_name = this.user;
         String password = (String) params[0];
 
+        String password_hashed = null;
+
         try {
+            password_hashed  = CryptographyHelper.hash_string(password);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
 
-            String pass_hashed = CryptographyHelper.hash_string(password);
-
+        try {
             ServerGrpc.ServerBlockingStub stub = ((GlobalVariableHelper) activityReference.get().getApplication()).getServerBlockingStub();
-            registerUserRequest request = registerUserRequest.newBuilder().setUser(new_user).setPasswordHash(pass_hashed).build();
 
-            return stub.withDeadlineAfter(5, TimeUnit.SECONDS).registerUser(request);
+            loginUserRequest request = loginUserRequest.newBuilder().setUser(user_name).setPasswordHash(password_hashed).build();
+
+            return stub.withDeadlineAfter(5, TimeUnit.SECONDS).loginUser(request);
+
 
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
             pw.flush();
-            Log.d("RegisterUserGrpcTask", sw.toString());
+            Log.d("LoginUserGrpcTask", sw.toString());
             return null;
         }
+
 
 
     }
 
     @Override
-    protected void onPostExecute(registerUserReply reply) {
+    protected void onPostExecute(loginUserReply reply) {
+
         Activity activity = activityReference.get();
         if (activity == null) {
             return;
@@ -74,30 +88,31 @@ public class RegisterUserGrpcTask extends AsyncTask<Object,Void, registerUserRep
 
             if(reply.getAck().equals("OK")) {
 
-
                 Toast.makeText(activity.getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
 
-                ((GlobalVariableHelper) activity.getApplication()).setUsername(new_user);
+                ((GlobalVariableHelper) activity.getApplication()).setUsername(this.user);
 
                 if(linkHelper.getFlag()) {
 
                     String chat_to_join = linkHelper.getChat_to_go();
                     linkHelper.setToEmpty();
-                    new JoinChatGrpcTask(activity,chat_to_join).execute(new_user);
+                    new JoinChatGrpcTask(activity,chat_to_join).execute(user);
 
                 } else {
 
                     //jump to the chatRoom activity
                     Intent myIntent = new Intent(activity, ChatroomActivity.class);
-                    myIntent.putExtra("username",new_user);
+                    myIntent.putExtra("username",user);
                     activity.startActivity(myIntent);
 
                 }
+
 
             } else {
                 Toast.makeText(activity.getApplicationContext(), reply.getAck(),
                         Toast.LENGTH_SHORT).show();
             }
+
 
         }
 
