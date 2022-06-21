@@ -1,23 +1,11 @@
 mandatory:
-	- login activity
 	- chatroom selection activity
 		- unread message badge
 		- difference between joined and unjoined chats
-		- new chat
 	- chat activity
 		- difference between message sent and received
-	- notifications
-	- resource frugality
-		- eager loading when on chat/lazy loading when off chat
-		- photo placeholder when on mobdata/immediate display when on wifi
-		- only load latest messages when chat opens and load more dynamically on scroll
-	- context awareness
-		- public
-		- private
-		- geo-fenced
 aditional:
-	- secure comms
-	- user accounts (almost done)
+	- user accounts
 	- recommendations
 extras:
 	- get proto file from outside project directory
