@@ -1,11 +1,14 @@
 package com.example.cmu_project.helpers;
 
+import static androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode;
+
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmu_project.adapters.MessageAdapter;
@@ -33,6 +36,10 @@ import io.grpc.okhttp.OkHttpChannelBuilder;
 import nl.altindag.ssl.SSLFactory;
 
 public class GlobalVariableHelper extends Application {
+
+    static {
+        setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+    }
 
     private static final Logger logger = Logger.getLogger(GlobalVariableHelper.class.getName());
 
