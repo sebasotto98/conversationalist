@@ -3,6 +3,7 @@ package com.example.cmu_project.helpers;
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,17 +67,15 @@ public class GlobalVariableHelper extends Application {
         final String KEYSTORE_PASS = bundle.getString("keystore_pass");
         final String HOST_ADDRESS = bundle.getString("host_address");
 
-        //TODO: ADD KEYSTORE AND TRUSTSTORE FOLDERS IN EMULATOR -> /storage/emulated/0/Android/data/com.example.cmu_project/files
-
         InputStream identityStorePath = null;
         try {
-            identityStorePath = new FileInputStream(getApplicationContext().getExternalFilesDir(null) + "/" + KEYSTORE_DIR + "client_KeystoreFile.jks");
+            identityStorePath = new FileInputStream(Uri.parse("android.resource://com.example.cmu_project/" + KEYSTORE_DIR + "client_KeystoreFile.jks").getPath());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         InputStream trustStorePath = null;
         try {
-            trustStorePath = new FileInputStream(getApplicationContext().getExternalFilesDir(null) + "/" + TRUSTSTORE_DIR + "client_TruststoreFile.jks");
+            trustStorePath = new FileInputStream(Uri.parse("android.resource://com.example.cmu_project/" + TRUSTSTORE_DIR + "client_TruststoreFile.jks").getPath());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
