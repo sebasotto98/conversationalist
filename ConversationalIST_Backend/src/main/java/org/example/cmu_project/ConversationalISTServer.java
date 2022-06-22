@@ -283,6 +283,32 @@ public class ConversationalISTServer {
         }
 
         @Override
+        public void addUserToChat(AddUserToChatRequest request,StreamObserver<AddUserToChatReply> responseObserver) {
+
+            String user_to_add = request.getUserToAdd();
+            String chat_name = request.getChatroom();
+            String ack;
+
+            if(!userFileHelper.userExists(user_to_add)){
+                ack = "Username Invalid";
+            } else {
+
+                if(userFileHelper.userInChat(user_to_add,chat_name)) {
+                    ack = "Username already in Chat";
+                } else {
+                    userFileHelper.store(chat_name + ",",user_to_add);
+                    ack = "OK";
+                }
+
+            }
+
+            AddUserToChatReply response = AddUserToChatReply.newBuilder().setAck(ack).build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+
+        }
+
+        @Override
         public void leaveChat(LeaveChatRequest request,StreamObserver<LeaveChatReply> responseObserver) {
 
             String user = request.getUser();

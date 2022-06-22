@@ -235,6 +235,37 @@ public final class ServerGrpc {
     return getLeaveChatMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.AddUserToChatRequest,
+      io.grpc.examples.backendserver.AddUserToChatReply> getAddUserToChatMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "addUserToChat",
+      requestType = io.grpc.examples.backendserver.AddUserToChatRequest.class,
+      responseType = io.grpc.examples.backendserver.AddUserToChatReply.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<io.grpc.examples.backendserver.AddUserToChatRequest,
+      io.grpc.examples.backendserver.AddUserToChatReply> getAddUserToChatMethod() {
+    io.grpc.MethodDescriptor<io.grpc.examples.backendserver.AddUserToChatRequest, io.grpc.examples.backendserver.AddUserToChatReply> getAddUserToChatMethod;
+    if ((getAddUserToChatMethod = ServerGrpc.getAddUserToChatMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getAddUserToChatMethod = ServerGrpc.getAddUserToChatMethod) == null) {
+          ServerGrpc.getAddUserToChatMethod = getAddUserToChatMethod =
+              io.grpc.MethodDescriptor.<io.grpc.examples.backendserver.AddUserToChatRequest, io.grpc.examples.backendserver.AddUserToChatReply>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "addUserToChat"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.AddUserToChatRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.AddUserToChatReply.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("addUserToChat"))
+              .build();
+        }
+      }
+    }
+    return getAddUserToChatMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.GetChatMembersRequest,
       io.grpc.examples.backendserver.GetChatMembersReply> getGetChatMembersMethod;
 
@@ -678,6 +709,13 @@ public final class ServerGrpc {
 
     /**
      */
+    public void addUserToChat(io.grpc.examples.backendserver.AddUserToChatRequest request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.AddUserToChatReply> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getAddUserToChatMethod(), responseObserver);
+    }
+
+    /**
+     */
     public void getChatMembers(io.grpc.examples.backendserver.GetChatMembersRequest request,
         io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.GetChatMembersReply> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetChatMembersMethod(), responseObserver);
@@ -804,6 +842,13 @@ public final class ServerGrpc {
                 io.grpc.examples.backendserver.LeaveChatRequest,
                 io.grpc.examples.backendserver.LeaveChatReply>(
                   this, METHODID_LEAVE_CHAT)))
+          .addMethod(
+            getAddUserToChatMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                io.grpc.examples.backendserver.AddUserToChatRequest,
+                io.grpc.examples.backendserver.AddUserToChatReply>(
+                  this, METHODID_ADD_USER_TO_CHAT)))
           .addMethod(
             getGetChatMembersMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
@@ -956,6 +1001,14 @@ public final class ServerGrpc {
         io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.LeaveChatReply> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getLeaveChatMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void addUserToChat(io.grpc.examples.backendserver.AddUserToChatRequest request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.AddUserToChatReply> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getAddUserToChatMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1117,6 +1170,13 @@ public final class ServerGrpc {
 
     /**
      */
+    public io.grpc.examples.backendserver.AddUserToChatReply addUserToChat(io.grpc.examples.backendserver.AddUserToChatRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getAddUserToChatMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
     public io.grpc.examples.backendserver.GetChatMembersReply getChatMembers(io.grpc.examples.backendserver.GetChatMembersRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetChatMembersMethod(), getCallOptions(), request);
@@ -1241,6 +1301,14 @@ public final class ServerGrpc {
 
     /**
      */
+    public com.google.common.util.concurrent.ListenableFuture<io.grpc.examples.backendserver.AddUserToChatReply> addUserToChat(
+        io.grpc.examples.backendserver.AddUserToChatRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getAddUserToChatMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
     public com.google.common.util.concurrent.ListenableFuture<io.grpc.examples.backendserver.GetChatMembersReply> getChatMembers(
         io.grpc.examples.backendserver.GetChatMembersRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
@@ -1295,17 +1363,18 @@ public final class ServerGrpc {
   private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION = 4;
   private static final int METHODID_CREATE_CHAT = 5;
   private static final int METHODID_LEAVE_CHAT = 6;
-  private static final int METHODID_GET_CHAT_MEMBERS = 7;
-  private static final int METHODID_GET_JOINABLE_CHATS = 8;
-  private static final int METHODID_GET_CHAT_TYPE = 9;
-  private static final int METHODID_GET_ALL_CHATS = 10;
-  private static final int METHODID_JOIN_CHAT = 11;
-  private static final int METHODID_GET_LAST_NMESSAGES_FROM_CHAT = 12;
-  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA = 13;
-  private static final int METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA = 14;
-  private static final int METHODID_GET_MESSAGE_AT_POSITION = 15;
-  private static final int METHODID_LISTEN_TO_CHATROOMS = 16;
-  private static final int METHODID_LISTEN_TO_CHATROOMS_MOBILE_DATA = 17;
+  private static final int METHODID_ADD_USER_TO_CHAT = 7;
+  private static final int METHODID_GET_CHAT_MEMBERS = 8;
+  private static final int METHODID_GET_JOINABLE_CHATS = 9;
+  private static final int METHODID_GET_CHAT_TYPE = 10;
+  private static final int METHODID_GET_ALL_CHATS = 11;
+  private static final int METHODID_JOIN_CHAT = 12;
+  private static final int METHODID_GET_LAST_NMESSAGES_FROM_CHAT = 13;
+  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA = 14;
+  private static final int METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA = 15;
+  private static final int METHODID_GET_MESSAGE_AT_POSITION = 16;
+  private static final int METHODID_LISTEN_TO_CHATROOMS = 17;
+  private static final int METHODID_LISTEN_TO_CHATROOMS_MOBILE_DATA = 18;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -1351,6 +1420,10 @@ public final class ServerGrpc {
         case METHODID_LEAVE_CHAT:
           serviceImpl.leaveChat((io.grpc.examples.backendserver.LeaveChatRequest) request,
               (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.LeaveChatReply>) responseObserver);
+          break;
+        case METHODID_ADD_USER_TO_CHAT:
+          serviceImpl.addUserToChat((io.grpc.examples.backendserver.AddUserToChatRequest) request,
+              (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.AddUserToChatReply>) responseObserver);
           break;
         case METHODID_GET_CHAT_MEMBERS:
           serviceImpl.getChatMembers((io.grpc.examples.backendserver.GetChatMembersRequest) request,
@@ -1462,6 +1535,7 @@ public final class ServerGrpc {
               .addMethod(getGetChatMessagesSincePositionMethod())
               .addMethod(getCreateChatMethod())
               .addMethod(getLeaveChatMethod())
+              .addMethod(getAddUserToChatMethod())
               .addMethod(getGetChatMembersMethod())
               .addMethod(getGetJoinableChatsMethod())
               .addMethod(getGetChatTypeMethod())

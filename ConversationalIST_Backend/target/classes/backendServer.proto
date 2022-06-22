@@ -16,6 +16,7 @@ service Server {
   rpc getChatMessagesSincePosition (chatMessageFromPosition) returns (stream messageResponse) {}
   rpc createChat (CreateChatRequest) returns (CreateChatReply) {}
   rpc leaveChat (LeaveChatRequest) returns (LeaveChatReply) {}
+  rpc addUserToChat (AddUserToChatRequest) returns (AddUserToChatReply) {}
   rpc getChatMembers (GetChatMembersRequest) returns (GetChatMembersReply) {}
   rpc getJoinableChats (JoinableChatsRequest) returns (JoinableChatsReply) {}
   rpc getChatType (ChatTypeRequest) returns (ChatTypeReply) {}
@@ -118,6 +119,15 @@ message NMessagesFromChat {
   string chatroom = 1;
   int32 numberOfMessages = 2;
 }
+
+message AddUserToChatRequest {
+ string user_to_add = 1;
+ string chatroom = 2;
+}
+
+message AddUserToChatReply {
+ string ack = 1;
+} 
 
 message GetChatMembersRequest {
  string chat_name = 1;

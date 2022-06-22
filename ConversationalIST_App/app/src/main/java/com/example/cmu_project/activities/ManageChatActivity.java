@@ -5,16 +5,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.cmu_project.R;
+import com.example.cmu_project.grpc_tasks.AddUserToChatGrpcTask;
 import com.example.cmu_project.grpc_tasks.GetChatMembersGrpcTask;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ManageChatActivity extends AppCompatActivity {
 
-    ListView chat_members;
+    ListView chat_members_list;
     String chat_name;
     String user_to_remove;
+    List<String> chat_members;
+    EditText add_user;
+    ArrayAdapter<String> adapter;
 
 
     @Override
@@ -25,22 +35,47 @@ public class ManageChatActivity extends AppCompatActivity {
 
         chat_name = getIntent().getExtras().getString("chat_name");
 
-        chat_members = findViewById(R.id.chat_members_list);
+        add_user = findViewById(R.id.add_user_text);
+        chat_members_list = findViewById(R.id.chat_members_list);
+        chat_members = new ArrayList<>();
 
-        new GetChatMembersGrpcTask(this,chat_members).execute(chat_name);
 
-        chat_members.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        new GetChatMembersGrpcTask(this,chat_members_list,chat_members).execute(chat_name);
+
+        chat_members_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                user_to_remove = chat_members.getItemAtPosition(i).toString();
+                user_to_remove = chat_members_list.getItemAtPosition(i).toString();
 
             }
         });
 
+
+
     }
 
     public void add_user(View view) {
+
+        if(add_user.getText().toString().matches("")) {
+            Toast.makeText(this.getApplicationContext(), "Add user is empty",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            new AddUserToChatGrpcTask(this,chat_members,add_user.getText().toString()).execute(user_to_remove,chat_name);
+            new GetChatMembersGrpcTask(this,chat_members_list,chat_members).execute(chat_name);
+            chat_members_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    user_to_remove = chat_members_list.getItemAtPosition(i).toString();
+
+                }
+            });
+        }
+
+    }
+
+    public void remove_user(View view) {
 
     }
 
