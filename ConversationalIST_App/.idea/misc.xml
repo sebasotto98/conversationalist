@@ -8,7 +8,6 @@
         <entry key="..\:/CMU_Project/ConversationalIST_App/app/src/main/res/layout/activity_create_chat.xml" value="0.264" />
         <entry key="..\:/CMU_Project/ConversationalIST_App/app/src/main/res/layout/activity_join_chat.xml" value="0.23505434782608695" />
         <entry key="..\:/CMU_Project/ConversationalIST_App/app/src/main/res/layout/activity_main.xml" value="0.11302083333333333" />
-        <entry key="..\:/CMU_Project/ConversationalIST_App/app/src/main/res/layout/activity_manage_chat.xml" value="0.24817518248175183" />
         <entry key="..\:/CMU_Project/ConversationalIST_App/app/src/main/res/layout/custom_list_view.xml" value="0.11302083333333333" />
         <entry key="..\:/CMU_Project/ConversationalIST_App/app/src/main/res/layout/message_geolocation.xml" value="0.11302083333333333" />
         <entry key="..\:/CMU_Project/ConversationalIST_App/app/src/main/res/layout/message_photo.xml" value="0.11302083333333333" />
@@ -32,6 +31,10 @@
         <entry key="..\:/Users/sebas/Downloads/cmu/CMU_Project/ConversationalIST_App/app/src/main/res/layout/custom_list_view.xml" value="0.26992753623188404" />
         <entry key="..\:/Users/sebas/Downloads/cmu/CMU_Project/ConversationalIST_App/app/src/main/res/layout/message_geolocation.xml" value="0.26992753623188404" />
         <entry key="..\:/Users/sebas/Downloads/cmu/CMU_Project/ConversationalIST_App/app/src/main/res/layout/message_image.xml" value="0.12409420289855072" />
+        <entry key="..\:/Users/sebas/Downloads/cmu/CMU_Project/ConversationalIST_App/app/src/main/res/layout/message_photo.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/sebas/Downloads/cmu/CMU_Project/ConversationalIST_App/app/src/main/res/layout/message_text.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/sebas/Downloads/cmu/CMU_Project/ConversationalIST_App/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.137" />
+        <entry key="..\:/Users/sebas/Downloads/cmu/CMU_Project/ConversationalIST_App/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
         <entry key="..\:/Users/sebas/Downloads/cmu/CMU_Project/app/src/main/res/layout/activity_main.xml" value="0.264" />
       </map>
     </option>
@@ -41,12 +44,5 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
-  </component>
-  <component name="VisualizationToolProject">
-    <option name="state">
-      <ProjectState>
-        <option name="scale" value="0.11302083333333333" />
-      </ProjectState>
-    </option>
   </component>
 </project>

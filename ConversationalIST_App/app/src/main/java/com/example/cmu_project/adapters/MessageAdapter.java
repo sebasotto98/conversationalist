@@ -51,7 +51,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final Context context;
 
     private RecyclerView myRecyclerView;
-    private MessageAdapter messageAdapter = this;
+    private final MessageAdapter messageAdapter = this;
 
     public MessageAdapter(Context context, List<messageResponse> messageList) {
         this.context = context;

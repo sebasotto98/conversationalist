@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,7 +24,6 @@ public class ManageChatActivity extends AppCompatActivity {
     String user_to_remove;
     List<String> chat_members;
     EditText add_user;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

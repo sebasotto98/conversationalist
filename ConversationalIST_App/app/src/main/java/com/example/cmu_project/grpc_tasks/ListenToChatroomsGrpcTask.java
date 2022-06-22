@@ -1,6 +1,5 @@
 package com.example.cmu_project.grpc_tasks;
 
-
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;

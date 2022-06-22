@@ -11,7 +11,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "ConversationalIST.db";
     public static final String MESSAGES_TABLE_NAME = "messages";
-    public static final String MESSAGES_COLUMN_ID = "id";
     public static final String MESSAGES_COLUMN_DATA = "data";
     public static final String MESSAGES_COLUMN_USERNAME = "username";
     public static final String MESSAGES_COLUMN_TIMESTAMP = "timestamp";
@@ -28,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d("DBHelper", "Creating new database.");
+        Log.d(this.getClass().getSimpleName(), "Creating new database.");
         db.execSQL(
                 "create table messages " +
                 "(id integer primary key, data text,username text,timestamp text," +
@@ -44,12 +43,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public boolean updateMessage(String data, String username, String timestamp, String type, String chatroom, int position){
         //debug
-        Log.d("DBHelper", "data = " + data);
-        Log.d("DBHelper", "username = " + username);
-        Log.d("DBHelper", "timestamp = " + timestamp);
-        Log.d("DBHelper", "type = " + type);
-        Log.d("DBHelper", "chatroom = " + chatroom);
-        Log.d("DBHelper", "position = " + position);
+        Log.d(this.getClass().getSimpleName(), "data = " + data);
+        Log.d(this.getClass().getSimpleName(), "username = " + username);
+        Log.d(this.getClass().getSimpleName(), "timestamp = " + timestamp);
+        Log.d(this.getClass().getSimpleName(), "type = " + type);
+        Log.d(this.getClass().getSimpleName(), "chatroom = " + chatroom);
+        Log.d(this.getClass().getSimpleName(), "position = " + position);
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -64,12 +63,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public boolean insertMessage (String data, String username, String timestamp, String type, String chatroom, int position) {
         //debug
-        Log.d("DBHelper", "data = " + data);
-        Log.d("DBHelper", "username = " + username);
-        Log.d("DBHelper", "timestamp = " + timestamp);
-        Log.d("DBHelper", "type = " + type);
-        Log.d("DBHelper", "chatroom = " + chatroom);
-        Log.d("DBHelper", "position = " + position);
+        Log.d(this.getClass().getSimpleName(), "data = " + data);
+        Log.d(this.getClass().getSimpleName(), "username = " + username);
+        Log.d(this.getClass().getSimpleName(), "timestamp = " + timestamp);
+        Log.d(this.getClass().getSimpleName(), "type = " + type);
+        Log.d(this.getClass().getSimpleName(), "chatroom = " + chatroom);
+        Log.d(this.getClass().getSimpleName(), "position = " + position);
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

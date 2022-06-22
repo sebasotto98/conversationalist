@@ -12,7 +12,6 @@ import java.io.StringWriter;
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
-
 import io.grpc.examples.backendserver.RemoveUserReply;
 import io.grpc.examples.backendserver.RemoveUserRequest;
 import io.grpc.examples.backendserver.ServerGrpc;

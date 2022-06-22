@@ -8,10 +8,8 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.example.cmu_project.R;
 import com.example.cmu_project.adapters.UserChatsAdapter;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 
@@ -22,10 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.grpc.examples.backendserver.CreateChatRequest;
 import io.grpc.examples.backendserver.GetChatsReply;
 import io.grpc.examples.backendserver.GetChatsRequest;
-import io.grpc.examples.backendserver.Location;
 import io.grpc.examples.backendserver.ServerGrpc;
 
 public class GetAllUserChatsGrpcTask extends AsyncTask<Object,Void, GetChatsReply> {

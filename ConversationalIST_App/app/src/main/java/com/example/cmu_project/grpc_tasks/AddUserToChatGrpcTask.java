@@ -17,7 +17,6 @@ import io.grpc.examples.backendserver.AddUserToChatReply;
 import io.grpc.examples.backendserver.AddUserToChatRequest;
 import io.grpc.examples.backendserver.ServerGrpc;
 
-
 public class AddUserToChatGrpcTask extends AsyncTask<Object,Void, AddUserToChatReply> {
 
     WeakReference<Activity> activityReference;
@@ -78,9 +77,6 @@ public class AddUserToChatGrpcTask extends AsyncTask<Object,Void, AddUserToChatR
                     Toast.LENGTH_SHORT).show();
         }
 
-
-
     }
-
 
 }

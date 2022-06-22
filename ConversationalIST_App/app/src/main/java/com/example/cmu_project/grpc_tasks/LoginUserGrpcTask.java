@@ -6,9 +6,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import com.example.cmu_project.activities.ChatActivity;
 import com.example.cmu_project.activities.ChatroomActivity;
 import com.example.cmu_project.helpers.CryptographyHelper;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
@@ -23,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 import io.grpc.examples.backendserver.ServerGrpc;
 import io.grpc.examples.backendserver.loginUserReply;
 import io.grpc.examples.backendserver.loginUserRequest;
-import io.grpc.examples.backendserver.registerUserReply;
 
 public class LoginUserGrpcTask extends AsyncTask<Object,Void, loginUserReply> {
 
@@ -47,7 +43,7 @@ public class LoginUserGrpcTask extends AsyncTask<Object,Void, loginUserReply> {
         String password_hashed = null;
 
         try {
-            password_hashed  = CryptographyHelper.hash_string(password);
+            password_hashed  = CryptographyHelper.hashString(password);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }

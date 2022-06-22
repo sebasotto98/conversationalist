@@ -16,13 +16,6 @@ import com.example.cmu_project.grpc_tasks.GetAllUserChatsGrpcTask;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 import com.example.cmu_project.R;
 import com.example.cmu_project.services.FetchDataService;
-import com.example.cmu_project.adapters.UserChatsAdapter;
-
-import java.util.List;
-
-import io.grpc.examples.backendserver.GetChatsReply;
-import io.grpc.examples.backendserver.GetChatsRequest;
-import io.grpc.examples.backendserver.ServerGrpc;
 
 public class ChatroomActivity extends AppCompatActivity {
 

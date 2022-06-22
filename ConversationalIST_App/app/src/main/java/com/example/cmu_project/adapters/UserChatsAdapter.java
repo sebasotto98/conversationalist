@@ -1,5 +1,6 @@
 package com.example.cmu_project.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -17,12 +18,11 @@ import com.example.cmu_project.helpers.GlobalVariableHelper;
 import com.example.cmu_project.R;
 import com.example.cmu_project.activities.ChatActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
 
-    private List<String> user_chats_list = new ArrayList<>();
+    private List<String> user_chats_list;
     private List<String> user_owner_chats;
     private final Context context;
     public Application application;
@@ -51,6 +51,7 @@ public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
         return 0;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 

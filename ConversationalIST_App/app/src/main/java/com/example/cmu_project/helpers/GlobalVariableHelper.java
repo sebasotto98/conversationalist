@@ -5,7 +5,6 @@ import static androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode;
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -14,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cmu_project.R;
 import com.example.cmu_project.adapters.MessageAdapter;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyManagementException;

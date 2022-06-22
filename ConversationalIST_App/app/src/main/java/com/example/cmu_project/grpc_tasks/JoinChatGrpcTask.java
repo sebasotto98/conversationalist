@@ -9,8 +9,6 @@ import android.widget.Toast;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.cmu_project.activities.ChatActivity;
-import com.example.cmu_project.activities.ChatroomActivity;
-import com.example.cmu_project.activities.JoinChatActivity;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 
 import java.io.PrintWriter;
@@ -20,9 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.grpc.examples.backendserver.JoinChatReply;
 import io.grpc.examples.backendserver.JoinChatRequest;
-import io.grpc.examples.backendserver.JoinableChatsRequest;
 import io.grpc.examples.backendserver.ServerGrpc;
-
 
 public class JoinChatGrpcTask extends AsyncTask<Object,Void, JoinChatReply> {
 

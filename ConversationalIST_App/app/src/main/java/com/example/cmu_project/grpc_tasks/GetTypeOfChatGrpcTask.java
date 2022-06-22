@@ -1,14 +1,12 @@
 package com.example.cmu_project.grpc_tasks;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.cmu_project.R;
-import com.example.cmu_project.activities.ChatActivity;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 
 import java.io.PrintWriter;
@@ -27,7 +25,6 @@ public class GetTypeOfChatGrpcTask extends AsyncTask<Object,Void, ChatTypeReply>
     public GetTypeOfChatGrpcTask(Activity activity) {
         this.activityReference = new WeakReference<>(activity);
     }
-
 
     @Override
     protected ChatTypeReply doInBackground(Object... params) {
