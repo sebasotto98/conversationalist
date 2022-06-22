@@ -1,24 +1,20 @@
 package com.example.cmu_project.grpc_tasks;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
+
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.util.Log;
 
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cmu_project.R;
 import com.example.cmu_project.activities.ChatActivity;
 import com.example.cmu_project.adapters.MessageAdapter;
 import com.example.cmu_project.enums.MessageType;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
+import com.example.cmu_project.helpers.NotificationsHelper;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -33,20 +29,17 @@ import io.grpc.stub.StreamObserver;
 
 public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
 
-    private final String CHANNEL_ID = "ConversationalIST notification";
     private final List<String> userChats;
     private StreamObserver<listenToChatroom> requestObserver;
     private final WeakReference<Context> context;
-    private int currentNotificationID;
-    private RecyclerView messageRecycler;
-    private MessageAdapter messageAdapter;
-    private boolean isMobileData;
+    private final boolean isMobileData;
+    private final NotificationsHelper notificationsHelper;
 
-    public ListenToChatroomsGrpcTask(List<String> userChats, Context context, int currentNotificationID, boolean isMobileData) {
+    public ListenToChatroomsGrpcTask(List<String> userChats, Context context, boolean isMobileData) {
         this.userChats = userChats;
         this.context = new WeakReference<>(context);
-        this.currentNotificationID = currentNotificationID;
         this.isMobileData = isMobileData;
+        notificationsHelper = ((GlobalVariableHelper) this.context.get().getApplicationContext()).getNotificationsHelper();
     }
 
     @Override
@@ -93,8 +86,8 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
 
                     //PendingIntent pendingIntent = null;
 
-                    messageRecycler = ((GlobalVariableHelper) context.get().getApplicationContext()).getMessageRecycler();
-                    messageAdapter = ((GlobalVariableHelper) context.get().getApplicationContext()).getMessageAdapter();
+                    RecyclerView messageRecycler = ((GlobalVariableHelper) context.get().getApplicationContext()).getMessageRecycler();
+                    MessageAdapter messageAdapter = ((GlobalVariableHelper) context.get().getApplicationContext()).getMessageAdapter();
                     String currentChatroom = ((GlobalVariableHelper) context.get().getApplicationContext())
                             .getCurrentChatroomName();
 
@@ -112,13 +105,13 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
 
                     } else {
                         if (message.getType() == MessageType.TEXT.getValue()) {
-                            pushNotification(message.getChatroom(),
+                            notificationsHelper.pushNotification(message.getChatroom(),
                                     message.getUsername() + ": " + message.getData(), pendingIntent);
                         } else if (message.getType() == MessageType.PHOTO.getValue()) {
-                            pushNotification(message.getChatroom(),
+                            notificationsHelper.pushNotification(message.getChatroom(),
                                     message.getUsername() + " sent a photo", pendingIntent);
                         } else if (message.getType() == MessageType.GEOLOCATION.getValue()) {
-                            pushNotification(message.getChatroom(),
+                            notificationsHelper.pushNotification(message.getChatroom(),
                                     message.getUsername() + " sent a geolocation", pendingIntent);
                         }
                     }
@@ -140,6 +133,7 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
             } else {
                 requestObserver = nonBlockingStub.listenToChatrooms(responseMessages);
             }
+            Log.d("listenToChatroomsGrpcTask", String.valueOf(userChats));
             for(String chat: userChats){
                 listenToChatroom newChat = listenToChatroom.newBuilder()
                         .setChatroom(chat)
@@ -158,9 +152,8 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
         return null;
     }
 
-    public int complete(){
+    public void complete(){
         requestObserver.onCompleted();
-        return currentNotificationID;
     }
 
     public void listenNewChat(String chat){
@@ -170,41 +163,4 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
         requestObserver.onNext(newChat);
     }
 
-    private void pushNotification(String Title, String Text, PendingIntent intent){
-        NotificationCompat.Builder builder;
-
-        createNotificationChannel();
-
-        builder = new NotificationCompat.Builder(context.get(), CHANNEL_ID)
-                .setContentTitle(Title)
-                .setContentText(Text)
-                .setAutoCancel(true)
-                .setSmallIcon(R.drawable.ist_logo)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        if(intent != null) {
-            builder.setContentIntent(intent);
-        }
-        NotificationManagerCompat manager = NotificationManagerCompat.from(context.get());
-
-        manager.notify(currentNotificationID, builder.build());
-        currentNotificationID++;
-
-        Log.d("listenToChatroomsGrpcTask", "Notification Push");
-    }
-
-    private void createNotificationChannel() {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "ConversationalIST channel";
-            String description = "App channel for notifications";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = context.get().getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
 }

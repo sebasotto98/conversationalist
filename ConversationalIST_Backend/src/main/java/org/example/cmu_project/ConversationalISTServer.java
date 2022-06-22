@@ -184,7 +184,7 @@ public class ConversationalISTServer {
 
             List<String> messages = chatroomFileHelper.readFile(chatroom);
 
-            sendMessageStreamToClient(responseObserver, messages);
+            sendMessageStreamToClient(responseObserver, messages, chatroom);
         }
 
         @Override
@@ -198,7 +198,7 @@ public class ConversationalISTServer {
 
             List<String> remainMessages = messages.subList(position, messages.size());
 
-            sendMessageStreamToClient(responseObserver, remainMessages);
+            sendMessageStreamToClient(responseObserver, remainMessages, chatroom);
         }
 
         @Override
@@ -352,7 +352,7 @@ public class ConversationalISTServer {
 
             List<String> messagesToSendModified = modifyMessagesToSendForMobileData(messagesToSend);
 
-            sendMessageStreamToClient(responseObserver, messagesToSendModified);
+            sendMessageStreamToClient(responseObserver, messagesToSendModified, chatroom);
         }
 
         @Override
@@ -368,7 +368,7 @@ public class ConversationalISTServer {
 
             List<String> messagesToSend = modifyMessagesToSendForMobileData(remainMessages);
 
-            sendMessageStreamToClient(responseObserver, messagesToSend);
+            sendMessageStreamToClient(responseObserver, messagesToSend, chatroom);
 
         }
 
@@ -391,7 +391,7 @@ public class ConversationalISTServer {
 
             List<String> messagesToSend = modifyMessagesToSendForMobileData(remainMessages);
 
-            sendMessageStreamToClient(responseObserver, messagesToSend);
+            sendMessageStreamToClient(responseObserver, messagesToSend, chatroom);
         }
 
         @Override
@@ -431,7 +431,7 @@ public class ConversationalISTServer {
             responseObserver.onCompleted();
         }
 
-        private void sendMessageStreamToClient(StreamObserver<messageResponse> responseObserver, List<String> messages) {
+        private void sendMessageStreamToClient(StreamObserver<messageResponse> responseObserver, List<String> messages, String chat) {
             String data, username, timestamp, type;
             int position;
             for (String m: messages) {
@@ -447,6 +447,7 @@ public class ConversationalISTServer {
                         .setData(data)
                         .setType(Integer.parseInt(type))
                         .setPosition(position)
+                        .setChatroom(chat)
                         .build();
                 responseObserver.onNext(message);
             }
@@ -512,15 +513,27 @@ public class ConversationalISTServer {
 
         private void sendMessageToInterestedClientsInMobileData(messageResponse message, String chatroom) {
 
+            messageResponse mobileDataMessage;
             //remove data of the image
-            messageResponse mobileDataMessage = messageResponse.newBuilder()
-                    .setChatroom(message.getChatroom())
-                    .setPosition(message.getPosition())
-                    .setType(message.getType())
-                    .setData("")
-                    .setTimestamp(message.getTimestamp())
-                    .setUsername(message.getUsername())
-                    .build();
+            if(message.getType() == 1){
+                mobileDataMessage = messageResponse.newBuilder()
+                        .setChatroom(message.getChatroom())
+                        .setPosition(message.getPosition())
+                        .setType(message.getType())
+                        .setData("")
+                        .setTimestamp(message.getTimestamp())
+                        .setUsername(message.getUsername())
+                        .build();
+            } else {
+                mobileDataMessage = messageResponse.newBuilder()
+                        .setChatroom(message.getChatroom())
+                        .setPosition(message.getPosition())
+                        .setType(message.getType())
+                        .setData(message.getData())
+                        .setTimestamp(message.getTimestamp())
+                        .setUsername(message.getUsername())
+                        .build();
+            }
 
             List<StreamObserver<messageResponse>> clients = clientSubscriptionsMobileData.get(chatroom);
             if(clients == null || clients.isEmpty()){

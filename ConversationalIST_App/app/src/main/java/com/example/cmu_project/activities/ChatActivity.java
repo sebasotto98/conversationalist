@@ -103,42 +103,6 @@ public class ChatActivity extends AppCompatActivity {
 
         messageRecycler.addOnScrollListener(myOnScrollListener);
 
-        WifiContext wifiContext = new WifiContext();
-        MobDataContext MDContext = new MobDataContext();
-        if(wifiContext.conforms(this)){
-            //Toast.makeText(getApplicationContext(),"Connected to wifi.", Toast.LENGTH_SHORT).show();
-            if(messageList.isEmpty()) {
-                Log.d("ChatActivity", "messageList is Empty");
-                //change IP for this to work
-                //after load IP and port from file or whatever just use those vars
-                new GetAllMessagesFromChatGrpcTask(this, messageRecycler)
-                        .execute(chatroom);
-            } else {
-                Log.d("ChatActivity", "Loaded some messages from cache. Now contact server.");
-
-                int position = (messageList.get(messageAdapter.getItemCount() - 1)).getPosition();
-
-                new GetRemainingMessagesGrpcTask(this, messageRecycler)
-                        .execute(position,
-                                chatroom);
-            }
-        } else if(MDContext.conforms(this)){
-            //Toast.makeText(getApplicationContext(),"Connected to mobile data.", Toast.LENGTH_SHORT).show();
-
-            if(messageList.isEmpty()) {
-                Log.d("ChatActivity", "messageList is Empty");
-                new GetLastNMessagesFromChatGrpcTask(this, messageRecycler)
-                        .execute(chatroom);
-            } else {
-                int position = (messageList.get(messageAdapter.getItemCount() - 1)).getPosition();
-                new GetRemainingMessagesMobileDataGrpcTask(this, messageRecycler)
-                        .execute(position,
-                                chatroom);
-            }
-        } else {
-            Toast.makeText(getApplicationContext(),
-                    "No connection available. Please connect to the internet.", Toast.LENGTH_SHORT).show();
-        }
 
         messageRecycler.post(() -> {
             // Call smooth scroll

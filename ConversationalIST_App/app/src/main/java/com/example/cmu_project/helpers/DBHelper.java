@@ -20,7 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String MESSAGES_COLUMN_POSITION = "position";
 
     //change this and onUpgrade will be called
-    private static final int VERSION = 69;
+    private static final int VERSION = 72;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME , null, VERSION);
@@ -101,5 +101,35 @@ public class DBHelper extends SQLiteOpenHelper {
                 sortOrder                 // The sort order
         );
         return cs;
+    }
+
+    public int getPositionLastMessageFromChat(String chatroom){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] args = {chatroom};
+
+        String sortOrder = MESSAGES_COLUMN_POSITION + " DESC";
+        String selection = MESSAGES_COLUMN_CHATROOM + " = ?";
+
+        Cursor cs = db.query(
+                false,
+                MESSAGES_TABLE_NAME,        //The table to query
+                null,               //The array of columns to return (pass null to get all)
+                selection,   //The columns for the WHERE clause
+                args,                       // The values for the WHERE clause
+                null,               // don't group the rows
+                null,                 // don't filter by row groups
+                sortOrder,                 // The sort order
+                String.valueOf(1),          //limit
+                null
+        );
+
+        cs.moveToFirst();
+
+        if(cs.getCount() == 0){
+            return 0;
+        }
+
+        return Integer.parseInt(cs.getString(cs.getColumnIndexOrThrow(MESSAGES_COLUMN_POSITION)));
+
     }
 }

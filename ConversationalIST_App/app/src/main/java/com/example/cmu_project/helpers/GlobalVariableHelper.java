@@ -57,6 +57,8 @@ public class GlobalVariableHelper extends Application {
     private String currentChatroomName = null;
     private String username = null;
 
+    private NotificationsHelper notificationsHelper = new NotificationsHelper(this);
+
     public GlobalVariableHelper() throws PackageManager.NameNotFoundException {
     }
 
@@ -180,6 +182,10 @@ public class GlobalVariableHelper extends Application {
 
     public void setMessageAdapter(MessageAdapter messageAdapter) {
         this.messageAdapter = messageAdapter;
+    }
+
+    public NotificationsHelper getNotificationsHelper(){
+        return notificationsHelper;
     }
 
 }

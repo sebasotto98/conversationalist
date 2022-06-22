@@ -83,7 +83,7 @@
             android:value="testtest" />
         <meta-data
             android:name="host_address"
-            android:value="192.168.1.238" />
+            android:value="192.168.0.129" />
     </application>
 
 </manifest>

@@ -88,11 +88,17 @@ public class JoinChatActivity extends AppCompatActivity {
             return userCoordinates;
         }
 
-        userCoordinates[0] = mFusedLocationClient.getLastLocation().getResult().getLatitude();
-        userCoordinates[1] = mFusedLocationClient.getLastLocation().getResult().getLongitude();
+        mFusedLocationClient.getLastLocation().addOnCompleteListener(location -> {
+            if (location.getResult() != null) {
+                userX.set(location.getResult().getLatitude());
+                userY.set(location.getResult().getLongitude());
+
+                userCoordinates[0] = userX.get();
+                userCoordinates[1] = userY.get();
+            }
+        });
 
         return userCoordinates;
-
     }
 
 }
