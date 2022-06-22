@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cmu_project.R;
 import com.example.cmu_project.adapters.MessageAdapter;
 
 import java.io.FileInputStream;
@@ -43,10 +44,6 @@ public class GlobalVariableHelper extends Application {
 
     private static final Logger logger = Logger.getLogger(GlobalVariableHelper.class.getName());
 
-    private static final String KEYSTORE_TYPE = "JKS";
-    private static final String KEYSTORE_DIR = "keystores/";
-    private static final String TRUSTSTORE_DIR = "truststores/";
-
     private final DBHelper db = new DBHelper(this);
 
     private ServerGrpc.ServerBlockingStub serverBlockingStub = null;
@@ -57,7 +54,7 @@ public class GlobalVariableHelper extends Application {
     private String currentChatroomName = null;
     private String username = null;
 
-    private NotificationsHelper notificationsHelper = new NotificationsHelper(this);
+    private final NotificationsHelper notificationsHelper = new NotificationsHelper(this);
 
     public GlobalVariableHelper() throws PackageManager.NameNotFoundException {
     }
@@ -76,22 +73,12 @@ public class GlobalVariableHelper extends Application {
         final String KEYSTORE_PASS = bundle.getString("keystore_pass");
         final String HOST_ADDRESS = bundle.getString("host_address");
 
-        InputStream identityStorePath = null;
-        try {
-            identityStorePath = new FileInputStream(Uri.parse("android.resource://com.example.cmu_project/" + KEYSTORE_DIR + "client_KeystoreFile.jks").getPath());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        InputStream trustStorePath = null;
-        try {
-            trustStorePath = new FileInputStream(Uri.parse("android.resource://com.example.cmu_project/" + TRUSTSTORE_DIR + "client_TruststoreFile.jks").getPath());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        InputStream identityStorePath = getResources().openRawResource( R.raw.client_keystore_file);
+        InputStream trustStorePath = getResources().openRawResource( R.raw.client_truststore_file);
 
         KeyStore keystore = null;
         try {
-            keystore = KeyStore.getInstance(KEYSTORE_TYPE);
+            keystore = KeyStore.getInstance(KeyStore.getDefaultType());
             keystore.load(identityStorePath, KEYSTORE_PASS.toCharArray());
         } catch (KeyStoreException | CertificateException | IOException | NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -113,7 +100,7 @@ public class GlobalVariableHelper extends Application {
 
         KeyStore truststore = null;
         try {
-            truststore = KeyStore.getInstance(KEYSTORE_TYPE);
+            truststore = KeyStore.getInstance(KeyStore.getDefaultType());
             truststore.load(trustStorePath, KEYSTORE_PASS.toCharArray());
         } catch (KeyStoreException | CertificateException | IOException | NoSuchAlgorithmException e) {
             e.printStackTrace();

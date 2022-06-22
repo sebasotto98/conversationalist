@@ -70,7 +70,6 @@ public class FileHelper {
     }
 
     protected void store(String data, String fileId, boolean isSensitive) {
-        System.out.println(fileId + FILE_FORMAT);
         if(!isSensitive) {
             parseFromClient(data);
         }

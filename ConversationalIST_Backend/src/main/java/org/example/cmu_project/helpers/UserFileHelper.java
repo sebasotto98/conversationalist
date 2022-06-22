@@ -71,7 +71,6 @@ public class UserFileHelper extends FileHelper {
 
     public boolean checkPassword(String user, String password_hashed) {
 
-
         try {
             File myObj = new File(USER_FILE_INFO + FILE_FORMAT);
             Scanner myReader = new Scanner(myObj);
@@ -98,7 +97,6 @@ public class UserFileHelper extends FileHelper {
 
     }
 
-
     public void leaveChat(String user, String chat_name) throws IOException {
 
         File inputFile = new File(USER_FILES_PATH + user + FILE_FORMAT);
@@ -122,8 +120,6 @@ public class UserFileHelper extends FileHelper {
         inputFile.delete();
 
         boolean sucesseful = tempFile.renameTo(inputFile);
-
-        System.out.println(sucesseful);
 
     }
 }

@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.cmu_project.activities.ChatActivity;
+import com.example.cmu_project.enums.ChatType;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 
 import java.io.PrintWriter;
@@ -57,7 +58,7 @@ public class CreateChatGrpcTask extends AsyncTask<Object,Void, CreateChatReply> 
 
             CreateChatRequest request;
 
-            if(type_of_chat.equals("GeoFanced")) {
+            if(type_of_chat.equalsIgnoreCase(ChatType.GEOFENCED.name())) {
                 Location location = Location.newBuilder().setLatitude(chat_latitude).setLongitude(chat_longitude).build();
                 request = CreateChatRequest.newBuilder().setChatroomName(new_chat_name).setUser(user).setTypeOfChat(type_of_chat).setLocation(location).setRadius(radius).build();
             } else {

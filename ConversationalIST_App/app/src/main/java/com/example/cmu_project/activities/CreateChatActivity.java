@@ -18,6 +18,7 @@ import android.widget.RadioButton;
 
 import com.adevinta.leku.LocationPickerActivity;
 import com.example.cmu_project.R;
+import com.example.cmu_project.enums.ChatType;
 import com.example.cmu_project.grpc_tasks.CreateChatGrpcTask;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -77,7 +78,7 @@ public class CreateChatActivity extends AppCompatActivity {
         EditText radiusId = (EditText) findViewById(R.id.radiusId);
         String radius = radiusId.getText().toString();
 
-        if (type_of_chat.equals("GeoFanced")) {
+        if (type_of_chat.equalsIgnoreCase(ChatType.GEOFENCED.name())) {
             new CreateChatGrpcTask(this,new_chat_name,String.valueOf(chat_latitude),String.valueOf(chat_longitude),radius).execute(((GlobalVariableHelper) this.getApplication()).getUsername(),type_of_chat);
         } else {
             new CreateChatGrpcTask(this,new_chat_name).execute(((GlobalVariableHelper) this.getApplication()).getUsername(),type_of_chat);

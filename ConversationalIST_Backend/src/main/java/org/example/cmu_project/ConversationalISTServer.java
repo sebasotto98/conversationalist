@@ -207,7 +207,7 @@ public class ConversationalISTServer {
             String chatName = request.getChatroomName();
             String userName = request.getUser();
             String chatType = request.getTypeOfChat();
-            System.out.println(chatType);
+            logger.info(chatType);
 
             if(generalHelper.userExists(userName)) {
                 if(!generalHelper.chatAlreadyExists(chatName)) {
@@ -243,15 +243,15 @@ public class ConversationalISTServer {
 
             for (String line: chats_info) {
 
-                System.out.println(line);
+                logger.info(line);
 
                 String[] split_line = line.split(",");
                 String chat_name = split_line[0];
                 String type_of_chat = split_line[2];
 
                 if(!user_chats.contains(chat_name)) {
-                    if(!type_of_chat.equals("Private")) {
-                        if(type_of_chat.equals("GeoFanced")) {
+                    if(!type_of_chat.equalsIgnoreCase(ChatType.PRIVATE.name())) {
+                        if(type_of_chat.equalsIgnoreCase(ChatType.GEOFENCED.name())) {
                             if(userInChatRadio(latitude,longitude,chat_name))
                                 chats_available.add(chat_name);
                         } else {
@@ -288,8 +288,6 @@ public class ConversationalISTServer {
             String user = request.getUser();
             String chat_name = request.getChatName();
             String ack;
-
-            System.out.println("Estou dentro do leaveChat Request");
 
             try {
                 userFileHelper.leaveChat(user,chat_name);
@@ -481,8 +479,6 @@ public class ConversationalISTServer {
             double height = el1 - el2;
 
             distance = Math.pow(distance, 2) + Math.pow(height, 2);
-
-            System.out.println("Distancia: " + Math.sqrt(distance));
 
             return !(Math.sqrt(distance) > radius);
 

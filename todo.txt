@@ -5,7 +5,6 @@ mandatory:
 	- chat activity
 		- difference between message sent and received
 aditional:
-	- user accounts
 	- recommendations
 extras:
 	- get proto file from outside project directory

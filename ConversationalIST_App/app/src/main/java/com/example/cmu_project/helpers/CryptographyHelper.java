@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 public class CryptographyHelper {
 
-    private static final String KEYSTORE_DIR = "keystores/";
+    private static final String KEYSTORE_DIR = "raw/keystores/";
     private static final String INPUT_CHARACTER_VALIDATION = "^[a-zA-Z0-9]*$";
     private static final String INPUT_LENGTH_VALIDATION = "^(.{4,20})";
     private static final Logger logger = Logger.getLogger(CryptographyHelper.class.getName());

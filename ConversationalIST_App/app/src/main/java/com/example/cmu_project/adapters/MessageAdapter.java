@@ -1,6 +1,7 @@
 package com.example.cmu_project.adapters;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -8,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
@@ -28,10 +30,13 @@ import com.example.cmu_project.activities.ChatActivity;
 import com.example.cmu_project.enums.MessageType;
 import com.example.cmu_project.grpc_tasks.GetMessageAtPositionGrpcTask;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
+import com.example.cmu_project.listeners.OnSwipeTouchListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
@@ -164,7 +169,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    private static class MessageTextHolder extends RecyclerView.ViewHolder {
+    private class MessageTextHolder extends RecyclerView.ViewHolder {
         TextView messageText, timeText, nameText;
 
         MessageTextHolder(View itemView) {
@@ -174,10 +179,27 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             nameText = (TextView) itemView.findViewById(R.id.text_user);
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         void bind(messageResponse message) {
             messageText.setText(message.getData());
             timeText.setText(message.getTimestamp());
             nameText.setText(message.getUsername());
+
+            messageText.setOnTouchListener(new OnSwipeTouchListener(context) {
+                @Override
+                public void onLongClick() {
+                    super.onLongClick();
+                    if (!message.getData().isEmpty()) {
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, message.getData());
+                        sendIntent.setType("text/plain");
+
+                        Intent shareIntent = Intent.createChooser(sendIntent, "Share text");
+                        context.startActivity(shareIntent);
+                    }
+                }
+            });
         }
     }
 
@@ -192,23 +214,43 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             namePhoto = (TextView) itemView.findViewById(R.id.photo_user);
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         void bind(messageResponse message) {
-            if(!message.getData().equals("")){
+            if(!message.getData().isEmpty()){
                 messagePhoto.setImageBitmap(stringToBitMap(message.getData()));
             }
             timePhoto.setText(message.getTimestamp());
             namePhoto.setText(message.getUsername());
 
-            messagePhoto.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Log.d("MessageAdapter", "Click Listener");
-                    if (message.getData().equals("")) {
+            messagePhoto.setOnClickListener(v -> {
+                Log.d("MessageAdapter", "Click Listener");
+                if (message.getData().isEmpty()) {
 
-                        new GetMessageAtPositionGrpcTask(context, messageAdapter)
-                                .execute(
-                                message.getPosition(),
-                                ((GlobalVariableHelper) context.getApplicationContext()).getCurrentChatroomName()
-                                );
+                    new GetMessageAtPositionGrpcTask(context, messageAdapter)
+                            .execute(
+                            message.getPosition(),
+                            ((GlobalVariableHelper) context.getApplicationContext()).getCurrentChatroomName()
+                            );
+                }
+            });
+
+            messagePhoto.setOnTouchListener(new OnSwipeTouchListener(context) {
+                @Override
+                public void onLongClick() {
+                    super.onLongClick();
+                    if (!message.getData().isEmpty()) {
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+
+                        Bitmap photo = stringToBitMap(message.getData());
+                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                        photo.compress(Bitmap.CompressFormat.PNG, 100, bytes);
+
+                        sendIntent.putExtra(Intent.EXTRA_STREAM, bytes.toByteArray());
+                        sendIntent.setType("image/png");
+
+                        Intent shareIntent = Intent.createChooser(sendIntent, "Share photo");
+                        context.startActivity(shareIntent);
                     }
                 }
             });
@@ -226,6 +268,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             nameGeolocation = (TextView) itemView.findViewById(R.id.geolocation_user);
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         void bind(messageResponse message) throws PackageManager.NameNotFoundException {
 
             String[] coordinates = message.getData().split("/");
@@ -236,9 +279,30 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             Bundle bundle = applicationInfo.metaData;
             String apiKey = bundle.getString("com.google.android.geo.API_KEY");
 
+            String url = "https://maps.google.com/maps/api/staticmap?center=" + geolocationX + "," + geolocationY + "&zoom=15&size=640x480&scale=2&maptype=hybrid&key=" + apiKey;
+
+            final Bitmap[] geolocationImage = {null};
             Picasso.with(context)
-                    .load("https://maps.google.com/maps/api/staticmap?center=" + geolocationX + "," + geolocationY + "&zoom=15&size=640x480&scale=2&maptype=hybrid&key=" + apiKey)
-                    .into(messageGeolocation);
+                    .load(url)
+                    .into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            geolocationImage[0] = bitmap;
+
+                        }
+
+                        @Override
+                        public void onBitmapFailed(Drawable errorDrawable) {
+
+                        }
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                        }
+                    });
+
+            messageGeolocation.setImageBitmap(geolocationImage[0]);
 
             FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
 
@@ -256,10 +320,31 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             });
 
-            messageGeolocation.setOnClickListener(v -> {
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("http://maps.google.com/maps?saddr=" + userX + "," + userY + "&daddr=" + geolocationX + "," + geolocationY));
-                context.startActivity(intent);
+            messageGeolocation.setOnTouchListener(new OnSwipeTouchListener(context) {
+                @Override
+                public void onClick() {
+                    super.onClick();
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://maps.google.com/maps?saddr=" + userX + "," + userY + "&daddr=" + geolocationX + "," + geolocationY));
+                    context.startActivity(intent);
+                }
+                @Override
+                public void onLongClick() {
+                    super.onLongClick();
+                    if (!message.getData().isEmpty()) {
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+
+                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                        geolocationImage[0].compress(Bitmap.CompressFormat.PNG, 100, bytes);
+
+                        sendIntent.putExtra(Intent.EXTRA_STREAM, bytes.toByteArray());
+                        sendIntent.setType("image/png");
+
+                        Intent shareIntent = Intent.createChooser(sendIntent, "Share geolocation");
+                        context.startActivity(shareIntent);
+                    }
+                }
             });
 
             timeGeolocation.setText(message.getTimestamp());
