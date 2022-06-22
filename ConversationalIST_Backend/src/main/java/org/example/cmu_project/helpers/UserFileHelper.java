@@ -122,4 +122,42 @@ public class UserFileHelper extends FileHelper {
         boolean sucesseful = tempFile.renameTo(inputFile);
 
     }
+
+    public List<String> allUsers() {
+
+        List<String> users = new ArrayList<>();
+
+        try {
+            File myObj = new File(USER_FILE_INFO + FILE_FORMAT);
+            Scanner myReader = new Scanner(myObj);
+            String newLine;
+
+            while (myReader.hasNextLine()) {
+                newLine = myReader.nextLine();
+                String[] splited_line = newLine.split(",");
+                String user = splited_line[0];
+                users.add(user);
+            }
+            myReader.close();
+
+        } catch (FileNotFoundException e) {
+            logger.warning(e.getMessage());
+        }
+
+        return users;
+
+    }
+
+    public boolean userInChat(String user,String chat_name) {
+
+        List<String> user_chats = this.getChats(user);
+
+        if(user_chats.contains(chat_name))
+            return true;
+
+        return false;
+
+    }
+
+
 }

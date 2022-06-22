@@ -110,5 +110,30 @@ public class ChatroomFileHelper extends FileHelper {
 
     }
 
+    public String getChatOwner(String chat_name){
+
+        try {
+            File myObj = new File(CHATROOM_FILE_INFO + FILE_FORMAT);
+            Scanner myReader = new Scanner(myObj);
+            String newLine;
+
+            while (myReader.hasNextLine()) {
+                newLine = myReader.nextLine();
+                String[] splited_line = newLine.split(",");
+                String chat = splited_line[0];
+                if (chat.equals(chat_name))
+                    return splited_line[1];
+
+            }
+            myReader.close();
+
+        } catch (FileNotFoundException e) {
+            logger.warning(e.getMessage());
+        }
+
+        return null;
+
+    }
+
 
 }

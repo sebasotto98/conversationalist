@@ -17,6 +17,7 @@ private static final long serialVersionUID = 0L;
   }
   private GetChatsReply() {
     userChats_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    userOwnerPrivateChats_ = com.google.protobuf.LazyStringArrayList.EMPTY;
   }
 
   @java.lang.Override
@@ -59,6 +60,15 @@ private static final long serialVersionUID = 0L;
             userChats_.add(s);
             break;
           }
+          case 18: {
+            java.lang.String s = input.readStringRequireUtf8();
+            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+              userOwnerPrivateChats_ = new com.google.protobuf.LazyStringArrayList();
+              mutable_bitField0_ |= 0x00000002;
+            }
+            userOwnerPrivateChats_.add(s);
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -76,6 +86,9 @@ private static final long serialVersionUID = 0L;
     } finally {
       if (((mutable_bitField0_ & 0x00000001) != 0)) {
         userChats_ = userChats_.getUnmodifiableView();
+      }
+      if (((mutable_bitField0_ & 0x00000002) != 0)) {
+        userOwnerPrivateChats_ = userOwnerPrivateChats_.getUnmodifiableView();
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -129,6 +142,41 @@ private static final long serialVersionUID = 0L;
     return userChats_.getByteString(index);
   }
 
+  public static final int USER_OWNER_PRIVATE_CHATS_FIELD_NUMBER = 2;
+  private com.google.protobuf.LazyStringList userOwnerPrivateChats_;
+  /**
+   * <code>repeated string user_owner_private_chats = 2;</code>
+   * @return A list containing the userOwnerPrivateChats.
+   */
+  public com.google.protobuf.ProtocolStringList
+      getUserOwnerPrivateChatsList() {
+    return userOwnerPrivateChats_;
+  }
+  /**
+   * <code>repeated string user_owner_private_chats = 2;</code>
+   * @return The count of userOwnerPrivateChats.
+   */
+  public int getUserOwnerPrivateChatsCount() {
+    return userOwnerPrivateChats_.size();
+  }
+  /**
+   * <code>repeated string user_owner_private_chats = 2;</code>
+   * @param index The index of the element to return.
+   * @return The userOwnerPrivateChats at the given index.
+   */
+  public java.lang.String getUserOwnerPrivateChats(int index) {
+    return userOwnerPrivateChats_.get(index);
+  }
+  /**
+   * <code>repeated string user_owner_private_chats = 2;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the userOwnerPrivateChats at the given index.
+   */
+  public com.google.protobuf.ByteString
+      getUserOwnerPrivateChatsBytes(int index) {
+    return userOwnerPrivateChats_.getByteString(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -145,6 +193,9 @@ private static final long serialVersionUID = 0L;
                       throws java.io.IOException {
     for (int i = 0; i < userChats_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, userChats_.getRaw(i));
+    }
+    for (int i = 0; i < userOwnerPrivateChats_.size(); i++) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, userOwnerPrivateChats_.getRaw(i));
     }
     unknownFields.writeTo(output);
   }
@@ -163,6 +214,14 @@ private static final long serialVersionUID = 0L;
       size += dataSize;
       size += 1 * getUserChatsList().size();
     }
+    {
+      int dataSize = 0;
+      for (int i = 0; i < userOwnerPrivateChats_.size(); i++) {
+        dataSize += computeStringSizeNoTag(userOwnerPrivateChats_.getRaw(i));
+      }
+      size += dataSize;
+      size += 1 * getUserOwnerPrivateChatsList().size();
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -180,6 +239,8 @@ private static final long serialVersionUID = 0L;
 
     if (!getUserChatsList()
         .equals(other.getUserChatsList())) return false;
+    if (!getUserOwnerPrivateChatsList()
+        .equals(other.getUserOwnerPrivateChatsList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -194,6 +255,10 @@ private static final long serialVersionUID = 0L;
     if (getUserChatsCount() > 0) {
       hash = (37 * hash) + USER_CHATS_FIELD_NUMBER;
       hash = (53 * hash) + getUserChatsList().hashCode();
+    }
+    if (getUserOwnerPrivateChatsCount() > 0) {
+      hash = (37 * hash) + USER_OWNER_PRIVATE_CHATS_FIELD_NUMBER;
+      hash = (53 * hash) + getUserOwnerPrivateChatsList().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -330,6 +395,8 @@ private static final long serialVersionUID = 0L;
       super.clear();
       userChats_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000001);
+      userOwnerPrivateChats_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -362,6 +429,11 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000001);
       }
       result.userChats_ = userChats_;
+      if (((bitField0_ & 0x00000002) != 0)) {
+        userOwnerPrivateChats_ = userOwnerPrivateChats_.getUnmodifiableView();
+        bitField0_ = (bitField0_ & ~0x00000002);
+      }
+      result.userOwnerPrivateChats_ = userOwnerPrivateChats_;
       onBuilt();
       return result;
     }
@@ -417,6 +489,16 @@ private static final long serialVersionUID = 0L;
         } else {
           ensureUserChatsIsMutable();
           userChats_.addAll(other.userChats_);
+        }
+        onChanged();
+      }
+      if (!other.userOwnerPrivateChats_.isEmpty()) {
+        if (userOwnerPrivateChats_.isEmpty()) {
+          userOwnerPrivateChats_ = other.userOwnerPrivateChats_;
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          ensureUserOwnerPrivateChatsIsMutable();
+          userOwnerPrivateChats_.addAll(other.userOwnerPrivateChats_);
         }
         onChanged();
       }
@@ -556,6 +638,116 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       ensureUserChatsIsMutable();
       userChats_.add(value);
+      onChanged();
+      return this;
+    }
+
+    private com.google.protobuf.LazyStringList userOwnerPrivateChats_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private void ensureUserOwnerPrivateChatsIsMutable() {
+      if (!((bitField0_ & 0x00000002) != 0)) {
+        userOwnerPrivateChats_ = new com.google.protobuf.LazyStringArrayList(userOwnerPrivateChats_);
+        bitField0_ |= 0x00000002;
+       }
+    }
+    /**
+     * <code>repeated string user_owner_private_chats = 2;</code>
+     * @return A list containing the userOwnerPrivateChats.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getUserOwnerPrivateChatsList() {
+      return userOwnerPrivateChats_.getUnmodifiableView();
+    }
+    /**
+     * <code>repeated string user_owner_private_chats = 2;</code>
+     * @return The count of userOwnerPrivateChats.
+     */
+    public int getUserOwnerPrivateChatsCount() {
+      return userOwnerPrivateChats_.size();
+    }
+    /**
+     * <code>repeated string user_owner_private_chats = 2;</code>
+     * @param index The index of the element to return.
+     * @return The userOwnerPrivateChats at the given index.
+     */
+    public java.lang.String getUserOwnerPrivateChats(int index) {
+      return userOwnerPrivateChats_.get(index);
+    }
+    /**
+     * <code>repeated string user_owner_private_chats = 2;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the userOwnerPrivateChats at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getUserOwnerPrivateChatsBytes(int index) {
+      return userOwnerPrivateChats_.getByteString(index);
+    }
+    /**
+     * <code>repeated string user_owner_private_chats = 2;</code>
+     * @param index The index to set the value at.
+     * @param value The userOwnerPrivateChats to set.
+     * @return This builder for chaining.
+     */
+    public Builder setUserOwnerPrivateChats(
+        int index, java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUserOwnerPrivateChatsIsMutable();
+      userOwnerPrivateChats_.set(index, value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated string user_owner_private_chats = 2;</code>
+     * @param value The userOwnerPrivateChats to add.
+     * @return This builder for chaining.
+     */
+    public Builder addUserOwnerPrivateChats(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUserOwnerPrivateChatsIsMutable();
+      userOwnerPrivateChats_.add(value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated string user_owner_private_chats = 2;</code>
+     * @param values The userOwnerPrivateChats to add.
+     * @return This builder for chaining.
+     */
+    public Builder addAllUserOwnerPrivateChats(
+        java.lang.Iterable<java.lang.String> values) {
+      ensureUserOwnerPrivateChatsIsMutable();
+      com.google.protobuf.AbstractMessageLite.Builder.addAll(
+          values, userOwnerPrivateChats_);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated string user_owner_private_chats = 2;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearUserOwnerPrivateChats() {
+      userOwnerPrivateChats_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField0_ = (bitField0_ & ~0x00000002);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated string user_owner_private_chats = 2;</code>
+     * @param value The bytes of the userOwnerPrivateChats to add.
+     * @return This builder for chaining.
+     */
+    public Builder addUserOwnerPrivateChatsBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      ensureUserOwnerPrivateChatsIsMutable();
+      userOwnerPrivateChats_.add(value);
       onChanged();
       return this;
     }

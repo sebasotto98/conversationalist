@@ -31,4 +31,29 @@ public interface GetChatsReplyOrBuilder extends
    */
   com.google.protobuf.ByteString
       getUserChatsBytes(int index);
+
+  /**
+   * <code>repeated string user_owner_private_chats = 2;</code>
+   * @return A list containing the userOwnerPrivateChats.
+   */
+  java.util.List<java.lang.String>
+      getUserOwnerPrivateChatsList();
+  /**
+   * <code>repeated string user_owner_private_chats = 2;</code>
+   * @return The count of userOwnerPrivateChats.
+   */
+  int getUserOwnerPrivateChatsCount();
+  /**
+   * <code>repeated string user_owner_private_chats = 2;</code>
+   * @param index The index of the element to return.
+   * @return The userOwnerPrivateChats at the given index.
+   */
+  java.lang.String getUserOwnerPrivateChats(int index);
+  /**
+   * <code>repeated string user_owner_private_chats = 2;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the userOwnerPrivateChats at the given index.
+   */
+  com.google.protobuf.ByteString
+      getUserOwnerPrivateChatsBytes(int index);
 }

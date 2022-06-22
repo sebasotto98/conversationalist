@@ -311,14 +311,58 @@ public class ConversationalISTServer {
             String user = request.getUser();
 
             List<String> user_chats = userFileHelper.getChats(user);
+            List<String> user_owner_private_chats = new ArrayList<>();
 
             for (String user_chat : user_chats) {
                 logger.info(user_chat);
             }
 
-            GetChatsReply response = GetChatsReply.newBuilder().addAllUserChats(user_chats).build();
+            List<String> lines_chat_info = chatroomFileHelper.readInfoFile();
+
+            for (String chat : user_chats) {
+
+                for (int i = 0;i<lines_chat_info.size();i++) {
+                    String[] line_splitted = lines_chat_info.get(i).split(",");
+                    if (line_splitted[0].equals(chat)) {
+                        if(line_splitted[1].equals(user) && line_splitted[2].equals("Private")) {
+                            user_owner_private_chats.add(chat);
+                        }
+                    }
+                }
+            }
+
+            GetChatsReply response = GetChatsReply.newBuilder().addAllUserChats(user_chats).addAllUserOwnerPrivateChats(user_owner_private_chats).build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
+
+        }
+
+        @Override
+        public void getChatMembers(GetChatMembersRequest request,StreamObserver<GetChatMembersReply> responseObserver) {
+
+            String chat_name = request.getChatName();
+            String chat_owner = chatroomFileHelper.getChatOwner(chat_name);
+            System.out.println("owner: " + chat_owner);
+            List<String> chat_members = new ArrayList<>();
+
+            List<String> all_users = userFileHelper.allUsers();
+
+
+            for (String user: all_users) {
+                if (!user.equals(chat_owner)) {
+                    System.out.println(user);
+                    if(userFileHelper.userInChat(user,chat_name)) {
+                        chat_members.add(user);
+                    }
+                }
+            }
+
+            System.out.println(chat_members);
+
+            GetChatMembersReply response = GetChatMembersReply.newBuilder().addAllMembers(chat_members).build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+
         }
 
         @Override

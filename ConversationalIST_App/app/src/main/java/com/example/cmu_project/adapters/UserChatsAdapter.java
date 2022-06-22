@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 
+import com.example.cmu_project.activities.ManageChatActivity;
 import com.example.cmu_project.grpc_tasks.LeaveChatGrpcTask;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 import com.example.cmu_project.R;
@@ -22,12 +23,14 @@ import java.util.List;
 public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
 
     private List<String> user_chats_list = new ArrayList<>();
+    private List<String> user_owner_chats;
     private final Context context;
     public Application application;
     public String user;
 
-    public UserChatsAdapter(List<String> user_chats_list, Context context, Application application,String user) {
+    public UserChatsAdapter(List<String> user_chats_list,List<String> user_owner_chats, Context context, Application application,String user) {
         this.user_chats_list = user_chats_list;
+        this.user_owner_chats = user_owner_chats;
         this.context = context;
         this.application = application;
         this.user = user;
@@ -62,8 +65,14 @@ public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
         //Handle buttons and add onClickListeners
         Button callbtn= (Button)view.findViewById(R.id.btn_item);
         Button leavebtn = (Button)view.findViewById(R.id.btn_item_leave);
+        Button managebtn = (Button)view.findViewById(R.id.btn_item_manage);
         callbtn.setText(user_chats_list.get(position));
         leavebtn.setText("Leave");
+        managebtn.setText("Manage");
+
+        if (!user_owner_chats.contains(user_chats_list.get(position))) {
+            managebtn.setVisibility(View.GONE);
+        }
 
         callbtn.setOnClickListener(v -> {
             ((GlobalVariableHelper) app).setCurrentChatroomName(callbtn.getText().toString());
@@ -75,6 +84,14 @@ public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
 
         leavebtn.setOnClickListener(v -> {
             new LeaveChatGrpcTask((Activity) v.getContext(),callbtn,leavebtn).execute(user,user_chats_list.get(position));
+        });
+
+        managebtn.setOnClickListener(v -> {
+
+            Intent myIntent = new Intent(v.getContext(), ManageChatActivity.class);
+            myIntent.putExtra("chat_name",callbtn.getText().toString());
+            v.getContext().startActivity(myIntent);
+
         });
 
         return view;

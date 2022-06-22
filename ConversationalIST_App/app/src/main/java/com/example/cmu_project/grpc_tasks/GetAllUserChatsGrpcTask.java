@@ -76,7 +76,8 @@ public class GetAllUserChatsGrpcTask extends AsyncTask<Object,Void, GetChatsRepl
         if(reply != null) {
 
             List<String> chats_list = reply.getUserChatsList();
-            my_chats_list.setAdapter(new UserChatsAdapter(chats_list, activityReference.get(), activityReference.get().getApplication(),user));
+            List<String> user_owner_chats = reply.getUserOwnerPrivateChatsList();
+            my_chats_list.setAdapter(new UserChatsAdapter(chats_list,user_owner_chats, activityReference.get(), activityReference.get().getApplication(),user));
 
             //Convert from ProtobufArrayList to java ArrayList
             ArrayList<String> chatsToListen = new ArrayList<>(chats_list);
