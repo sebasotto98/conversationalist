@@ -4,9 +4,12 @@ io\grpc\examples\backendserver\ChatTypeReplyOrBuilder.class
 io\grpc\examples\backendserver\CreateChatRequest$1.class
 io\grpc\examples\backendserver\JoinableChatsRequest$Builder.class
 io\grpc\examples\backendserver\ServerGrpc$ServerImplBase.class
+io\grpc\examples\backendserver\LeaveChatRequest$1.class
 io\grpc\examples\backendserver\messagesBetweenPosition$Builder.class
 io\grpc\examples\backendserver\registerUserRequest.class
 io\grpc\examples\backendserver\GetChatsReply$1.class
+io\grpc\examples\backendserver\LeaveChatReply$Builder.class
+io\grpc\examples\backendserver\LeaveChatRequest.class
 io\grpc\examples\backendserver\ServerGrpc.class
 io\grpc\examples\backendserver\ChatTypeRequest.class
 io\grpc\examples\backendserver\sendingMessageOrBuilder.class
@@ -21,6 +24,7 @@ io\grpc\examples\backendserver\GetChatsReplyOrBuilder.class
 io\grpc\examples\backendserver\ServerGrpc$1.class
 org\example\cmu_project\Message.class
 org\example\cmu_project\helpers\FileHelper.class
+io\grpc\examples\backendserver\LeaveChatRequest$Builder.class
 io\grpc\examples\backendserver\JoinChatRequest$1.class
 io\grpc\examples\backendserver\registerUserReplyOrBuilder.class
 io\grpc\examples\backendserver\chatMessageRequest.class
@@ -50,6 +54,7 @@ io\grpc\examples\backendserver\ServerGrpc$ServerBaseDescriptorSupplier.class
 io\grpc\examples\backendserver\Location$Builder.class
 io\grpc\examples\backendserver\getMessagePosition.class
 io\grpc\examples\backendserver\JoinChatReply$Builder.class
+io\grpc\examples\backendserver\LeaveChatReply.class
 io\grpc\examples\backendserver\GetChatsReply$Builder.class
 io\grpc\examples\backendserver\sendingMessage$1.class
 io\grpc\examples\backendserver\ServerGrpc$ServerFutureStub.class
@@ -71,10 +76,12 @@ io\grpc\examples\backendserver\chatMessageRequest$Builder.class
 io\grpc\examples\backendserver\CreateChatReply$Builder.class
 io\grpc\examples\backendserver\ChatTypeReply.class
 io\grpc\examples\backendserver\JoinChatRequestOrBuilder.class
+io\grpc\examples\backendserver\LeaveChatReply$1.class
 io\grpc\examples\backendserver\LocationOrBuilder.class
 io\grpc\examples\backendserver\CreateChatRequest.class
 io\grpc\examples\backendserver\CreateChatRequest$Builder.class
 io\grpc\examples\backendserver\CreateChatRequestOrBuilder.class
+io\grpc\examples\backendserver\LeaveChatReplyOrBuilder.class
 org\example\cmu_project\ConversationalISTServer.class
 io\grpc\examples\backendserver\CreateChatReply$1.class
 io\grpc\examples\backendserver\registerUserReply$1.class
@@ -98,6 +105,7 @@ io\grpc\examples\backendserver\loginUserReply$Builder.class
 org\example\cmu_project\helpers\PasswordHashingHelper.class
 io\grpc\examples\backendserver\JoinableChatsReply.class
 io\grpc\examples\backendserver\NMessagesFromChat$Builder.class
+io\grpc\examples\backendserver\LeaveChatRequestOrBuilder.class
 io\grpc\examples\backendserver\NMessagesFromChat$1.class
 org\example\cmu_project\ConversationalISTServer$ServerImpl$listenToChatroomMobileDataObserver.class
 io\grpc\examples\backendserver\CreateChatReply.class

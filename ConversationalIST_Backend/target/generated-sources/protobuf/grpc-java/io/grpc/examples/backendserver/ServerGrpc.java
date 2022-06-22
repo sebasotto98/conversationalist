@@ -204,6 +204,37 @@ public final class ServerGrpc {
     return getCreateChatMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.LeaveChatRequest,
+      io.grpc.examples.backendserver.LeaveChatReply> getLeaveChatMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "leaveChat",
+      requestType = io.grpc.examples.backendserver.LeaveChatRequest.class,
+      responseType = io.grpc.examples.backendserver.LeaveChatReply.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<io.grpc.examples.backendserver.LeaveChatRequest,
+      io.grpc.examples.backendserver.LeaveChatReply> getLeaveChatMethod() {
+    io.grpc.MethodDescriptor<io.grpc.examples.backendserver.LeaveChatRequest, io.grpc.examples.backendserver.LeaveChatReply> getLeaveChatMethod;
+    if ((getLeaveChatMethod = ServerGrpc.getLeaveChatMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getLeaveChatMethod = ServerGrpc.getLeaveChatMethod) == null) {
+          ServerGrpc.getLeaveChatMethod = getLeaveChatMethod =
+              io.grpc.MethodDescriptor.<io.grpc.examples.backendserver.LeaveChatRequest, io.grpc.examples.backendserver.LeaveChatReply>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "leaveChat"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.LeaveChatRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.LeaveChatReply.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("leaveChat"))
+              .build();
+        }
+      }
+    }
+    return getLeaveChatMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.JoinableChatsRequest,
       io.grpc.examples.backendserver.JoinableChatsReply> getGetJoinableChatsMethod;
 
@@ -609,6 +640,13 @@ public final class ServerGrpc {
 
     /**
      */
+    public void leaveChat(io.grpc.examples.backendserver.LeaveChatRequest request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.LeaveChatReply> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getLeaveChatMethod(), responseObserver);
+    }
+
+    /**
+     */
     public void getJoinableChats(io.grpc.examples.backendserver.JoinableChatsRequest request,
         io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.JoinableChatsReply> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetJoinableChatsMethod(), responseObserver);
@@ -721,6 +759,13 @@ public final class ServerGrpc {
                 io.grpc.examples.backendserver.CreateChatRequest,
                 io.grpc.examples.backendserver.CreateChatReply>(
                   this, METHODID_CREATE_CHAT)))
+          .addMethod(
+            getLeaveChatMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                io.grpc.examples.backendserver.LeaveChatRequest,
+                io.grpc.examples.backendserver.LeaveChatReply>(
+                  this, METHODID_LEAVE_CHAT)))
           .addMethod(
             getGetJoinableChatsMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
@@ -858,6 +903,14 @@ public final class ServerGrpc {
         io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.CreateChatReply> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getCreateChatMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void leaveChat(io.grpc.examples.backendserver.LeaveChatRequest request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.LeaveChatReply> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getLeaveChatMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1004,6 +1057,13 @@ public final class ServerGrpc {
 
     /**
      */
+    public io.grpc.examples.backendserver.LeaveChatReply leaveChat(io.grpc.examples.backendserver.LeaveChatRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getLeaveChatMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
     public io.grpc.examples.backendserver.JoinableChatsReply getJoinableChats(io.grpc.examples.backendserver.JoinableChatsRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetJoinableChatsMethod(), getCallOptions(), request);
@@ -1113,6 +1173,14 @@ public final class ServerGrpc {
 
     /**
      */
+    public com.google.common.util.concurrent.ListenableFuture<io.grpc.examples.backendserver.LeaveChatReply> leaveChat(
+        io.grpc.examples.backendserver.LeaveChatRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getLeaveChatMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
     public com.google.common.util.concurrent.ListenableFuture<io.grpc.examples.backendserver.JoinableChatsReply> getJoinableChats(
         io.grpc.examples.backendserver.JoinableChatsRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
@@ -1158,16 +1226,17 @@ public final class ServerGrpc {
   private static final int METHODID_GET_ALL_CHAT_MESSAGES = 3;
   private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION = 4;
   private static final int METHODID_CREATE_CHAT = 5;
-  private static final int METHODID_GET_JOINABLE_CHATS = 6;
-  private static final int METHODID_GET_CHAT_TYPE = 7;
-  private static final int METHODID_GET_ALL_CHATS = 8;
-  private static final int METHODID_JOIN_CHAT = 9;
-  private static final int METHODID_GET_LAST_NMESSAGES_FROM_CHAT = 10;
-  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA = 11;
-  private static final int METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA = 12;
-  private static final int METHODID_GET_MESSAGE_AT_POSITION = 13;
-  private static final int METHODID_LISTEN_TO_CHATROOMS = 14;
-  private static final int METHODID_LISTEN_TO_CHATROOMS_MOBILE_DATA = 15;
+  private static final int METHODID_LEAVE_CHAT = 6;
+  private static final int METHODID_GET_JOINABLE_CHATS = 7;
+  private static final int METHODID_GET_CHAT_TYPE = 8;
+  private static final int METHODID_GET_ALL_CHATS = 9;
+  private static final int METHODID_JOIN_CHAT = 10;
+  private static final int METHODID_GET_LAST_NMESSAGES_FROM_CHAT = 11;
+  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA = 12;
+  private static final int METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA = 13;
+  private static final int METHODID_GET_MESSAGE_AT_POSITION = 14;
+  private static final int METHODID_LISTEN_TO_CHATROOMS = 15;
+  private static final int METHODID_LISTEN_TO_CHATROOMS_MOBILE_DATA = 16;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -1209,6 +1278,10 @@ public final class ServerGrpc {
         case METHODID_CREATE_CHAT:
           serviceImpl.createChat((io.grpc.examples.backendserver.CreateChatRequest) request,
               (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.CreateChatReply>) responseObserver);
+          break;
+        case METHODID_LEAVE_CHAT:
+          serviceImpl.leaveChat((io.grpc.examples.backendserver.LeaveChatRequest) request,
+              (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.LeaveChatReply>) responseObserver);
           break;
         case METHODID_GET_JOINABLE_CHATS:
           serviceImpl.getJoinableChats((io.grpc.examples.backendserver.JoinableChatsRequest) request,
@@ -1315,6 +1388,7 @@ public final class ServerGrpc {
               .addMethod(getGetAllChatMessagesMethod())
               .addMethod(getGetChatMessagesSincePositionMethod())
               .addMethod(getCreateChatMethod())
+              .addMethod(getLeaveChatMethod())
               .addMethod(getGetJoinableChatsMethod())
               .addMethod(getGetChatTypeMethod())
               .addMethod(getGetAllChatsMethod())

@@ -32,18 +32,20 @@ public class GetAllUserChatsGrpcTask extends AsyncTask<Object,Void, GetChatsRepl
 
     WeakReference<Activity> activityReference;
     ListView my_chats_list;
+    String user;
     private final WeakReference<Context> context;
 
-    public GetAllUserChatsGrpcTask(Activity activity, ListView my_chats_list) {
+    public GetAllUserChatsGrpcTask(Activity activity, ListView my_chats_list,String user) {
         this.activityReference = new WeakReference<>(activity);
         this.my_chats_list = my_chats_list;
         this.context = new WeakReference<>(activityReference.get().getApplicationContext());
+        this.user = user;
     }
 
     @Override
     protected GetChatsReply doInBackground(Object... params) {
 
-        String user = (String) params[0];
+        String user = this.user;
 
         try {
 
@@ -74,7 +76,7 @@ public class GetAllUserChatsGrpcTask extends AsyncTask<Object,Void, GetChatsRepl
         if(reply != null) {
 
             List<String> chats_list = reply.getUserChatsList();
-            my_chats_list.setAdapter(new UserChatsAdapter(chats_list, activityReference.get(), activityReference.get().getApplication()));
+            my_chats_list.setAdapter(new UserChatsAdapter(chats_list, activityReference.get(), activityReference.get().getApplication(),user));
 
             //Convert from ProtobufArrayList to java ArrayList
             ArrayList<String> chatsToListen = new ArrayList<>(chats_list);

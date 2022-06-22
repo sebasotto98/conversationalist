@@ -283,11 +283,37 @@ public class ConversationalISTServer {
         }
 
         @Override
+        public void leaveChat(LeaveChatRequest request,StreamObserver<LeaveChatReply> responseObserver) {
+
+            String user = request.getUser();
+            String chat_name = request.getChatName();
+            String ack;
+
+            System.out.println("Estou dentro do leaveChat Request");
+
+            try {
+                userFileHelper.leaveChat(user,chat_name);
+                ack = "OK";
+            } catch (IOException e) {
+                ack = "ERROR";
+                e.printStackTrace();
+            }
+
+            LeaveChatReply response = LeaveChatReply.newBuilder().setAck(ack).build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+
+        }
+
+
+
+        @Override
         public void getAllChats(GetChatsRequest request,StreamObserver<GetChatsReply> responseObserver) {
 
             String user = request.getUser();
 
             List<String> user_chats = userFileHelper.getChats(user);
+
             for (String user_chat : user_chats) {
                 logger.info(user_chat);
             }

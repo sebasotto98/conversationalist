@@ -15,6 +15,7 @@ service Server {
   rpc getAllChatMessages (chatMessageRequest) returns (stream messageResponse) {}
   rpc getChatMessagesSincePosition (chatMessageFromPosition) returns (stream messageResponse) {}
   rpc createChat (CreateChatRequest) returns (CreateChatReply) {}
+  rpc leaveChat (LeaveChatRequest) returns (LeaveChatReply) {}
   rpc getJoinableChats (JoinableChatsRequest) returns (JoinableChatsReply) {}
   rpc getChatType (ChatTypeRequest) returns (ChatTypeReply) {}
   rpc getAllChats (GetChatsRequest) returns (GetChatsReply) {}
@@ -101,6 +102,15 @@ message CreateChatReply {
 message Location {
  string latitude = 1;
  string longitude = 2;
+}
+
+message LeaveChatRequest {
+ string user = 1;
+ string chat_name = 2;
+}
+
+message LeaveChatReply {
+ string ack = 1;
 }
 
 message NMessagesFromChat {

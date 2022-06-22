@@ -31,6 +31,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\app-data-files\chatrooms\ola.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\chatrooms\ola2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\app-data-files\chatrooms\sala1.csv">
           <value>
             <Attribute>
@@ -87,6 +101,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\app-data-files\users\myTempFile.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\app-data-files\users\qq.csv">
           <value>
             <Attribute>
@@ -116,13 +137,6 @@
           </value>
         </entry>
         <entry key="\app-data-files\users\testerAndroid.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\app-data-files\users\userTest1.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

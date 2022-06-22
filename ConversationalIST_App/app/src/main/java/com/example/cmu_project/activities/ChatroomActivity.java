@@ -47,7 +47,7 @@ public class ChatroomActivity extends AppCompatActivity {
         ((GlobalVariableHelper) this.getApplication()).setUsername(username);
 
         my_chats_list = (ListView) findViewById(R.id.my_chat_list);
-        new GetAllUserChatsGrpcTask(this,my_chats_list).execute(username);
+        new GetAllUserChatsGrpcTask(this,my_chats_list,username).execute();
 
         //only start service if it is not running
         if(!isMyServiceRunning(FetchDataService.class)){
@@ -58,7 +58,7 @@ public class ChatroomActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //new GetAllUserChatsGrpcTask(this,my_chats_list).execute(username);
+        new GetAllUserChatsGrpcTask(this,my_chats_list,username).execute();
     }
 
     public void create_chatroom(View view) {

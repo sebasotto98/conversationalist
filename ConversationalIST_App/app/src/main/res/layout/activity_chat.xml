@@ -42,6 +42,7 @@
         android:onClick="sendLink"
         android:text="share link" />
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
