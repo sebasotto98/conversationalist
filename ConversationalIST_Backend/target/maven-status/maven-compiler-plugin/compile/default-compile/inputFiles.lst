@@ -17,6 +17,7 @@ C:\CMU_Project\ConversationalIST_Backend\src\main\java\org\example\cmu_project\h
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\JoinChatRequest.java
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\JoinableChatsReplyOrBuilder.java
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\JoinableChatsReply.java
+C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\RemoveUserReply.java
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\JoinChatReplyOrBuilder.java
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\AddUserToChatRequestOrBuilder.java
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\GetChatMembersReplyOrBuilder.java
@@ -27,6 +28,8 @@ C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\
 C:\CMU_Project\ConversationalIST_Backend\src\main\java\org\example\cmu_project\ConversationalISTServer.java
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\AddUserToChatReply.java
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\NMessagesFromChat.java
+C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\RemoveUserRequest.java
+C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\RemoveUserReplyOrBuilder.java
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\messagesBetweenPosition.java
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\loginUserRequestOrBuilder.java
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\GetChatMembersRequest.java
@@ -42,6 +45,7 @@ C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\loginUserReplyOrBuilder.java
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\JoinableChatsRequestOrBuilder.java
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\messageResponseOrBuilder.java
+C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\RemoveUserRequestOrBuilder.java
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\LeaveChatRequest.java
 C:\CMU_Project\ConversationalIST_Backend\target\generated-sources\protobuf\java\io\grpc\examples\backendserver\JoinChatReply.java
 C:\CMU_Project\ConversationalIST_Backend\src\main\java\org\example\cmu_project\helpers\FileHelper.java

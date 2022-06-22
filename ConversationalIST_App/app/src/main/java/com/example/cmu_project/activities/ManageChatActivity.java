@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.cmu_project.R;
 import com.example.cmu_project.grpc_tasks.AddUserToChatGrpcTask;
 import com.example.cmu_project.grpc_tasks.GetChatMembersGrpcTask;
+import com.example.cmu_project.grpc_tasks.RemoveUserGrpcTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,6 @@ public class ManageChatActivity extends AppCompatActivity {
     String user_to_remove;
     List<String> chat_members;
     EditText add_user;
-    ArrayAdapter<String> adapter;
 
 
     @Override
@@ -76,6 +76,24 @@ public class ManageChatActivity extends AppCompatActivity {
     }
 
     public void remove_user(View view) {
+
+        if (user_to_remove.matches("")) {
+            Toast.makeText(this.getApplicationContext(), "No user to remove selected",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+
+            new RemoveUserGrpcTask(this,user_to_remove).execute(chat_name);
+            new GetChatMembersGrpcTask(this,chat_members_list,chat_members).execute(chat_name);
+            chat_members_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    user_to_remove = chat_members_list.getItemAtPosition(i).toString();
+
+                }
+            });
+
+        }
 
     }
 

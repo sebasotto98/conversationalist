@@ -17,6 +17,7 @@ service Server {
   rpc createChat (CreateChatRequest) returns (CreateChatReply) {}
   rpc leaveChat (LeaveChatRequest) returns (LeaveChatReply) {}
   rpc addUserToChat (AddUserToChatRequest) returns (AddUserToChatReply) {}
+  rpc removeUserFromChat (RemoveUserRequest) returns (RemoveUserReply) {}
   rpc getChatMembers (GetChatMembersRequest) returns (GetChatMembersReply) {}
   rpc getJoinableChats (JoinableChatsRequest) returns (JoinableChatsReply) {}
   rpc getChatType (ChatTypeRequest) returns (ChatTypeReply) {}
@@ -119,6 +120,15 @@ message NMessagesFromChat {
   string chatroom = 1;
   int32 numberOfMessages = 2;
 }
+
+message RemoveUserRequest {
+ string user_to_remove = 1;
+ string chat_name = 2;
+}
+
+message RemoveUserReply {
+ string ack = 1;
+} 
 
 message AddUserToChatRequest {
  string user_to_add = 1;

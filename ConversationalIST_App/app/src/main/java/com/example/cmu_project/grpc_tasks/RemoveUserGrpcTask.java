@@ -10,31 +10,29 @@ import com.example.cmu_project.helpers.GlobalVariableHelper;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.grpc.examples.backendserver.AddUserToChatReply;
-import io.grpc.examples.backendserver.AddUserToChatRequest;
+
+import io.grpc.examples.backendserver.RemoveUserReply;
+import io.grpc.examples.backendserver.RemoveUserRequest;
 import io.grpc.examples.backendserver.ServerGrpc;
 
-
-public class AddUserToChatGrpcTask extends AsyncTask<Object,Void, AddUserToChatReply> {
+public class RemoveUserGrpcTask extends AsyncTask<Object,Void, RemoveUserReply> {
 
     WeakReference<Activity> activityReference;
-    List<String> chat_members;
-    private String user_to_add;
 
-    public AddUserToChatGrpcTask(Activity activity, List<String> chat_members,String user_to_add) {
+    private String user_to_remove;
+
+    public RemoveUserGrpcTask(Activity activity, String user_to_remove) {
         this.activityReference = new WeakReference<>(activity);
-        this.chat_members = chat_members;
-        this.user_to_add = user_to_add;
+        this.user_to_remove = user_to_remove;
     }
 
     @Override
-    protected AddUserToChatReply doInBackground(Object... params) {
+    protected RemoveUserReply doInBackground(Object... params) {
 
-        String user_to_add = this.user_to_add;
-        String chat_name  = (String) params[1];
+        String user_to_remove = this.user_to_remove;
+        String chat_name = (String) params[0];
 
         try {
 
@@ -42,31 +40,31 @@ public class AddUserToChatGrpcTask extends AsyncTask<Object,Void, AddUserToChatR
                     = ((GlobalVariableHelper) activityReference.get().getApplication())
                     .getServerBlockingStub();
 
-            AddUserToChatRequest request = AddUserToChatRequest.newBuilder().setUserToAdd(user_to_add).setChatroom(chat_name).build();
-            return stub.withDeadlineAfter(5, TimeUnit.SECONDS).addUserToChat(request);
+            RemoveUserRequest request = RemoveUserRequest.newBuilder().setUserToRemove(user_to_remove).setChatName(chat_name).build();
+            return stub.withDeadlineAfter(5, TimeUnit.SECONDS).removeUserFromChat(request);
 
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
             pw.flush();
-            Log.d("AddUserToChatGrpcTask", sw.toString());
+            Log.d("RemoveUserGrpcTask", sw.toString());
             return null;
         }
 
     }
 
     @Override
-    protected void onPostExecute(AddUserToChatReply reply) {
+    protected void onPostExecute(RemoveUserReply reply) {
 
         Activity activity = activityReference.get();
         if (activity == null) {
             return;
         }
-        if(reply != null) {
+        if (reply != null) {
 
             if (reply.getAck().equals("OK")) {
-                Toast.makeText(activity.getApplicationContext(), "User added with sucess",
+                Toast.makeText(activity.getApplicationContext(), "User removed with sucess",
                         Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(activity.getApplicationContext(), reply.getAck(),
@@ -79,8 +77,6 @@ public class AddUserToChatGrpcTask extends AsyncTask<Object,Void, AddUserToChatR
         }
 
 
-
     }
-
 
 }

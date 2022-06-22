@@ -309,6 +309,29 @@ public class ConversationalISTServer {
         }
 
         @Override
+        public void removeUserFromChat(RemoveUserRequest request,StreamObserver<RemoveUserReply> responseObserver) {
+
+            String user_to_remove = request.getUserToRemove();
+            String chat_name = request.getChatName();
+            String ack;
+
+            try {
+                userFileHelper.leaveChat(user_to_remove,chat_name);
+                ack = "User removed with sucess";
+            } catch (IOException e) {
+                ack = "Something went wrong";
+                e.printStackTrace();
+            }
+
+            RemoveUserReply response = RemoveUserReply.newBuilder().setAck(ack).build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+
+        }
+
+
+
+        @Override
         public void leaveChat(LeaveChatRequest request,StreamObserver<LeaveChatReply> responseObserver) {
 
             String user = request.getUser();
