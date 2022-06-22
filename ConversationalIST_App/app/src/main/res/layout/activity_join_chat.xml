@@ -25,10 +25,9 @@
         android:layout_marginTop="580dp"
         android:layout_marginEnd="160dp"
         android:onClick="join"
-        android:text="JOIN"
+        android:text="@string/join"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

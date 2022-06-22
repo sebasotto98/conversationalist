@@ -246,7 +246,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                         photo.compress(Bitmap.CompressFormat.PNG, 100, bytes);
 
-                        sendIntent.putExtra(Intent.EXTRA_STREAM, bytes.toByteArray());
+                        sendIntent.putExtra("BMP", bytes.toByteArray());
                         sendIntent.setType("image/png");
 
                         Intent shareIntent = Intent.createChooser(sendIntent, "Share photo");
@@ -335,11 +335,12 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         Intent sendIntent = new Intent();
                         sendIntent.setAction(Intent.ACTION_SEND);
 
+                        Bitmap geolocation = geolocationImage[0];
                         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                        geolocationImage[0].compress(Bitmap.CompressFormat.PNG, 100, bytes);
+                        geolocation.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
 
-                        sendIntent.putExtra(Intent.EXTRA_STREAM, bytes.toByteArray());
-                        sendIntent.setType("image/png");
+                        sendIntent.putExtra("BMP", bytes.toByteArray());
+                        sendIntent.setType("image/jpg");
 
                         Intent shareIntent = Intent.createChooser(sendIntent, "Share geolocation");
                         context.startActivity(shareIntent);

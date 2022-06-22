@@ -73,6 +73,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\app-data-files\sample_chatrooms_info.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\sample_passwords.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\app-data-files\users\da.csv">
           <value>
             <Attribute>

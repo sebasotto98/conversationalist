@@ -81,10 +81,7 @@ public class UserFileHelper extends FileHelper {
 
                 String[] splited_line = newLine.split(",");
                 if (splited_line[0].equals(user)) {
-                    if (splited_line[1].equals(password_hashed))
-                        return true;
-                    else
-                        return false;
+                    return splited_line[1].equals(password_hashed);
                 }
 
             }
@@ -119,7 +116,7 @@ public class UserFileHelper extends FileHelper {
 
         inputFile.delete();
 
-        boolean sucesseful = tempFile.renameTo(inputFile);
+        tempFile.renameTo(inputFile);
 
     }
 
@@ -152,10 +149,7 @@ public class UserFileHelper extends FileHelper {
 
         List<String> user_chats = this.getChats(user);
 
-        if(user_chats.contains(chat_name))
-            return true;
-
-        return false;
+        return user_chats.contains(chat_name);
 
     }
 

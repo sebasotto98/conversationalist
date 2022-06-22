@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="192dp"
         android:layout_marginEnd="344dp"
-        android:text="Chat Type:"
+        android:text="@string/chat_type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="172dp"
         android:onClick="create"
-        android:text="Create"
+        android:text="@string/create"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
         android:layout_marginEnd="368dp"
-        android:text="Name:"
+        android:text="@string/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -90,7 +90,7 @@
         android:layout_marginTop="484dp"
         android:layout_marginEnd="260dp"
         android:onClick="openMapOnCurrentLocation"
-        android:text="set"
+        android:text="@string/set"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -101,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="440dp"
         android:layout_marginEnd="300dp"
-        android:text="Location:"
+        android:text="@string/location"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

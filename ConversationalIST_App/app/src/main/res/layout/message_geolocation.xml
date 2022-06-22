@@ -12,7 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="name_default"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -39,7 +38,6 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_margin="8dp"
-                android:contentDescription=""
                 android:maxWidth="200dp"
                 android:maxHeight="200dp"
                 android:src="@null" />
@@ -50,7 +48,6 @@
         android:id="@+id/geolocation_timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="default_timestamp"
         android:textColor="#C0C0C0"
         android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="@+id/card_message"

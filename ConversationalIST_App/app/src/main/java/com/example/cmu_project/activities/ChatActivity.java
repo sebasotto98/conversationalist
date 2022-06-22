@@ -22,8 +22,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,8 +33,6 @@ import com.example.cmu_project.grpc_tasks.*;
 import com.example.cmu_project.listeners.MyOnScrollListener;
 import com.example.cmu_project.R;
 import com.example.cmu_project.adapters.MessageAdapter;
-import com.example.cmu_project.contexts.MobDataContext;
-import com.example.cmu_project.contexts.WifiContext;
 import com.example.cmu_project.enums.MessageType;
 
 import java.io.ByteArrayOutputStream;
@@ -55,10 +53,7 @@ public class ChatActivity extends AppCompatActivity {
     private EditText messageEdit;
     private RecyclerView messageRecycler;
     private MessageAdapter messageAdapter;
-
     private String chatroom;
-    private String chatroom_type;
-
     private List<messageResponse> messageList = new ArrayList<>();
 
     @Override
@@ -156,6 +151,12 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle oldInstanceState) {
+        super.onSaveInstanceState(oldInstanceState);
+        oldInstanceState.clear();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         ((GlobalVariableHelper) getApplication()).setMessageAdapter(null);
@@ -171,6 +172,8 @@ public class ChatActivity extends AppCompatActivity {
         new SendMessageGrpcTask(this, messageRecycler)
                 .execute(messageEdit.getText().toString(),
                         MessageType.TEXT.getValue());
+
+        messageEdit.setText("");
     }
 
     public void showMap(View view) throws PackageManager.NameNotFoundException {
