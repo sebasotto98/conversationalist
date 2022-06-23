@@ -35,4 +35,15 @@
     <string name="chat_type">Chat Type:</string>
     <string name="join">Join</string>
     <string name="share_link">Share link</string>
+    <string name="language">Language</string>
+    <string name="select">Select</string>
+    <string name="selecionar">Selecionar</string>
+    <string name="linguagem">Linguagem</string>
+    <string name="login_ou_registar">Login ou Registar</string>
+    <string name="nome_utilizador">Nome de Utilizador</string>
+    <string name="tentativas">Tentativas Restantes:</string>
+    <string name="registar">Registar</string>
+    <string name="sair">Sair</string>
+    <string name="field_missing">Username or Password fields missing</string>
+    <string name="campo_em_falta">Nome de Utilizador ou Password em falta</string>
 </resources>

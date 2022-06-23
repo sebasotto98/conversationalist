@@ -15,11 +15,17 @@
         <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1355" />
         <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/activity_chat.xml" value="0.12360688956433637" />
         <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/activity_chatroom.xml" value="0.16983695652173914" />
+        <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/activity_join_chat.xml" value="0.20742753623188406" />
         <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/activity_login.xml" value="0.16983695652173914" />
+        <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/custom_list_view.xml" value="0.20742753623188406" />
+        <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/languages.xml" value="0.20742753623188406" />
+        <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/languages_activity.xml" value="0.1" />
+        <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/menu_options.xml" value="0.17383879781420766" />
         <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/message_geolocation.xml" value="0.4" />
         <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/message_image.xml" value="0.4" />
         <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/message_photo.xml" value="0.15579710144927536" />
         <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/layout/message_text.xml" value="0.12360688956433637" />
+        <entry key="..\:/Users/ricos/Desktop/CMU/CMU_Project/ConversationalIST_App/app/src/main/res/menu/menu_options.xml" value="0.1" />
         <entry key="..\:/Users/sebas/Downloads/cmu/CMU_Project/ConversationalIST_App/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.18" />
         <entry key="..\:/Users/sebas/Downloads/cmu/CMU_Project/ConversationalIST_App/app/src/main/res/drawable/ic_launcher_background.xml" value="0.18" />
         <entry key="..\:/Users/sebas/Downloads/cmu/CMU_Project/ConversationalIST_App/app/src/main/res/layout/activity_chat.xml" value="0.2" />

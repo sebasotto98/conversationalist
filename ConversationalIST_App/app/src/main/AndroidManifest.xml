@@ -75,6 +75,7 @@
             android:name=".activities.CreateChatActivity"
             android:exported="true">
         </activity>
+        <activity android:name=".activities.Languages" />
 
         <service android:name=".services.FetchDataService" />
 
@@ -86,7 +87,7 @@
             android:value="testtest" />
         <meta-data
             android:name="host_address"
-            android:value="192.168.1.80" />
+            android:value="192.168.1.135" />
     </application>
 
 </manifest>

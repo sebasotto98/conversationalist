@@ -3,8 +3,12 @@ package com.example.cmu_project.activities;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -23,6 +27,7 @@ public class ChatroomActivity extends AppCompatActivity {
     Button chatIcon;
     ListView my_chats_list;
     String username;
+    Menu menu = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,5 +77,43 @@ public class ChatroomActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_options, menu);
+        this.menu = menu;
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.language){
+            Intent myIntent = new Intent(ChatroomActivity.this, Languages.class);
+            ChatroomActivity.this.startActivity(myIntent);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ChatroomActivity.this);
+        String current_language = prefs.getString("language", "English");
+        if(current_language.equals("Português")){
+            setPortuguese();
+        } else if (current_language.equals("English")) {
+            setEnglish();
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void setEnglish(){
+        (menu.findItem(R.id.language)).setTitle(R.string.language);
+    }
+
+    private void setPortuguese(){
+        (menu.findItem(R.id.language)).setTitle(R.string.linguagem);
     }
 }
