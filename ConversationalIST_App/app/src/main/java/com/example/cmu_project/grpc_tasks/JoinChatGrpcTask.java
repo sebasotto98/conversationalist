@@ -23,25 +23,24 @@ import io.grpc.examples.backendserver.ServerGrpc;
 public class JoinChatGrpcTask extends AsyncTask<Object,Void, JoinChatReply> {
 
     private final WeakReference<Activity> activityReference;
-    private String current_chat_to_join;
+    private final String currentChatToJoin;
 
-    public JoinChatGrpcTask(Activity activity,String chat_to_join) {
+    public JoinChatGrpcTask(Activity activity, String currentChatToJoin) {
         this.activityReference = new WeakReference<>(activity);
-        this.current_chat_to_join = chat_to_join;
+        this.currentChatToJoin = currentChatToJoin;
     }
 
     @Override
     protected JoinChatReply doInBackground(Object... params) {
 
         String user = (String) params[0];
-        String chat_to_join = current_chat_to_join;
 
         try {
             ServerGrpc.ServerBlockingStub stub
                     = ((GlobalVariableHelper) activityReference.get().getApplication())
                     .getServerBlockingStub();
 
-            JoinChatRequest request = JoinChatRequest.newBuilder().setUser(user).setChatName(chat_to_join).build();
+            JoinChatRequest request = JoinChatRequest.newBuilder().setUser(user).setChatName(currentChatToJoin).build();
 
             return stub.withDeadlineAfter(5, TimeUnit.SECONDS).joinChat(request);
 
@@ -70,13 +69,13 @@ public class JoinChatGrpcTask extends AsyncTask<Object,Void, JoinChatReply> {
 
             //say to the service that we want to listen a new chat
             Intent intent = new Intent("NEWchat");
-            intent.putExtra("chat", current_chat_to_join);
+            intent.putExtra("chat", currentChatToJoin);
             LocalBroadcastManager.getInstance(activity.getApplicationContext()).sendBroadcast(intent);
 
             //jump to the chat activity
-            ((GlobalVariableHelper) activity.getApplication()).setCurrentChatroomName(current_chat_to_join);
+            ((GlobalVariableHelper) activity.getApplication()).setCurrentChatroomName(currentChatToJoin);
             Intent myIntent = new Intent(activity, ChatActivity.class);
-            myIntent.putExtra("chatroom",current_chat_to_join);
+            myIntent.putExtra("chatroom", currentChatToJoin);
             activity.startActivity(myIntent);
         }
     }

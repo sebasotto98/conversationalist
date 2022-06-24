@@ -4,7 +4,6 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -23,9 +22,8 @@ import com.example.cmu_project.services.FetchDataService;
 
 public class ChatroomActivity extends AppCompatActivity {
 
-    TextView tx1;
-    Button chatIcon;
-    ListView my_chats_list;
+    TextView userNameTextView;
+    ListView userChatsList;
     String username;
     Menu menu = null;
 
@@ -34,21 +32,18 @@ public class ChatroomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatroom);
 
-        //chatIcon = (Button) findViewById(R.id.chat_icon);
-
-        tx1 = (TextView) findViewById(R.id.username);
+        userNameTextView = findViewById(R.id.username);
         username = getIntent().getExtras().getString("username");
         String welcomeMessage = "Welcome " + username + "!";
-        tx1.setText(welcomeMessage);
-        tx1.setVisibility(View.VISIBLE);
+        userNameTextView.setText(welcomeMessage);
+        userNameTextView.setVisibility(View.VISIBLE);
 
         ((GlobalVariableHelper) this.getApplication()).setUsername(username);
 
-        my_chats_list = (ListView) findViewById(R.id.my_chat_list);
-        //new GetAllUserChatsGrpcTask(this,my_chats_list,username).execute();
+        userChatsList = findViewById(R.id.my_chat_list);
 
         //only start service if it is not running
-        if(!isMyServiceRunning(FetchDataService.class)){
+        if (!isMyServiceRunning(FetchDataService.class)) {
             startService(new Intent(this, FetchDataService.class));
         }
     }
@@ -56,7 +51,7 @@ public class ChatroomActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new GetAllUserChatsGrpcTask(this,my_chats_list,username).execute();
+        new GetAllUserChatsGrpcTask(this, userChatsList, username).execute();
     }
 
     public void create_chatroom(View view) {
@@ -90,8 +85,8 @@ public class ChatroomActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.language){
-            Intent myIntent = new Intent(ChatroomActivity.this, Languages.class);
+        if (id == R.id.language) {
+            Intent myIntent = new Intent(ChatroomActivity.this, LanguageActivity.class);
             ChatroomActivity.this.startActivity(myIntent);
         }
         return true;
@@ -101,7 +96,7 @@ public class ChatroomActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ChatroomActivity.this);
         String current_language = prefs.getString("language", "English");
-        if(current_language.equals("Português")){
+        if (current_language.equals("Português")) {
             setPortuguese();
         } else if (current_language.equals("English")) {
             setEnglish();
@@ -109,11 +104,24 @@ public class ChatroomActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    private void setEnglish(){
+    private void setEnglish() {
+        TextView titleTextView = findViewById(R.id.activity_title);
+        titleTextView.setText(R.string.chatrooms);
+        Button joinNewChatroomButton = findViewById(R.id.join_new_chatroom_button);
+        joinNewChatroomButton.setText(R.string.join_new_chatroom);
+        Button createNewChatroomButton = findViewById(R.id.create_new_chatroom_button);
+        createNewChatroomButton.setText(R.string.create_new_chatroom);
         (menu.findItem(R.id.language)).setTitle(R.string.language);
+
     }
 
-    private void setPortuguese(){
+    private void setPortuguese() {
+        TextView titleTextView = findViewById(R.id.activity_title);
+        titleTextView.setText(R.string.salas_de_conversacao);
+        Button joinNewChatroomButton = findViewById(R.id.join_new_chatroom_button);
+        joinNewChatroomButton.setText(R.string.entrar_em_nova_sala_de_conversacao);
+        Button createNewChatroomButton = findViewById(R.id.create_new_chatroom_button);
+        createNewChatroomButton.setText(R.string.criar_nova_sala_de_conversacao);
         (menu.findItem(R.id.language)).setTitle(R.string.linguagem);
     }
 }

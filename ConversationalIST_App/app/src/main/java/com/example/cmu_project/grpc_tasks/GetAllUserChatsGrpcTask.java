@@ -27,13 +27,13 @@ import io.grpc.examples.backendserver.ServerGrpc;
 public class GetAllUserChatsGrpcTask extends AsyncTask<Object,Void, GetChatsReply> {
 
     WeakReference<Activity> activityReference;
-    ListView my_chats_list;
+    ListView myChatsList;
     String user;
     private final WeakReference<Context> context;
 
-    public GetAllUserChatsGrpcTask(Activity activity, ListView my_chats_list,String user) {
+    public GetAllUserChatsGrpcTask(Activity activity, ListView myChatsList, String user) {
         this.activityReference = new WeakReference<>(activity);
-        this.my_chats_list = my_chats_list;
+        this.myChatsList = myChatsList;
         this.context = new WeakReference<>(activityReference.get().getApplicationContext());
         this.user = user;
     }
@@ -73,7 +73,7 @@ public class GetAllUserChatsGrpcTask extends AsyncTask<Object,Void, GetChatsRepl
 
             List<String> chats_list = reply.getUserChatsList();
             List<String> user_owner_chats = reply.getUserOwnerPrivateChatsList();
-            my_chats_list.setAdapter(new UserChatsAdapter(chats_list,user_owner_chats, activityReference.get(), activityReference.get().getApplication(),user));
+            myChatsList.setAdapter(new UserChatsAdapter(chats_list,user_owner_chats, activityReference.get(), activityReference.get().getApplication(),user));
 
             //Convert from ProtobufArrayList to java ArrayList
             ArrayList<String> chatsToListen = new ArrayList<>(chats_list);

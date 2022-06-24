@@ -81,8 +81,6 @@
             android:text="@string/geofenced_chat" />
     </RadioGroup>
 
-    <!-- here gone -->
-
     <Button
         android:id="@+id/buttonMyLocation"
         android:layout_width="121dp"

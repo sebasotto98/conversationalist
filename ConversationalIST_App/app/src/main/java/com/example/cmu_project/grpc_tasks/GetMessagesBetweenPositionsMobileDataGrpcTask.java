@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmu_project.adapters.MessageAdapter;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
+import com.example.cmu_project.listeners.OnScrollListener;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -25,9 +26,9 @@ import io.grpc.examples.backendserver.messagesBetweenPosition;
 public class GetMessagesBetweenPositionsMobileDataGrpcTask extends AsyncTask<Object, Void, Iterator<messageResponse>> {
     private final WeakReference<Activity> activityReference;
     private final MessageAdapter messageAdapter;
-    private final com.example.cmu_project.listeners.MyOnScrollListener scrollListener;
+    private final OnScrollListener scrollListener;
 
-    public GetMessagesBetweenPositionsMobileDataGrpcTask(Activity activity, RecyclerView messageRecycler, com.example.cmu_project.listeners.MyOnScrollListener scrollListener) {
+    public GetMessagesBetweenPositionsMobileDataGrpcTask(Activity activity, RecyclerView messageRecycler, OnScrollListener scrollListener) {
         this.activityReference = new WeakReference<>(activity);
         this.messageAdapter = (MessageAdapter) messageRecycler.getAdapter();
         this.scrollListener = scrollListener;
@@ -56,7 +57,7 @@ public class GetMessagesBetweenPositionsMobileDataGrpcTask extends AsyncTask<Obj
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
             pw.flush();
-            Log.d( "MyOnScrollListener",sw.toString());
+            Log.d( "OnScrollListener",sw.toString());
             return null;
         }
     }

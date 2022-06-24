@@ -80,7 +80,6 @@ io\grpc\examples\backendserver\messagesBetweenPosition.class
 io\grpc\examples\backendserver\Location$1.class
 io\grpc\examples\backendserver\ServerGrpc$3.class
 org\example\cmu_project\ConversationalISTServer$ServerImpl.class
-org\example\cmu_project\helpers\CryptographyHelper.class
 io\grpc\examples\backendserver\registerUserReply$Builder.class
 io\grpc\examples\backendserver\Location.class
 io\grpc\examples\backendserver\AddUserToChatReply.class
@@ -106,7 +105,6 @@ io\grpc\examples\backendserver\GetChatMembersRequest.class
 io\grpc\examples\backendserver\RemoveUserReply$1.class
 org\example\cmu_project\helpers\ChatroomFileHelper.class
 io\grpc\examples\backendserver\GetChatsRequest$Builder.class
-org\example\cmu_project\TestClient.class
 io\grpc\examples\backendserver\chatMessageFromPosition$1.class
 io\grpc\examples\backendserver\JoinChatReplyOrBuilder.class
 io\grpc\examples\backendserver\ServerGrpc$ServerStub.class

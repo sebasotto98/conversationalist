@@ -23,7 +23,6 @@ public class LeaveChatGrpcTask  extends AsyncTask<Object,Void, LeaveChatReply> {
     Button callbtn;
     Button leavebtn;
 
-
     public LeaveChatGrpcTask(Activity activity, Button callbtn,Button leavebtn) {
         this.activityReference = new WeakReference<>(activity);
         this.callbtn = callbtn;

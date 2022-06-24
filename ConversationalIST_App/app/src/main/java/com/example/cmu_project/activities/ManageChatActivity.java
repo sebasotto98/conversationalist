@@ -37,8 +37,7 @@ public class ManageChatActivity extends AppCompatActivity {
         chat_members_list = findViewById(R.id.chat_members_list);
         chat_members = new ArrayList<>();
 
-
-        new GetChatMembersGrpcTask(this,chat_members_list,chat_members).execute(chat_name);
+        new GetChatMembersGrpcTask(this, chat_members_list, chat_members).execute(chat_name);
 
         chat_members_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -49,18 +48,16 @@ public class ManageChatActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
 
     public void add_user(View view) {
 
-        if(add_user.getText().toString().matches("")) {
+        if (add_user.getText().toString().matches("")) {
             Toast.makeText(this.getApplicationContext(), "Add user is empty",
                     Toast.LENGTH_SHORT).show();
         } else {
-            new AddUserToChatGrpcTask(this,chat_members,add_user.getText().toString()).execute(user_to_remove,chat_name);
-            new GetChatMembersGrpcTask(this,chat_members_list,chat_members).execute(chat_name);
+            new AddUserToChatGrpcTask(this, chat_members, add_user.getText().toString()).execute(user_to_remove, chat_name);
+            new GetChatMembersGrpcTask(this, chat_members_list, chat_members).execute(chat_name);
             chat_members_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -80,8 +77,8 @@ public class ManageChatActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         } else {
 
-            new RemoveUserGrpcTask(this,user_to_remove).execute(chat_name);
-            new GetChatMembersGrpcTask(this,chat_members_list,chat_members).execute(chat_name);
+            new RemoveUserGrpcTask(this, user_to_remove).execute(chat_name);
+            new GetChatMembersGrpcTask(this, chat_members_list, chat_members).execute(chat_name);
             chat_members_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -94,6 +91,5 @@ public class ManageChatActivity extends AppCompatActivity {
         }
 
     }
-
 
 }

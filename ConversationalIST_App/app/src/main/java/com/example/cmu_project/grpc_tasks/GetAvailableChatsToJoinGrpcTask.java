@@ -24,13 +24,13 @@ import io.grpc.examples.backendserver.ServerGrpc;
 public class GetAvailableChatsToJoinGrpcTask extends AsyncTask<Object,Void, JoinableChatsReply> {
 
     private final WeakReference<Activity> activityReference;
-    private double user_latitude;
-    private double user_longitude;
+    private final double userLatitude;
+    private final double userLongitude;
 
-    public GetAvailableChatsToJoinGrpcTask(Activity activity,double user_latitude,double user_longitude) {
+    public GetAvailableChatsToJoinGrpcTask(Activity activity, double userLatitude, double userLongitude) {
         this.activityReference = new WeakReference<>(activity);
-        this.user_latitude = user_latitude;
-        this.user_longitude = user_longitude;
+        this.userLatitude = userLatitude;
+        this.userLongitude = userLongitude;
 
     }
 
@@ -44,7 +44,7 @@ public class GetAvailableChatsToJoinGrpcTask extends AsyncTask<Object,Void, Join
                     = ((GlobalVariableHelper) activityReference.get().getApplication())
                     .getServerBlockingStub();
 
-            Location location = Location.newBuilder().setLatitude(String.valueOf(user_latitude)).setLongitude(String.valueOf(user_longitude)).build();
+            Location location = Location.newBuilder().setLatitude(String.valueOf(userLatitude)).setLongitude(String.valueOf(userLongitude)).build();
             JoinableChatsRequest request = JoinableChatsRequest.newBuilder().setUser(user).setUserLocation(location).build();
 
             return stub.withDeadlineAfter(5, TimeUnit.SECONDS).getJoinableChats(request);
@@ -57,7 +57,6 @@ public class GetAvailableChatsToJoinGrpcTask extends AsyncTask<Object,Void, Join
             Log.d("GetAvailableChatsToJoinGrpcTask", sw.toString());
             return null;
         }
-
 
     }
 

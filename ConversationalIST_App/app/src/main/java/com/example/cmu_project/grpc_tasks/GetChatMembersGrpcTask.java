@@ -1,22 +1,17 @@
 package com.example.cmu_project.grpc_tasks;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import com.example.cmu_project.adapters.UserChatsAdapter;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -28,14 +23,13 @@ import io.grpc.examples.backendserver.ServerGrpc;
 public class GetChatMembersGrpcTask extends AsyncTask<Object,Void, GetChatMembersReply> {
 
     WeakReference<Activity> activityReference;
-    ListView chat_members_list;
-    List<String> chat_members;
-
-
-    public GetChatMembersGrpcTask(Activity activity, ListView chat_members_list, List<String> chat_members) {
+    ListView chatMembersList;
+    List<String> chatMembers;
+    
+    public GetChatMembersGrpcTask(Activity activity, ListView chatMembersList, List<String> chatMembers) {
         this.activityReference = new WeakReference<>(activity);
-        this.chat_members_list = chat_members_list;
-        this.chat_members = chat_members;
+        this.chatMembersList = chatMembersList;
+        this.chatMembers = chatMembers;
     }
 
     @Override
@@ -74,9 +68,9 @@ public class GetChatMembersGrpcTask extends AsyncTask<Object,Void, GetChatMember
         }
         if(reply != null) {
 
-            chat_members = reply.getMembersList();
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity,android.R.layout.simple_list_item_1,chat_members);
-            chat_members_list.setAdapter(adapter);
+            chatMembers = reply.getMembersList();
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity,android.R.layout.simple_list_item_1, chatMembers);
+            chatMembersList.setAdapter(adapter);
 
 
         } else {

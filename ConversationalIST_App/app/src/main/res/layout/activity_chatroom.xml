@@ -6,7 +6,7 @@
 
     <TextView android:text = "@string/chatrooms" android:layout_width="wrap_content"
         android:layout_height = "wrap_content"
-        android:id = "@+id/textview"
+        android:id = "@+id/activity_title"
         android:textSize = "20sp"
         android:layout_alignParentTop = "true"
         android:layout_centerHorizontal = "true" />
@@ -15,7 +15,7 @@
         android:id="@+id/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textview"
+        android:layout_below="@+id/activity_title"
         android:layout_centerHorizontal="true"
         android:text="@string/conversationalist"
         android:textColor="#689F38"
@@ -30,17 +30,8 @@
         android:textColor = "#009688"
         android:textSize = "25sp" />
 
-   <!-- <Button
-        android:id="@+id/chat_icon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/username"
-        android:onClick="enterChat"
-        android:text="@string/cmu_chat" />
-        -->
-
     <Button
-        android:id="@+id/joinChatRoom"
+        android:id="@+id/join_new_chatroom_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -49,7 +40,7 @@
         android:text="@string/join_new_chatroom" />
 
     <Button
-        android:id="@+id/create_chatroom"
+        android:id="@+id/create_new_chatroom_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="create_chatroom"

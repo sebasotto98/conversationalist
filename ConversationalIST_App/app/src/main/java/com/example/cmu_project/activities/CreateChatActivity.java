@@ -44,11 +44,8 @@ public class CreateChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_chat);
 
-        //Buttons
-        sendRequest = (Button) findViewById(R.id.create_chatroom);
-
-        //TextFields
-        chat_name = (EditText) findViewById(R.id.chat_name);
+        sendRequest = findViewById(R.id.create_chatroom);
+        chat_name = findViewById(R.id.chat_name);
 
     }
 
@@ -79,21 +76,21 @@ public class CreateChatActivity extends AppCompatActivity {
         String radius = radiusId.getText().toString();
 
         if (type_of_chat.equalsIgnoreCase(ChatType.GEOFENCED.name())) {
-            new CreateChatGrpcTask(this,new_chat_name,String.valueOf(chat_latitude),String.valueOf(chat_longitude),radius).execute(((GlobalVariableHelper) this.getApplication()).getUsername(),type_of_chat);
+            new CreateChatGrpcTask(this, new_chat_name, String.valueOf(chat_latitude), String.valueOf(chat_longitude), radius).execute(((GlobalVariableHelper) this.getApplication()).getUsername(), type_of_chat);
         } else {
-            new CreateChatGrpcTask(this,new_chat_name).execute(((GlobalVariableHelper) this.getApplication()).getUsername(),type_of_chat);
+            new CreateChatGrpcTask(this, new_chat_name).execute(((GlobalVariableHelper) this.getApplication()).getUsername(), type_of_chat);
         }
     }
 
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
-        boolean checked = ((RadioButton)view).isChecked();
+        boolean checked = ((RadioButton) view).isChecked();
 
         // Check which radio button was clicked
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.radio_public:
                 if (checked) {
-                    current_checked = (RadioButton) findViewById(R.id.radio_public);
+                    current_checked = findViewById(R.id.radio_public);
                     findViewById(R.id.radiusId).setVisibility(View.GONE);
                     findViewById(R.id.textViewRadius).setVisibility(View.GONE);
                     findViewById(R.id.textViewLocation).setVisibility(View.GONE);
@@ -102,7 +99,7 @@ public class CreateChatActivity extends AppCompatActivity {
                 break;
             case R.id.radio_private:
                 if (checked) {
-                    current_checked = (RadioButton) findViewById(R.id.radio_private);
+                    current_checked = findViewById(R.id.radio_private);
                     findViewById(R.id.radiusId).setVisibility(View.GONE);
                     findViewById(R.id.textViewRadius).setVisibility(View.GONE);
                     findViewById(R.id.textViewLocation).setVisibility(View.GONE);
@@ -111,7 +108,7 @@ public class CreateChatActivity extends AppCompatActivity {
                 break;
             case R.id.radio_geofenced:
                 if (checked) {
-                    current_checked = (RadioButton) findViewById(R.id.radio_geofenced);
+                    current_checked = findViewById(R.id.radio_geofenced);
                     findViewById(R.id.radiusId).setVisibility(View.VISIBLE);
                     findViewById(R.id.textViewRadius).setVisibility(View.VISIBLE);
                     findViewById(R.id.textViewLocation).setVisibility(View.VISIBLE);

@@ -25,7 +25,6 @@ public class SendMessageGrpcTask extends AsyncTask<Object, Void, messageResponse
     private final WeakReference<Activity> activityReference;
     private final MessageAdapter messageAdapter;
 
-
     public SendMessageGrpcTask(Activity activity, RecyclerView messageRecycler) {
         this.activityReference = new WeakReference<>(activity);
         this.messageAdapter = (MessageAdapter) messageRecycler.getAdapter();
@@ -71,26 +70,8 @@ public class SendMessageGrpcTask extends AsyncTask<Object, Void, messageResponse
             Toast.makeText(activityReference.get().getApplicationContext(), "Error contacting the server",
                     Toast.LENGTH_SHORT).show();
         }
-        Button sendButton = (Button) activity.findViewById(R.id.send_button);
+        Button sendButton = activity.findViewById(R.id.send_button);
         sendButton.setEnabled(true);
-        /*messageAdapter.addToMessageList(result);
-        int position = messageAdapter.getItemCount() - 1;
-        messageAdapter.notifyItemInserted(position);
 
-        //save message in cache
-        boolean r = ((GlobalVariableHelper) activityReference.get().getApplication()).getDb().insertMessage(
-                result.getData(),
-                result.getUsername(),
-                result.getTimestamp(),
-                String.valueOf(result.getType()),
-                result.getChatroom(),
-                result.getPosition()
-        );
-
-        if(r) {
-            Log.d("SendMessageGrpcTask", "Message response inserted in cache.");
-        } else {
-            Log.d("SendMessageGrpcTask", "Couldn't insert message in cache.");
-        }*/
     }
 }

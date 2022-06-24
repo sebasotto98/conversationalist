@@ -36,9 +36,9 @@ public class JoinChatActivity extends AppCompatActivity {
 
         System.out.println("Location is: " + user_latitude + "/" + user_longitude);
 
-        new GetAvailableChatsToJoinGrpcTask(this,user_latitude,user_longitude).execute(((GlobalVariableHelper) this.getApplication()).getUsername());
+        new GetAvailableChatsToJoinGrpcTask(this, user_latitude, user_longitude).execute(((GlobalVariableHelper) this.getApplication()).getUsername());
 
-        chats_list = (ListView) findViewById(R.id.chats_list);
+        chats_list = findViewById(R.id.chats_list);
 
         chats_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -57,7 +57,7 @@ public class JoinChatActivity extends AppCompatActivity {
         Double[] user_location = getUserCoord();
         double user_latitude = user_location[0];
         double user_longitude = user_location[1];
-        new GetAvailableChatsToJoinGrpcTask(this,user_latitude,user_longitude).execute(((GlobalVariableHelper) this.getApplication()).getUsername());
+        new GetAvailableChatsToJoinGrpcTask(this, user_latitude, user_longitude).execute(((GlobalVariableHelper) this.getApplication()).getUsername());
         chats_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -70,7 +70,7 @@ public class JoinChatActivity extends AppCompatActivity {
 
     public void join(View view) {
 
-        new JoinChatGrpcTask(this,current_chat_to_join).execute(((GlobalVariableHelper) this.getApplication()).getUsername());
+        new JoinChatGrpcTask(this, current_chat_to_join).execute(((GlobalVariableHelper) this.getApplication()).getUsername());
 
     }
 

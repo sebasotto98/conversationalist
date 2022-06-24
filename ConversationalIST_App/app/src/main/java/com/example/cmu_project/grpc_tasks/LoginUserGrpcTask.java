@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cmu_project.R;
 import com.example.cmu_project.activities.ChatroomActivity;
 import com.example.cmu_project.helpers.CryptographyHelper;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
@@ -33,7 +36,6 @@ public class LoginUserGrpcTask extends AsyncTask<Object,Void, loginUserReply> {
         this.user = user;
     }
 
-
     @Override
     protected loginUserReply doInBackground(Object... params) {
 
@@ -55,7 +57,6 @@ public class LoginUserGrpcTask extends AsyncTask<Object,Void, loginUserReply> {
 
             return stub.withDeadlineAfter(5, TimeUnit.SECONDS).loginUser(request);
 
-
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
@@ -64,8 +65,6 @@ public class LoginUserGrpcTask extends AsyncTask<Object,Void, loginUserReply> {
             Log.d("LoginUserGrpcTask", sw.toString());
             return null;
         }
-
-
 
     }
 
@@ -103,16 +102,27 @@ public class LoginUserGrpcTask extends AsyncTask<Object,Void, loginUserReply> {
 
                 }
 
-
             } else {
-                Toast.makeText(activity.getApplicationContext(), reply.getAck(),
-                        Toast.LENGTH_SHORT).show();
-            }
+                TextView attemptsLeftNumberTextView = activity.findViewById(R.id.attempts_left_number_text_view);
+                attemptsLeftNumberTextView.setVisibility(View.VISIBLE);
 
+                int curAttemptsLeft = Integer.parseInt(attemptsLeftNumberTextView.getText().toString()) - 1;
+
+                if(curAttemptsLeft == 0) {
+                    Toast.makeText(activity.getApplicationContext(), "Account locked! Please contact the administrator to recover your account.",
+                            Toast.LENGTH_SHORT).show();
+
+                    attemptsLeftNumberTextView.setVisibility(View.GONE);
+                } else {
+                    Toast.makeText(activity.getApplicationContext(), reply.getAck(),
+                            Toast.LENGTH_SHORT).show();
+
+                    attemptsLeftNumberTextView.setText(String.valueOf(curAttemptsLeft));
+                }
+            }
 
         }
 
     }
-
 
 }

@@ -75,7 +75,6 @@ public class RemoveUserGrpcTask extends AsyncTask<Object,Void, RemoveUserReply> 
                     Toast.LENGTH_SHORT).show();
         }
 
-
     }
 
 }

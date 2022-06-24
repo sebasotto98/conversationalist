@@ -10,6 +10,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\app-data-files\chatrooms\AnotherServiceTest.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\app-data-files\chatrooms\CMU Chat.csv">
           <value>
             <Attribute>
@@ -17,28 +24,7 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\app-data-files\chatrooms\PARTY.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\app-data-files\chatrooms\newQ.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\app-data-files\chatrooms\ola.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\app-data-files\chatrooms\ola2.csv">
+        <entry key="\app-data-files\chatrooms\mygeofenc.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -53,13 +39,6 @@
           </value>
         </entry>
         <entry key="\app-data-files\chatrooms\sample_chat.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\app-data-files\chatrooms\zezocas.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -87,56 +66,7 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\app-data-files\users\da.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\app-data-files\users\da2.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\app-data-files\users\da3.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\app-data-files\users\da4.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\app-data-files\users\myTempFile.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\app-data-files\users\qq.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\app-data-files\users\sample_user.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\app-data-files\users\testUser1.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

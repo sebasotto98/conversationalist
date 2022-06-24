@@ -20,19 +20,19 @@ import io.grpc.examples.backendserver.ServerGrpc;
 public class AddUserToChatGrpcTask extends AsyncTask<Object,Void, AddUserToChatReply> {
 
     WeakReference<Activity> activityReference;
-    List<String> chat_members;
-    private String user_to_add;
+    List<String> chatMembers;
+    private final String userToAdd;
 
-    public AddUserToChatGrpcTask(Activity activity, List<String> chat_members,String user_to_add) {
+    public AddUserToChatGrpcTask(Activity activity, List<String> chatMembers, String userToAdd) {
         this.activityReference = new WeakReference<>(activity);
-        this.chat_members = chat_members;
-        this.user_to_add = user_to_add;
+        this.chatMembers = chatMembers;
+        this.userToAdd = userToAdd;
     }
 
     @Override
     protected AddUserToChatReply doInBackground(Object... params) {
 
-        String user_to_add = this.user_to_add;
+        String user_to_add = this.userToAdd;
         String chat_name  = (String) params[1];
 
         try {

@@ -25,21 +25,21 @@ import io.grpc.examples.backendserver.ServerGrpc;
 public class CreateChatGrpcTask extends AsyncTask<Object,Void, CreateChatReply> {
 
     WeakReference<Activity> activityReference;
-    String new_chat_name;
-    String chat_latitude;
-    String chat_longitude;
+    String newChatName;
+    String chatLatitude;
+    String chatLongitude;
     String radius;
 
-    public CreateChatGrpcTask(Activity activity,String new_chat_name) {
+    public CreateChatGrpcTask(Activity activity,String newChatName) {
         this.activityReference = new WeakReference<>(activity);
-        this.new_chat_name = new_chat_name;
+        this.newChatName = newChatName;
     }
 
-    public CreateChatGrpcTask(Activity activity,String new_chat_name,String chat_latitude,String chat_longitude,String radius) {
+    public CreateChatGrpcTask(Activity activity, String newChatName, String chatLatitude, String chatLongitude, String radius) {
         this.activityReference = new WeakReference<>(activity);
-        this.new_chat_name = new_chat_name;
-        this.chat_latitude = chat_latitude;
-        this.chat_longitude = chat_longitude;
+        this.newChatName = newChatName;
+        this.chatLatitude = chatLatitude;
+        this.chatLongitude = chatLongitude;
         this.radius = radius;
     }
 
@@ -59,10 +59,10 @@ public class CreateChatGrpcTask extends AsyncTask<Object,Void, CreateChatReply> 
             CreateChatRequest request;
 
             if(type_of_chat.equalsIgnoreCase(ChatType.GEOFENCED.name())) {
-                Location location = Location.newBuilder().setLatitude(chat_latitude).setLongitude(chat_longitude).build();
-                request = CreateChatRequest.newBuilder().setChatroomName(new_chat_name).setUser(user).setTypeOfChat(type_of_chat).setLocation(location).setRadius(radius).build();
+                Location location = Location.newBuilder().setLatitude(chatLatitude).setLongitude(chatLongitude).build();
+                request = CreateChatRequest.newBuilder().setChatroomName(newChatName).setUser(user).setTypeOfChat(type_of_chat).setLocation(location).setRadius(radius).build();
             } else {
-                request = CreateChatRequest.newBuilder().setChatroomName(new_chat_name).setUser(user).setTypeOfChat(type_of_chat).build();
+                request = CreateChatRequest.newBuilder().setChatroomName(newChatName).setUser(user).setTypeOfChat(type_of_chat).build();
             }
 
 
@@ -90,13 +90,13 @@ public class CreateChatGrpcTask extends AsyncTask<Object,Void, CreateChatReply> 
 
             //say to the service that we want to listen a new chat
             Intent intent = new Intent("NEWchat");
-            intent.putExtra("chat", new_chat_name);
+            intent.putExtra("chat", newChatName);
             LocalBroadcastManager.getInstance(activity.getApplicationContext()).sendBroadcast(intent);
 
             //jump to the chat activity
-            ((GlobalVariableHelper) activity.getApplication()).setCurrentChatroomName(new_chat_name);
+            ((GlobalVariableHelper) activity.getApplication()).setCurrentChatroomName(newChatName);
             Intent myIntent = new Intent(activity, ChatActivity.class);
-            myIntent.putExtra("chatroom",new_chat_name);
+            myIntent.putExtra("chatroom", newChatName);
             activity.startActivity(myIntent);
         } else {
             Toast.makeText(activity.getApplicationContext(), "Error contacting the server",

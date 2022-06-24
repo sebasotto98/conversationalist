@@ -22,12 +22,12 @@ import com.example.cmu_project.helpers.LinkHelper;
 
 public class LoginActivity extends AppCompatActivity {
 
-    LinkHelper link_helper;
+    LinkHelper linkHelper;
 
     Button loginButton, registerButton, quitButton;
-    EditText ed1, ed2;
+    EditText userNameEditText, passwordEditText;
 
-    TextView tx1;
+    TextView attemptsLeftNumberTextView;
 
     Menu menu = null;
 
@@ -36,17 +36,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        link_helper = new LinkHelper();
+        linkHelper = new LinkHelper();
 
-        loginButton = (Button) findViewById(R.id.login_button);
-        ed1 = (EditText) findViewById(R.id.edit_text);
-        ed2 = (EditText) findViewById(R.id.edit_text2);
+        loginButton = findViewById(R.id.login_button);
+        userNameEditText = findViewById(R.id.user_name_edit_text);
+        passwordEditText = findViewById(R.id.password_edit_text);
 
-        registerButton = (Button) findViewById(R.id.register_button);
+        registerButton = findViewById(R.id.register_button);
 
-        quitButton = (Button) findViewById(R.id.quit_button);
-        tx1 = (TextView) findViewById(R.id.text_view3);
-        tx1.setVisibility(View.GONE);
+        quitButton = findViewById(R.id.quit_button);
+        attemptsLeftNumberTextView = findViewById(R.id.attempts_left_number_text_view);
+        attemptsLeftNumberTextView.setVisibility(View.GONE);
 
         quitButton.setOnClickListener(v -> finish());
 
@@ -65,19 +65,19 @@ public class LoginActivity extends AppCompatActivity {
         String appLinkAction = intent.getAction();
         Uri appLinkData = intent.getData();
 
-        if (Intent.ACTION_VIEW.equals(appLinkAction) && appLinkData != null){
+        if (Intent.ACTION_VIEW.equals(appLinkAction) && appLinkData != null) {
             String chat_name = appLinkData.getLastPathSegment();
-            link_helper.setFlag(true);
-            link_helper.setChat_to_go(chat_name);
+            linkHelper.setFlag(true);
+            linkHelper.setChat_to_go(chat_name);
         }
     }
 
     public void login(View view) {
 
-        if (ed1.getText().toString().matches("") || ed2.getText().toString().matches("")) {
+        if (userNameEditText.getText().toString().matches("") || passwordEditText.getText().toString().matches("")) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
             String current_language = prefs.getString("language", "English");
-            if(current_language.equals("Português")){
+            if (current_language.equals("Português")) {
                 Toast.makeText(getApplicationContext(),
                         R.string.campo_em_falta, Toast.LENGTH_SHORT).show();
             } else if (current_language.equals("English")) {
@@ -86,18 +86,18 @@ public class LoginActivity extends AppCompatActivity {
             }
 
         } else {
-            String username = ed1.getText().toString();
-            String password = ed2.getText().toString();
-            new LoginUserGrpcTask(this,link_helper,username).execute(password);
+            String username = userNameEditText.getText().toString();
+            String password = passwordEditText.getText().toString();
+            new LoginUserGrpcTask(this, linkHelper, username).execute(password);
         }
 
     }
 
     public void register(View view) {
-        if (ed1.getText().toString().matches("") || ed2.getText().toString().matches("")) {
+        if (userNameEditText.getText().toString().matches("") || passwordEditText.getText().toString().matches("")) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
             String current_language = prefs.getString("language", "English");
-            if(current_language.equals("Português")){
+            if (current_language.equals("Português")) {
                 Toast.makeText(getApplicationContext(),
                         R.string.campo_em_falta, Toast.LENGTH_SHORT).show();
             } else if (current_language.equals("English")) {
@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         } else {
 
-            new RegisterUserGrpcTask(this,ed1.getText().toString(),link_helper).execute(ed2.getText().toString());
+            new RegisterUserGrpcTask(this, userNameEditText.getText().toString(), linkHelper).execute(passwordEditText.getText().toString());
 
         }
     }
@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
         String current_language = prefs.getString("language", "English");
-        if(current_language.equals("Português")){
+        if (current_language.equals("Português")) {
             setPortuguese();
         } else if (current_language.equals("English")) {
             setEnglish();
@@ -134,8 +134,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.language){
-            Intent myIntent = new Intent(LoginActivity.this, Languages.class);
+        if (id == R.id.language) {
+            Intent myIntent = new Intent(LoginActivity.this, LanguageActivity.class);
             LoginActivity.this.startActivity(myIntent);
         }
         return true;
@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
         String language = prefs.getString("language", "English");
 
-        if(menu != null) {
+        if (menu != null) {
             if (language.equals("Português")) {
                 setPortuguese();
             } else if (language.equals("English")) {
@@ -158,24 +158,24 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void setEnglish(){
-        TextView textview = (TextView) findViewById(R.id.textview);
-        TextView textview2 = (TextView) findViewById(R.id.textView2);
+    private void setEnglish() {
+        TextView titleTextView = findViewById(R.id.activity_title);
+        TextView attemptsLeftTextView = findViewById(R.id.attempts_left_text_view);
         (menu.findItem(R.id.language)).setTitle(R.string.language);
-        textview.setText(R.string.login_or_register);
-        ed1.setHint(R.string.enter_username);
-        textview2.setText(R.string.attempts_left);
+        titleTextView.setText(R.string.login_or_register);
+        userNameEditText.setHint(R.string.enter_username);
+        attemptsLeftTextView.setText(R.string.attempts_left);
         registerButton.setText(R.string.register);
         quitButton.setText(R.string.quit);
     }
 
-    private void setPortuguese(){
-        TextView textview = (TextView) findViewById(R.id.textview);
-        TextView textview2 = (TextView) findViewById(R.id.textView2);
+    private void setPortuguese() {
+        TextView titleTextView = findViewById(R.id.activity_title);
+        TextView attemptsLeftTextView = findViewById(R.id.attempts_left_text_view);
         (menu.findItem(R.id.language)).setTitle(R.string.linguagem);
-        textview.setText(R.string.login_ou_registar);
-        ed1.setHint(R.string.nome_utilizador);
-        textview2.setText(R.string.tentativas);
+        titleTextView.setText(R.string.login_ou_registar);
+        userNameEditText.setHint(R.string.nome_utilizador);
+        attemptsLeftTextView.setText(R.string.tentativas);
         registerButton.setText(R.string.registar);
         quitButton.setText(R.string.sair);
     }

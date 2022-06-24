@@ -5,7 +5,7 @@
 
     <TextView android:text = "@string/login_or_register" android:layout_width="wrap_content"
         android:layout_height = "wrap_content"
-        android:id = "@+id/textview"
+        android:id = "@+id/activity_title"
         android:textSize = "20sp"
         android:layout_alignParentTop = "true"
         android:layout_centerHorizontal = "true" />
@@ -14,14 +14,14 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textview"
+        android:layout_below="@+id/activity_title"
         android:layout_centerHorizontal="true"
         android:text="@string/conversationalist"
         android:textColor="#689F38"
         android:textSize="30sp" />
 
     <EditText
-        android:id="@+id/edit_text"
+        android:id="@+id/user_name_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView"
@@ -46,11 +46,11 @@
         android:src="@drawable/ist_logo" />
 
     <EditText
-        android:id="@+id/edit_text2"
+        android:id="@+id/password_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edit_text"
-        android:layout_alignEnd="@+id/edit_text"
+        android:layout_below="@+id/user_name_edit_text"
+        android:layout_alignEnd="@+id/user_name_edit_text"
         android:layout_alignParentStart="true"
         android:autofillHints=""
         android:ems="10"
@@ -63,21 +63,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/attempts_left"
-        android:id="@+id/textView2"
-        android:layout_below="@+id/edit_text2"
+        android:id="@+id/attempts_left_text_view"
+        android:layout_below="@+id/password_edit_text"
         android:layout_alignParentStart="true"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/text_view3"
-        android:layout_alignTop="@+id/textView2"
+        android:text="@string/_3"
+        android:id="@+id/attempts_left_number_text_view"
+        android:layout_alignTop="@+id/attempts_left_text_view"
         android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_toEndOf="@+id/textview"
-        android:textSize="25sp" />
+        android:layout_alignBottom="@+id/attempts_left_text_view"
+        android:layout_toEndOf="@+id/activity_title"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/login_button"
@@ -85,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="40dp"
-        android:layout_toStartOf="@+id/textview"
+        android:layout_toStartOf="@+id/activity_title"
         android:onClick="login"
         android:text="@string/login" />
 
@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="-120dp"
-        android:layout_toStartOf="@+id/textview"
+        android:layout_toStartOf="@+id/activity_title"
         android:onClick="register"
         android:text="@string/register" />
 
@@ -105,7 +105,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="30dp"
-        android:layout_toEndOf="@+id/textview"
+        android:layout_toEndOf="@+id/activity_title"
         android:text="@string/quit" />
 
 </RelativeLayout>

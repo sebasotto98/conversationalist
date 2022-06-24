@@ -9,19 +9,24 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -29,7 +34,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cmu_project.grpc_tasks.*;
-import com.example.cmu_project.listeners.MyOnScrollListener;
+import com.example.cmu_project.listeners.OnScrollListener;
 import com.example.cmu_project.R;
 import com.example.cmu_project.adapters.MessageAdapter;
 import com.example.cmu_project.enums.MessageType;
@@ -48,12 +53,14 @@ public class ChatActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_LOCATION_PICKER = 2;
 
+    private TextView chatNameTextView;
     private Button sendButton;
     private EditText messageEdit;
     private RecyclerView messageRecycler;
     private MessageAdapter messageAdapter;
     private String chatroom;
     private List<messageResponse> messageList = new ArrayList<>();
+    Menu menu = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +74,12 @@ public class ChatActivity extends AppCompatActivity {
 
         Log.d("ChatActivity", String.valueOf(getIntent().getStringExtra("chatroom")));
 
-        sendButton = (Button) findViewById(R.id.send_button);
-        messageEdit = (EditText) findViewById(R.id.message_edit_text);
-        messageRecycler = (RecyclerView) findViewById(R.id.recyclerView);
+        chatNameTextView = findViewById(R.id.activity_title);
+        chatNameTextView.setText(chatroom);
+
+        sendButton = findViewById(R.id.send_button);
+        messageEdit = findViewById(R.id.message_edit_text);
+        messageRecycler = findViewById(R.id.recyclerView);
 
         retrieveMessagesFromCache();
 
@@ -83,20 +93,19 @@ public class ChatActivity extends AppCompatActivity {
         messageRecycler.setLayoutManager(linearLayoutManager);
         messageRecycler.setAdapter(messageAdapter);
 
-        MyOnScrollListener myOnScrollListener = new MyOnScrollListener(this, messageRecycler);
+        OnScrollListener onScrollListener = new OnScrollListener(this, messageRecycler);
 
         ((GlobalVariableHelper) getApplication()).setMessageAdapter(messageAdapter);
         ((GlobalVariableHelper) getApplication()).setMessageRecycler(messageRecycler);
 
-        if(!messageList.isEmpty()){
+        if (!messageList.isEmpty()) {
             int firstPosition = messageList.get(0).getPosition();
-            if(firstPosition == 1){
-                myOnScrollListener.setGotAllChatMessages(true);
+            if (firstPosition == 1) {
+                onScrollListener.setGotAllChatMessages(true);
             }
         }
 
-        messageRecycler.addOnScrollListener(myOnScrollListener);
-
+        messageRecycler.addOnScrollListener(onScrollListener);
 
         messageRecycler.post(() -> {
             // Call smooth scroll
@@ -107,11 +116,11 @@ public class ChatActivity extends AppCompatActivity {
     private void retrieveMessagesFromCache() {
 
         Cursor messagesCursor = ((GlobalVariableHelper) this.getApplication()).getDb()
-                                                    .getAllChatroomMessages(chatroom);
+                .getAllChatroomMessages(chatroom);
         messagesCursor.moveToFirst();
         Log.d("CHAT ACTIVITY", String.valueOf(messagesCursor.getCount()));
         messageResponse message;
-        while(!messagesCursor.isAfterLast()){
+        while (!messagesCursor.isAfterLast()) {
 
             message = messageResponse.newBuilder()
                     .setChatroom(messagesCursor.getString(messagesCursor.getColumnIndexOrThrow(DBHelper.MESSAGES_COLUMN_CHATROOM)))
@@ -260,6 +269,60 @@ public class ChatActivity extends AppCompatActivity {
         Intent shareIntent = Intent.createChooser(sendIntent, null);
         startActivity(shareIntent);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_options, menu);
+        this.menu = menu;
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.language) {
+            Intent myIntent = new Intent(ChatActivity.this, LanguageActivity.class);
+            ChatActivity.this.startActivity(myIntent);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ChatActivity.this);
+        String current_language = prefs.getString("language", "English");
+        if (current_language.equals("Português")) {
+            setPortuguese();
+        } else if (current_language.equals("English")) {
+            setEnglish();
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void setEnglish() {
+        Button sendTextButton = findViewById(R.id.send_button);
+        sendTextButton.setText(R.string.send_text);
+        Button sendPhotoButton = findViewById(R.id.camera_button);
+        sendPhotoButton.setText(R.string.send_photo);
+        Button sendGeolocationButton = findViewById(R.id.map_button);
+        sendGeolocationButton.setText(R.string.send_geolocation);
+        Button shareLinkButton = findViewById(R.id.share_link_button);
+        shareLinkButton.setText(R.string.share_link);
+        (menu.findItem(R.id.language)).setTitle(R.string.language);
+    }
+
+    private void setPortuguese() {
+        Button sendTextButton = findViewById(R.id.send_button);
+        sendTextButton.setText(R.string.enviar_texto);
+        Button sendPhotoButton = findViewById(R.id.camera_button);
+        sendPhotoButton.setText(R.string.enviar_foto);
+        Button sendGeolocationButton = findViewById(R.id.map_button);
+        sendGeolocationButton.setText(R.string.enviar_geolocalizacao);
+        Button shareLinkButton = findViewById(R.id.share_link_button);
+        shareLinkButton.setText(R.string.partilhar_hiperligacao);
+        (menu.findItem(R.id.language)).setTitle(R.string.linguagem);
     }
 
 }

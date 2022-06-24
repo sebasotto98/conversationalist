@@ -58,11 +58,11 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.messageList = messageList;
     }
 
-    public int changeInMessageList(messageResponse message){
+    public int changeInMessageList(messageResponse message) {
         Log.d("MessageAdapter", String.valueOf(message));
         int i = 0;
-        for(int j = 0; j < getItemCount(); j++){
-            if(messageList.get(j).getPosition() == message.getPosition()){
+        for (int j = 0; j < getItemCount(); j++) {
+            if (messageList.get(j).getPosition() == message.getPosition()) {
                 i = j;
                 break;
             }
@@ -174,9 +174,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         MessageTextHolder(View itemView) {
             super(itemView);
-            messageText = (TextView) itemView.findViewById(R.id.text_message);
-            timeText = (TextView) itemView.findViewById(R.id.text_timestamp);
-            nameText = (TextView) itemView.findViewById(R.id.text_user);
+            messageText = itemView.findViewById(R.id.text_message);
+            timeText = itemView.findViewById(R.id.text_timestamp);
+            nameText = itemView.findViewById(R.id.text_user);
         }
 
         @SuppressLint("ClickableViewAccessibility")
@@ -209,14 +209,14 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         MessagePhotoHolder(View itemView) {
             super(itemView);
-            messagePhoto = (ImageView) itemView.findViewById(R.id.photo_message);
-            timePhoto = (TextView) itemView.findViewById(R.id.photo_timestamp);
-            namePhoto = (TextView) itemView.findViewById(R.id.photo_user);
+            messagePhoto = itemView.findViewById(R.id.photo_message);
+            timePhoto = itemView.findViewById(R.id.photo_timestamp);
+            namePhoto = itemView.findViewById(R.id.photo_user);
         }
 
         @SuppressLint("ClickableViewAccessibility")
         void bind(messageResponse message) {
-            if(!message.getData().isEmpty()){
+            if (!message.getData().isEmpty()) {
                 messagePhoto.setImageBitmap(stringToBitMap(message.getData()));
             }
             timePhoto.setText(message.getTimestamp());
@@ -228,8 +228,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                     new GetMessageAtPositionGrpcTask(context, messageAdapter)
                             .execute(
-                            message.getPosition(),
-                            ((GlobalVariableHelper) context.getApplicationContext()).getCurrentChatroomName()
+                                    message.getPosition(),
+                                    ((GlobalVariableHelper) context.getApplicationContext()).getCurrentChatroomName()
                             );
                 }
             });
@@ -328,6 +328,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             Uri.parse("http://maps.google.com/maps?saddr=" + userX + "," + userY + "&daddr=" + geolocationX + "," + geolocationY));
                     context.startActivity(intent);
                 }
+
                 @Override
                 public void onLongClick() {
                     super.onLongClick();
@@ -355,10 +356,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public Bitmap stringToBitMap(String encodedString) {
         try {
-            byte [] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             logger.warning(e.getMessage());
             return null;
         }

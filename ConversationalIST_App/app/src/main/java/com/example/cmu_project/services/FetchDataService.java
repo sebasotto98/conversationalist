@@ -184,9 +184,6 @@ public class FetchDataService extends Service {
                 Log.d("FetchDataService", "Nothing");
             }
 
-
-
-
             listenGrpcTask.listenNewChat(chat);
 
             currentChats.add(chat);

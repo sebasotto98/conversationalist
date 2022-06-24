@@ -22,15 +22,15 @@ import java.util.List;
 
 public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
 
-    private List<String> user_chats_list;
-    private List<String> user_owner_chats;
+    private final List<String> userChatsList;
+    private final List<String> userOwnerChats;
     private final Context context;
     public Application application;
     public String user;
 
-    public UserChatsAdapter(List<String> user_chats_list,List<String> user_owner_chats, Context context, Application application,String user) {
-        this.user_chats_list = user_chats_list;
-        this.user_owner_chats = user_owner_chats;
+    public UserChatsAdapter(List<String> userChatsList, List<String> userOwnerChats, Context context, Application application, String user) {
+        this.userChatsList = userChatsList;
+        this.userOwnerChats = userOwnerChats;
         this.context = context;
         this.application = application;
         this.user = user;
@@ -38,12 +38,12 @@ public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
 
     @Override
     public int getCount() {
-        return user_chats_list.size();
+        return userChatsList.size();
     }
 
     @Override
     public Object getItem(int pos) {
-        return user_chats_list.get(pos);
+        return userChatsList.get(pos);
     }
 
     @Override
@@ -64,14 +64,14 @@ public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
         }
 
         //Handle buttons and add onClickListeners
-        Button callbtn= (Button)view.findViewById(R.id.btn_item);
-        Button leavebtn = (Button)view.findViewById(R.id.btn_item_leave);
-        Button managebtn = (Button)view.findViewById(R.id.btn_item_manage);
-        callbtn.setText(user_chats_list.get(position));
+        Button callbtn = (Button) view.findViewById(R.id.btn_item);
+        Button leavebtn = (Button) view.findViewById(R.id.btn_item_leave);
+        Button managebtn = (Button) view.findViewById(R.id.btn_item_manage);
+        callbtn.setText(userChatsList.get(position));
         leavebtn.setText("Leave");
         managebtn.setText("Manage");
 
-        if (!user_owner_chats.contains(user_chats_list.get(position))) {
+        if (!userOwnerChats.contains(userChatsList.get(position))) {
             managebtn.setVisibility(View.GONE);
         }
 
@@ -84,13 +84,13 @@ public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
         });
 
         leavebtn.setOnClickListener(v -> {
-            new LeaveChatGrpcTask((Activity) v.getContext(),callbtn,leavebtn).execute(user,user_chats_list.get(position));
+            new LeaveChatGrpcTask((Activity) v.getContext(), callbtn, leavebtn).execute(user, userChatsList.get(position));
         });
 
         managebtn.setOnClickListener(v -> {
 
             Intent myIntent = new Intent(v.getContext(), ManageChatActivity.class);
-            myIntent.putExtra("chat_name",callbtn.getText().toString());
+            myIntent.putExtra("chat_name", callbtn.getText().toString());
             v.getContext().startActivity(myIntent);
 
         });

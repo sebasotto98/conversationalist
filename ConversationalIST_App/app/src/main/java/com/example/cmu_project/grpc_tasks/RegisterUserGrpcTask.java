@@ -55,7 +55,6 @@ public class RegisterUserGrpcTask extends AsyncTask<Object,Void, registerUserRep
             return null;
         }
 
-
     }
 
     @Override
@@ -100,6 +99,5 @@ public class RegisterUserGrpcTask extends AsyncTask<Object,Void, registerUserRep
         }
 
     }
-
 
 }

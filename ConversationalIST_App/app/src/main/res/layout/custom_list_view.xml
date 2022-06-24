@@ -7,8 +7,7 @@
         android:id="@+id/btn_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        />
+        android:padding="5dp" />
 
     <Button
         android:id="@+id/btn_item_leave"
@@ -16,8 +15,7 @@
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:layout_marginLeft="25dp"
-        android:layout_toRightOf="@+id/btn_item"
-        />
+        android:layout_toRightOf="@+id/btn_item" />
 
     <Button
         android:id="@+id/btn_item_manage"
@@ -25,9 +23,6 @@
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:layout_marginLeft="25dp"
-        android:layout_toRightOf="@+id/btn_item_leave"
-        />
-
-
+        android:layout_toRightOf="@+id/btn_item_leave" />
 
 </RelativeLayout>

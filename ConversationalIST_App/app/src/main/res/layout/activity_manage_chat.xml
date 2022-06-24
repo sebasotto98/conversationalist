@@ -13,7 +13,7 @@
         android:layout_marginTop="524dp"
         android:layout_marginEnd="160dp"
         android:onClick="add_user"
-        android:text="Add"
+        android:text="@string/add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="396dp"
         android:layout_marginEnd="156dp"
-        android:text="remove"
+        android:text="@string/remove"
         android:onClick="remove_user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

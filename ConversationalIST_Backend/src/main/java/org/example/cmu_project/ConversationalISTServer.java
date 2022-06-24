@@ -261,7 +261,6 @@ public class ConversationalISTServer {
                     }
                 }
 
-
             }
 
             JoinableChatsReply response = JoinableChatsReply.newBuilder().addAllChats(chats_available).build();
@@ -329,8 +328,6 @@ public class ConversationalISTServer {
 
         }
 
-
-
         @Override
         public void leaveChat(LeaveChatRequest request,StreamObserver<LeaveChatReply> responseObserver) {
 
@@ -351,8 +348,6 @@ public class ConversationalISTServer {
             responseObserver.onCompleted();
 
         }
-
-
 
         @Override
         public void getAllChats(GetChatsRequest request,StreamObserver<GetChatsReply> responseObserver) {
