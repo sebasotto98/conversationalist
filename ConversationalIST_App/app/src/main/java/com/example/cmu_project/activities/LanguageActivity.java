@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class LanguageActivity extends AppCompatActivity {
 
-    ListView language_list;
+    ListView languageList;
     String language;
     Button select;
 
@@ -28,14 +27,14 @@ public class LanguageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language);
 
-        language_list = findViewById(R.id.languages_list);
+        languageList = findViewById(R.id.languages_list);
         select = findViewById(R.id.select);
 
         List<String> languages = new ArrayList<>();
         languages.add("English");
         languages.add("Português");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(LanguageActivity.this, android.R.layout.simple_list_item_1, languages);
-        language_list.setAdapter(adapter);
+        languageList.setAdapter(adapter);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LanguageActivity.this);
         String current_language = prefs.getString("language", "English");
@@ -44,11 +43,11 @@ public class LanguageActivity extends AppCompatActivity {
             select.setText(R.string.selecionar);
         }
 
-        language_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        languageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                language = language_list.getItemAtPosition(i).toString();
+                language = languageList.getItemAtPosition(i).toString();
 
                 if (language.equals("Português")) {
                     select.setText(R.string.selecionar);

@@ -39,8 +39,6 @@ public class GlobalVariableHelper extends Application {
         setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
     }
 
-    private static final Logger logger = Logger.getLogger(GlobalVariableHelper.class.getName());
-
     private final DBHelper db = new DBHelper(this);
 
     private ServerGrpc.ServerBlockingStub serverBlockingStub = null;

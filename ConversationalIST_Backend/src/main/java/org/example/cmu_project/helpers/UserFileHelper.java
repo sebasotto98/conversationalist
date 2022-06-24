@@ -69,7 +69,7 @@ public class UserFileHelper extends FileHelper {
 
     }
 
-    public boolean checkPassword(String user, String password_hashed) {
+    public boolean checkPassword(String user, String passwordHashed) {
 
         try {
             File myObj = new File(USER_FILE_INFO + FILE_FORMAT);
@@ -81,7 +81,7 @@ public class UserFileHelper extends FileHelper {
 
                 String[] splited_line = newLine.split(",");
                 if (splited_line[0].equals(user)) {
-                    return splited_line[1].equals(password_hashed);
+                    return splited_line[1].equals(passwordHashed);
                 }
 
             }
@@ -145,31 +145,30 @@ public class UserFileHelper extends FileHelper {
 
     }
 
-    public boolean userInChat(String user,String chat_name) {
+    public boolean userInChat(String user,String chatName) {
 
         List<String> user_chats = this.getChats(user);
 
-        return user_chats.contains(chat_name);
+        return user_chats.contains(chatName);
 
     }
 
-
-    public boolean renameGuestFile(String guest_user, String new_user) {
+    public boolean renameGuestFile(String guestUser, String newUser) {
 
         // File (or directory) with old name
-        File file = new File(USER_FILES_PATH + guest_user + FILE_FORMAT);
+        File file = new File(USER_FILES_PATH + guestUser + FILE_FORMAT);
 
         // File (or directory) with new name
-        File file2 = new File(USER_FILES_PATH + new_user + FILE_FORMAT);
+        File file2 = new File(USER_FILES_PATH + newUser + FILE_FORMAT);
 
         return file.renameTo(file2);
 
     }
 
-    public void add_guest_user(String guest_user, String user,String password_hashed) throws IOException {
+    public void addGuestUser(String guestUser, String user, String passwordHashed) throws IOException {
 
-        this.removeGuest(guest_user);
-        this.store_info(user + "," + password_hashed);
+        this.removeGuest(guestUser);
+        this.store_info(user + "," + passwordHashed);
 
     }
 

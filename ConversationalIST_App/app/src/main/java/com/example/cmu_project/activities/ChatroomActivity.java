@@ -67,17 +67,17 @@ public class ChatroomActivity extends AppCompatActivity {
         new GetAllUserChatsGrpcTask(this, userChatsList, username).execute();
     }
 
-    public void create_chatroom(View view) {
+    public void createChatroom(View view) {
         Intent myIntent = new Intent(ChatroomActivity.this, CreateChatActivity.class);
         ChatroomActivity.this.startActivity(myIntent);
     }
 
-    public void join_chatroom(View view) {
+    public void joinChatroom(View view) {
         Intent myIntent = new Intent(ChatroomActivity.this, JoinChatActivity.class);
         ChatroomActivity.this.startActivity(myIntent);
     }
 
-    public void upgrade_account(View view) {
+    public void upgradeAccount(View view) {
         Intent myIntent = new Intent(ChatroomActivity.this, UpgradeAccountActivity.class);
         ChatroomActivity.this.startActivity(myIntent);
     }

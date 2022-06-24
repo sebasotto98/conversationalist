@@ -77,7 +77,6 @@ public class ChatroomFileHelper extends FileHelper {
         }
         return chat_type;
 
-
     }
 
     public List<String> getChatLocation(String chat_name) {
@@ -97,7 +96,6 @@ public class ChatroomFileHelper extends FileHelper {
                      ret.add(splited_line[3]);
                      ret.add(splited_line[4]);
                 }
-
 
             }
             myReader.close();
@@ -134,6 +132,5 @@ public class ChatroomFileHelper extends FileHelper {
         return null;
 
     }
-
 
 }

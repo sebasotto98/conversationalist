@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="57dp"
-        android:onClick="join_chatroom"
+        android:onClick="joinChatroom"
         android:text="@string/join_new_chatroom" />
 
     <Button
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="113dp"
-        android:onClick="upgrade_account"
+        android:onClick="upgradeAccount"
         android:text="@string/upgrade_account" />
 
     <Button
@@ -53,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:onClick="create_chatroom"
+        android:onClick="createChatroom"
         android:text="@string/create_new_chatroom" />
 
     <ListView

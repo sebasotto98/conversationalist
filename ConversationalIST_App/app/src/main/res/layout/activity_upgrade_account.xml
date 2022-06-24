@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="272dp"
         android:layout_marginEnd="272dp"
-        android:onClick="send_upgrade"
+        android:onClick="sendUpgrade"
         android:text="@string/upgrade"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -50,6 +50,5 @@
         android:textColorHint="#ffff299f"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

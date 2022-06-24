@@ -19,9 +19,6 @@ import java.util.concurrent.TimeUnit;
 import io.grpc.examples.backendserver.ServerGrpc;
 import io.grpc.examples.backendserver.empty_message;
 import io.grpc.examples.backendserver.loginGuestReply;
-import io.grpc.examples.backendserver.loginUserReply;
-import io.grpc.examples.backendserver.loginUserRequest;
-
 
 public class LoginAsGuestGrpcTask extends AsyncTask<Object,Void, loginGuestReply> {
 

@@ -263,9 +263,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         MessageGeolocationHolder(View itemView) {
             super(itemView);
-            messageGeolocation = (ImageView) itemView.findViewById(R.id.geolocation_message);
-            timeGeolocation = (TextView) itemView.findViewById(R.id.geolocation_timestamp);
-            nameGeolocation = (TextView) itemView.findViewById(R.id.geolocation_user);
+            messageGeolocation = itemView.findViewById(R.id.geolocation_message);
+            timeGeolocation = itemView.findViewById(R.id.geolocation_timestamp);
+            nameGeolocation = itemView.findViewById(R.id.geolocation_user);
         }
 
         @SuppressLint("ClickableViewAccessibility")

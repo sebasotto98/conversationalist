@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void login_as_guest(View view) {
+    public void loginAsGuest(View view) {
 
         new LoginAsGuestGrpcTask(this).execute();
 

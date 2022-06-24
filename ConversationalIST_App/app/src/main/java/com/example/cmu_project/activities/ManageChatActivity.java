@@ -18,18 +18,16 @@ import com.example.cmu_project.grpc_tasks.AddUserToChatGrpcTask;
 import com.example.cmu_project.grpc_tasks.GetChatMembersGrpcTask;
 import com.example.cmu_project.grpc_tasks.RemoveUserGrpcTask;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class ManageChatActivity extends AppCompatActivity {
 
-    ListView chat_members_list;
-    String chat_name;
-    String user_to_remove;
-    List<String> chat_members;
-    EditText add_user;
+    ListView chatMembersList;
+    String chatName;
+    String userToRemove;
+    List<String> chatMembers;
+    EditText addUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,38 +35,38 @@ public class ManageChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_chat);
 
-        chat_name = getIntent().getExtras().getString("chat_name");
+        chatName = getIntent().getExtras().getString("chat_name");
 
-        add_user = findViewById(R.id.add_user_text);
-        chat_members_list = findViewById(R.id.chat_members_list);
-        chat_members = new ArrayList<>();
+        addUser = findViewById(R.id.add_user_text);
+        chatMembersList = findViewById(R.id.chat_members_list);
+        chatMembers = new ArrayList<>();
 
-        new GetChatMembersGrpcTask(this, chat_members_list, chat_members).execute(chat_name);
+        new GetChatMembersGrpcTask(this, chatMembersList, chatMembers).execute(chatName);
 
-        chat_members_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        chatMembersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                user_to_remove = chat_members_list.getItemAtPosition(i).toString();
+                userToRemove = chatMembersList.getItemAtPosition(i).toString();
 
             }
         });
 
     }
 
-    public void add_user(View view) {
+    public void addUser(View view) {
 
-        if (add_user.getText().toString().matches("")) {
+        if (addUser.getText().toString().matches("")) {
             Toast.makeText(this.getApplicationContext(), "Add user is empty",
                     Toast.LENGTH_SHORT).show();
         } else {
-            new AddUserToChatGrpcTask(this, chat_members, add_user.getText().toString()).execute(user_to_remove, chat_name);
-            new GetChatMembersGrpcTask(this, chat_members_list, chat_members).execute(chat_name);
-            chat_members_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            new AddUserToChatGrpcTask(this, chatMembers, addUser.getText().toString()).execute(userToRemove, chatName);
+            new GetChatMembersGrpcTask(this, chatMembersList, chatMembers).execute(chatName);
+            chatMembersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                    user_to_remove = chat_members_list.getItemAtPosition(i).toString();
+                    userToRemove = chatMembersList.getItemAtPosition(i).toString();
 
                 }
             });
@@ -76,20 +74,20 @@ public class ManageChatActivity extends AppCompatActivity {
 
     }
 
-    public void remove_user(View view) {
+    public void removeUser(View view) {
 
-        if (user_to_remove.matches("")) {
+        if (userToRemove.matches("")) {
             Toast.makeText(this.getApplicationContext(), "No user to remove selected",
                     Toast.LENGTH_SHORT).show();
         } else {
 
-            new RemoveUserGrpcTask(this, user_to_remove).execute(chat_name);
-            new GetChatMembersGrpcTask(this, chat_members_list, chat_members).execute(chat_name);
-            chat_members_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            new RemoveUserGrpcTask(this, userToRemove).execute(chatName);
+            new GetChatMembersGrpcTask(this, chatMembersList, chatMembers).execute(chatName);
+            chatMembersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                    user_to_remove = chat_members_list.getItemAtPosition(i).toString();
+                    userToRemove = chatMembersList.getItemAtPosition(i).toString();
 
                 }
             });

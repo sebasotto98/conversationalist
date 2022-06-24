@@ -187,7 +187,7 @@ public class ConversationalISTServer {
 
                 //add new user to users_info
                 try {
-                    userFileHelper.add_guest_user(guest_user,new_user,hashed_pass);
+                    userFileHelper.addGuestUser(guest_user,new_user,hashed_pass);
                 } catch (IOException e) {
                     ack = "ERROR";
                     e.printStackTrace();
@@ -544,11 +544,11 @@ public class ConversationalISTServer {
 
         @Override
         public StreamObserver<listenToChatroom> listenToChatrooms(StreamObserver<messageResponse> responseObserver){
-            return new listenToChatroomObserver(responseObserver);
+            return new ListenToChatroomObserver(responseObserver);
         }
 
         public StreamObserver<listenToChatroom> listenToChatroomsMobileData(StreamObserver<messageResponse> responseObserver){
-            return new listenToChatroomMobileDataObserver(responseObserver);
+            return new ListenToChatroomMobileDataObserver(responseObserver);
         }
 
         @Override
@@ -683,7 +683,7 @@ public class ConversationalISTServer {
 
             List<StreamObserver<messageResponse>> clients = clientSubscriptionsMobileData.get(chatroom);
             if(clients == null || clients.isEmpty()){
-                logger.info("No interested Clients"); //how??
+                logger.info("No interested Clients");
             } else {
                 for(StreamObserver<messageResponse> client: clients){
                     client.onNext(mobileDataMessage);
@@ -703,12 +703,12 @@ public class ConversationalISTServer {
             }
         }
 
-        private static class listenToChatroomObserver implements StreamObserver<listenToChatroom> {
+        private static class ListenToChatroomObserver implements StreamObserver<listenToChatroom> {
 
             private final StreamObserver<messageResponse> responseObserver;
-            private List<String> allChats = new ArrayList<>();
+            private final List<String> allChats = new ArrayList<>();
 
-            public listenToChatroomObserver(StreamObserver<messageResponse> responseObserver) {
+            public ListenToChatroomObserver(StreamObserver<messageResponse> responseObserver) {
                 this.responseObserver = responseObserver;
             }
 
@@ -747,12 +747,12 @@ public class ConversationalISTServer {
             }
         }
 
-        private static class listenToChatroomMobileDataObserver implements StreamObserver<listenToChatroom> {
+        private static class ListenToChatroomMobileDataObserver implements StreamObserver<listenToChatroom> {
 
             private final StreamObserver<messageResponse> responseObserver;
-            private List<String> allChats = new ArrayList<>();
+            private final List<String> allChats = new ArrayList<>();
 
-            public listenToChatroomMobileDataObserver(StreamObserver<messageResponse> responseObserver) {
+            public ListenToChatroomMobileDataObserver(StreamObserver<messageResponse> responseObserver) {
                 this.responseObserver = responseObserver;
             }
 

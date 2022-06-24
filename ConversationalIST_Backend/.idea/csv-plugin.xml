@@ -52,6 +52,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\app-data-files\sample_chatrooms_info.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\sample_passwords.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\app-data-files\users\Guest_1.csv">
           <value>
             <Attribute>
@@ -60,6 +74,13 @@
           </value>
         </entry>
         <entry key="\app-data-files\users\sample_user.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\users\seba.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

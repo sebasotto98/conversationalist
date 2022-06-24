@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cmu_project.R;
@@ -17,8 +16,8 @@ import com.example.cmu_project.helpers.GlobalVariableHelper;
 
 public class UpgradeAccountActivity extends AppCompatActivity {
 
-    String guest_user;
-    EditText new_user;
+    String guestUser;
+    EditText newUser;
     EditText password;
 
     @Override
@@ -27,20 +26,18 @@ public class UpgradeAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upgrade_account);
 
-        guest_user = ((GlobalVariableHelper) this.getApplication()).getUsername();
-        this.new_user = findViewById(R.id.user_name_edit_text_guest);
+        guestUser = ((GlobalVariableHelper) this.getApplication()).getUsername();
+        this.newUser = findViewById(R.id.user_name_edit_text_guest);
         this.password = findViewById(R.id.password_edit_text_guest);
-
-
     }
 
-    public void send_upgrade(View view) {
+    public void sendUpgrade(View view) {
 
-        if (new_user.getText().toString().matches("") || password.getText().toString().matches("")) {
+        if (newUser.getText().toString().matches("") || password.getText().toString().matches("")) {
             Toast.makeText(getApplicationContext(),
                     R.string.field_missing, Toast.LENGTH_SHORT).show();
         } else {
-            new UpgradeAccountGrpcTask(this,new_user.getText().toString()).execute(guest_user,password.getText().toString());
+            new UpgradeAccountGrpcTask(this, newUser.getText().toString()).execute(guestUser,password.getText().toString());
         }
 
     }

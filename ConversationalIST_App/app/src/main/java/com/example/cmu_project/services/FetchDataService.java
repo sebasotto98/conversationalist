@@ -17,7 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.example.cmu_project.activities.JoinChatActivity;
 import com.example.cmu_project.contexts.MobDataContext;
 import com.example.cmu_project.contexts.WifiContext;
 import com.example.cmu_project.grpc_tasks.GetAllMessagesFromChatGrpcTask;

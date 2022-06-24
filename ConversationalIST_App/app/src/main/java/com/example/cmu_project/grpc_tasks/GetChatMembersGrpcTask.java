@@ -21,7 +21,6 @@ import io.grpc.examples.backendserver.GetChatMembersReply;
 import io.grpc.examples.backendserver.GetChatMembersRequest;
 import io.grpc.examples.backendserver.ServerGrpc;
 
-
 public class GetChatMembersGrpcTask extends AsyncTask<Object,Void, GetChatMembersReply> {
 
     WeakReference<Activity> activityReference;

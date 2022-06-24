@@ -9,9 +9,8 @@ public class CryptographyHelper {
 
         MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
         messageDigest.update(stringToHash.getBytes());
-        String stringHash = new String(messageDigest.digest());
 
-        return stringHash;
+        return new String(messageDigest.digest());
 
     }
 

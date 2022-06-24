@@ -22,17 +22,16 @@ public class RemoveUserGrpcTask extends AsyncTask<Object,Void, RemoveUserReply> 
 
     WeakReference<Activity> activityReference;
 
-    private String user_to_remove;
+    private final String userToRemove;
 
-    public RemoveUserGrpcTask(Activity activity, String user_to_remove) {
+    public RemoveUserGrpcTask(Activity activity, String userToRemove) {
         this.activityReference = new WeakReference<>(activity);
-        this.user_to_remove = user_to_remove;
+        this.userToRemove = userToRemove;
     }
 
     @Override
     protected RemoveUserReply doInBackground(Object... params) {
 
-        String user_to_remove = this.user_to_remove;
         String chat_name = (String) params[0];
 
         try {
@@ -41,7 +40,7 @@ public class RemoveUserGrpcTask extends AsyncTask<Object,Void, RemoveUserReply> 
                     = ((GlobalVariableHelper) activityReference.get().getApplication())
                     .getServerBlockingStub();
 
-            RemoveUserRequest request = RemoveUserRequest.newBuilder().setUserToRemove(user_to_remove).setChatName(chat_name).build();
+            RemoveUserRequest request = RemoveUserRequest.newBuilder().setUserToRemove(this.userToRemove).setChatName(chat_name).build();
             return stub.withDeadlineAfter(5, TimeUnit.SECONDS).removeUserFromChat(request);
 
         } catch (Exception e) {

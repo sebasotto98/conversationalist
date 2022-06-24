@@ -118,7 +118,6 @@ public class FileHelper {
 
             myObj.delete();
 
-
             //update the value
             int cur_int_number = Integer.parseInt(cur_number);
             cur_int_number = cur_int_number + 1;
@@ -128,13 +127,11 @@ public class FileHelper {
             myWriter.write(next_cur_number+",");
             myWriter.close();
 
-
         } catch (FileNotFoundException e) {
             logger.warning(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         return cur_number;
 

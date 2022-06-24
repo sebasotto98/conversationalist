@@ -36,11 +36,11 @@ public class CreateChatActivity extends AppCompatActivity {
     private static final int REQUEST_LOCATION_PICKER = 1;
 
     Button sendRequest;
-    EditText chat_name;
-    RadioButton current_checked;
+    EditText chatName;
+    RadioButton currentChecked;
 
-    double chat_latitude;
-    double chat_longitude;
+    double chatLatitude;
+    double chatLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class CreateChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_chat);
 
         sendRequest = findViewById(R.id.create_chatroom);
-        chat_name = findViewById(R.id.chat_name);
+        chatName = findViewById(R.id.chat_name);
 
     }
 
@@ -59,8 +59,8 @@ public class CreateChatActivity extends AppCompatActivity {
             double latitude = data.getDoubleExtra("latitude", 0.0);
             double longitude = data.getDoubleExtra("longitude", 0.0);
 
-            chat_latitude = latitude;
-            chat_longitude = longitude;
+            chatLatitude = latitude;
+            chatLongitude = longitude;
 
             String geolocation = latitude + "/" + longitude;
             System.out.println("Location is: " + geolocation);
@@ -73,13 +73,13 @@ public class CreateChatActivity extends AppCompatActivity {
 
     public void create(View view) {
 
-        String new_chat_name = chat_name.getText().toString();
-        String type_of_chat = current_checked.getText().toString();
+        String new_chat_name = chatName.getText().toString();
+        String type_of_chat = currentChecked.getText().toString();
         EditText radiusId = (EditText) findViewById(R.id.radiusId);
         String radius = radiusId.getText().toString();
 
         if (type_of_chat.equalsIgnoreCase(ChatType.GEOFENCED.name())) {
-            new CreateChatGrpcTask(this, new_chat_name, String.valueOf(chat_latitude), String.valueOf(chat_longitude), radius).execute(((GlobalVariableHelper) this.getApplication()).getUsername(), type_of_chat);
+            new CreateChatGrpcTask(this, new_chat_name, String.valueOf(chatLatitude), String.valueOf(chatLongitude), radius).execute(((GlobalVariableHelper) this.getApplication()).getUsername(), type_of_chat);
         } else {
             new CreateChatGrpcTask(this, new_chat_name).execute(((GlobalVariableHelper) this.getApplication()).getUsername(), type_of_chat);
         }
@@ -93,7 +93,7 @@ public class CreateChatActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.radio_public:
                 if (checked) {
-                    current_checked = findViewById(R.id.radio_public);
+                    currentChecked = findViewById(R.id.radio_public);
                     findViewById(R.id.radiusId).setVisibility(View.GONE);
                     findViewById(R.id.textViewRadius).setVisibility(View.GONE);
                     findViewById(R.id.textViewLocation).setVisibility(View.GONE);
@@ -102,7 +102,7 @@ public class CreateChatActivity extends AppCompatActivity {
                 break;
             case R.id.radio_private:
                 if (checked) {
-                    current_checked = findViewById(R.id.radio_private);
+                    currentChecked = findViewById(R.id.radio_private);
                     findViewById(R.id.radiusId).setVisibility(View.GONE);
                     findViewById(R.id.textViewRadius).setVisibility(View.GONE);
                     findViewById(R.id.textViewLocation).setVisibility(View.GONE);
@@ -111,7 +111,7 @@ public class CreateChatActivity extends AppCompatActivity {
                 break;
             case R.id.radio_geofenced:
                 if (checked) {
-                    current_checked = findViewById(R.id.radio_geofenced);
+                    currentChecked = findViewById(R.id.radio_geofenced);
                     findViewById(R.id.radiusId).setVisibility(View.VISIBLE);
                     findViewById(R.id.textViewRadius).setVisibility(View.VISIBLE);
                     findViewById(R.id.textViewLocation).setVisibility(View.VISIBLE);

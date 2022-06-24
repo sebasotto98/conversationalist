@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.cmu_project.grpc_tasks.GetAvailableChatsToJoinGrpcTask;
 import com.example.cmu_project.grpc_tasks.JoinChatGrpcTask;
@@ -25,8 +24,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class JoinChatActivity extends AppCompatActivity {
 
-    ListView chats_list;
-    String current_chat_to_join;
+    ListView chatsList;
+    String currentChatToJoin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +41,13 @@ public class JoinChatActivity extends AppCompatActivity {
 
         new GetAvailableChatsToJoinGrpcTask(this, user_latitude, user_longitude).execute(((GlobalVariableHelper) this.getApplication()).getUsername());
 
-        chats_list = findViewById(R.id.chats_list);
+        chatsList = findViewById(R.id.chats_list);
 
-        chats_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        chatsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                current_chat_to_join = chats_list.getItemAtPosition(i).toString();
+                currentChatToJoin = chatsList.getItemAtPosition(i).toString();
 
             }
         });
@@ -62,11 +61,11 @@ public class JoinChatActivity extends AppCompatActivity {
         double user_latitude = user_location[0];
         double user_longitude = user_location[1];
         new GetAvailableChatsToJoinGrpcTask(this, user_latitude, user_longitude).execute(((GlobalVariableHelper) this.getApplication()).getUsername());
-        chats_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        chatsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                current_chat_to_join = chats_list.getItemAtPosition(i).toString();
+                currentChatToJoin = chatsList.getItemAtPosition(i).toString();
 
             }
         });
@@ -83,7 +82,7 @@ public class JoinChatActivity extends AppCompatActivity {
 
     public void join(View view) {
 
-        new JoinChatGrpcTask(this, current_chat_to_join).execute(((GlobalVariableHelper) this.getApplication()).getUsername());
+        new JoinChatGrpcTask(this, currentChatToJoin).execute(((GlobalVariableHelper) this.getApplication()).getUsername());
 
     }
 

@@ -13,9 +13,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
-import android.widget.TextView;
 
-import com.example.cmu_project.activities.LoginActivity;
 import com.example.cmu_project.activities.ManageChatActivity;
 import com.example.cmu_project.grpc_tasks.LeaveChatGrpcTask;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
@@ -66,13 +64,13 @@ public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
 
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.custom_list_view, null);
+            view = inflater.inflate(R.layout.view_user_chats, null);
         }
 
         //Handle buttons and add onClickListeners
-        callbtn = (Button) view.findViewById(R.id.btn_item);
-        leavebtn = (Button) view.findViewById(R.id.btn_item_leave);
-        managebtn = (Button) view.findViewById(R.id.btn_item_manage);
+        callbtn = view.findViewById(R.id.btn_item);
+        leavebtn = view.findViewById(R.id.btn_item_leave);
+        managebtn = view.findViewById(R.id.btn_item_manage);
         callbtn.setText(userChatsList.get(position));
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -88,10 +86,10 @@ public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
         }
 
         callbtn.setOnClickListener(v -> {
-            ((GlobalVariableHelper) app).setCurrentChatroomName(callbtn.getText().toString());
+            ((GlobalVariableHelper) app).setCurrentChatroomName(userChatsList.get(position));
 
             Intent myIntent = new Intent(v.getContext(), ChatActivity.class);
-            myIntent.putExtra("chatroom", callbtn.getText().toString());
+            myIntent.putExtra("chatroom", userChatsList.get(position));
             v.getContext().startActivity(myIntent);
         });
 

@@ -20,8 +20,6 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -53,14 +51,12 @@ public class ChatActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_LOCATION_PICKER = 2;
 
-    private TextView chatNameTextView;
     private Button sendButton;
     private EditText messageEdit;
     private RecyclerView messageRecycler;
     private MessageAdapter messageAdapter;
     private String chatroom;
-    private List<messageResponse> messageList = new ArrayList<>();
-
+    private final List<messageResponse> messageList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +70,7 @@ public class ChatActivity extends AppCompatActivity {
 
         Log.d("ChatActivity", String.valueOf(getIntent().getStringExtra("chatroom")));
 
-        chatNameTextView = findViewById(R.id.activity_title);
+        TextView chatNameTextView = findViewById(R.id.activity_title);
         chatNameTextView.setText(chatroom);
 
         sendButton = findViewById(R.id.send_button);
@@ -270,7 +266,6 @@ public class ChatActivity extends AppCompatActivity {
         startActivity(shareIntent);
 
     }
-
 
     @Override
     protected void onResume() {

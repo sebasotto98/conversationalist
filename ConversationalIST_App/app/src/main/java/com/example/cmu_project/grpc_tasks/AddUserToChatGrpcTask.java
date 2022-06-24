@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.cmu_project.activities.LoginActivity;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 
 import java.io.PrintWriter;

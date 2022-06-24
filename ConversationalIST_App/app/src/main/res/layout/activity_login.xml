@@ -85,6 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="40dp"
+        android:layout_marginBottom="90dp"
         android:layout_toStartOf="@+id/activity_title"
         android:onClick="login"
         android:text="@string/login" />
@@ -94,7 +95,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="-120dp"
+        android:layout_marginEnd="-278dp"
+        android:layout_marginBottom="90dp"
         android:layout_toStartOf="@+id/activity_title"
         android:onClick="register"
         android:text="@string/register" />
@@ -104,10 +106,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="-110dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginEnd="-34dp"
         android:layout_toStartOf="@+id/activity_title"
-        android:onClick="login_as_guest"
+        android:onClick="loginAsGuest"
         android:text="@string/start" />
 
     <Button
@@ -115,7 +116,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="38dp"
         android:layout_toEndOf="@+id/activity_title"
         android:text="@string/quit" />
 

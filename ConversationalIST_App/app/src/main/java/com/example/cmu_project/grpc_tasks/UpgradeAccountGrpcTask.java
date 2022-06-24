@@ -20,24 +20,22 @@ import java.util.concurrent.TimeUnit;
 import io.grpc.examples.backendserver.ServerGrpc;
 import io.grpc.examples.backendserver.UpgradeAccountReply;
 import io.grpc.examples.backendserver.UpgradeAccountRequest;
-import io.grpc.examples.backendserver.empty_message;
-
 
 public class UpgradeAccountGrpcTask extends AsyncTask<Object,Void, UpgradeAccountReply> {
 
     WeakReference<Activity> activityReference;
-    String new_user;
+    String newUser;
 
-    public UpgradeAccountGrpcTask(Activity activity,String new_user) {
+    public UpgradeAccountGrpcTask(Activity activity,String newUser) {
         this.activityReference = new WeakReference<>(activity);
-        this.new_user = new_user;
+        this.newUser = newUser;
     }
 
     @Override
     protected UpgradeAccountReply doInBackground(Object... params) {
 
         String guest_user = (String) params[0];
-        String new_user = this.new_user;
+        String new_user = this.newUser;
         String password = (String) params[1];
 
         try {
@@ -90,12 +88,12 @@ public class UpgradeAccountGrpcTask extends AsyncTask<Object,Void, UpgradeAccoun
                 } else if (language.equals("English")) {
                     Toast.makeText(activity.getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
                 }
-                ((GlobalVariableHelper) activity.getApplication()).setUsername(this.new_user);
+                ((GlobalVariableHelper) activity.getApplication()).setUsername(this.newUser);
 
                 //jump to the chatRoom activity
                 Intent myIntent = new Intent(activity, ChatroomActivity.class);
                 myIntent.putExtra("isGuest",false);
-                myIntent.putExtra("username",this.new_user);
+                myIntent.putExtra("username",this.newUser);
                 activity.startActivity(myIntent);
 
 
