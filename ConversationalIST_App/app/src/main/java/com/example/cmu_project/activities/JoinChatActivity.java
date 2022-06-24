@@ -4,11 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.cmu_project.grpc_tasks.GetAvailableChatsToJoinGrpcTask;
 import com.example.cmu_project.grpc_tasks.JoinChatGrpcTask;
@@ -66,6 +70,15 @@ public class JoinChatActivity extends AppCompatActivity {
 
             }
         });
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(JoinChatActivity.this);
+        String language = prefs.getString("language", "English");
+
+        if (language.equals("Português")) {
+            setPortuguese();
+        } else if (language.equals("English")) {
+            setEnglish();
+        }
     }
 
     public void join(View view) {
@@ -99,6 +112,16 @@ public class JoinChatActivity extends AppCompatActivity {
         });
 
         return userCoordinates;
+    }
+
+    private void setEnglish() {
+        Button join_chat = findViewById(R.id.join_chat);
+        join_chat.setText(R.string.join);
+    }
+
+    private void setPortuguese() {
+        Button join_chat = findViewById(R.id.join_chat);
+        join_chat.setText(R.string.juntar);
     }
 
 }

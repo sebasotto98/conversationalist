@@ -50,6 +50,12 @@ public class LanguageActivity extends AppCompatActivity {
 
                 language = language_list.getItemAtPosition(i).toString();
 
+                if (language.equals("Português")) {
+                    select.setText(R.string.selecionar);
+                } else if (language.equals("English")) {
+                    select.setText(R.string.select);
+                }
+
             }
         });
 

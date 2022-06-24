@@ -57,6 +57,13 @@ public class ChatroomActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ChatroomActivity.this);
+        String current_language = prefs.getString("language", "English");
+        if (current_language.equals("Português")) {
+            setPortuguese();
+        } else if (current_language.equals("English")) {
+            setEnglish();
+        }
         new GetAllUserChatsGrpcTask(this, userChatsList, username).execute();
     }
 
@@ -122,8 +129,14 @@ public class ChatroomActivity extends AppCompatActivity {
         joinNewChatroomButton.setText(R.string.join_new_chatroom);
         Button createNewChatroomButton = findViewById(R.id.create_new_chatroom_button);
         createNewChatroomButton.setText(R.string.create_new_chatroom);
-        (menu.findItem(R.id.language)).setTitle(R.string.language);
+        if(menu != null){
+            (menu.findItem(R.id.language)).setTitle(R.string.language);
+        }
+        String welcomeMessage = "Welcome " + username + "!";
+        userNameTextView.setText(welcomeMessage);
 
+        Button upgrade_account = findViewById(R.id.upgrade_account);
+        upgrade_account.setText(R.string.upgrade_account);
     }
 
     private void setPortuguese() {
@@ -133,7 +146,15 @@ public class ChatroomActivity extends AppCompatActivity {
         joinNewChatroomButton.setText(R.string.entrar_em_nova_sala_de_conversacao);
         Button createNewChatroomButton = findViewById(R.id.create_new_chatroom_button);
         createNewChatroomButton.setText(R.string.criar_nova_sala_de_conversacao);
-        (menu.findItem(R.id.language)).setTitle(R.string.linguagem);
+        if(menu != null){
+            (menu.findItem(R.id.language)).setTitle(R.string.linguagem);
+        }
+        String welcomeMessage = "Bem-Vindo " + username + "!";
+        userNameTextView.setText(welcomeMessage);
+
+        Button upgrade_account = findViewById(R.id.upgrade_account);
+        upgrade_account.setText(R.string.melhorar_conta);
+
     }
 
 }

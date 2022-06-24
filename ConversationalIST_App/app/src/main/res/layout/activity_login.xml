@@ -108,7 +108,7 @@
         android:layout_marginBottom="80dp"
         android:layout_toStartOf="@+id/activity_title"
         android:onClick="login_as_guest"
-        android:text="Start" />
+        android:text="@string/start" />
 
     <Button
         android:id="@+id/quit_button"

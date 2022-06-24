@@ -48,7 +48,7 @@
         android:layout_marginEnd="108dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Add_user"
+        android:text="@string/add_user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

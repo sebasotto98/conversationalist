@@ -46,7 +46,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="113dp"
         android:onClick="upgrade_account"
-        android:text="upgrade account" />
+        android:text="@string/upgrade_account" />
 
     <Button
         android:id="@+id/create_new_chatroom_button"

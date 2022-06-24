@@ -7,14 +7,17 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.adevinta.leku.LocationPickerActivity;
 import com.example.cmu_project.R;
@@ -169,6 +172,77 @@ public class CreateChatActivity extends AppCompatActivity {
         } catch (ActivityNotFoundException e) {
             logger.warning(e.getMessage());
         }
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(CreateChatActivity.this);
+        String language = prefs.getString("language", "English");
+
+        if (language.equals("Português")) {
+            setPortuguese();
+        } else if (language.equals("English")) {
+            setEnglish();
+        }
+
+    }
+
+    private void setEnglish() {
+        TextView chat_type = findViewById(R.id.textView4);
+        TextView name = findViewById(R.id.textView3);
+
+        RadioButton public_button = findViewById(R.id.radio_public);
+        RadioButton private_button = findViewById(R.id.radio_private);
+        RadioButton geo_button = findViewById(R.id.radio_geofenced);
+
+        Button location = findViewById(R.id.buttonMyLocation);
+        TextView textViewLocation = findViewById(R.id.textViewLocation);
+
+        TextView textViewRadius = findViewById(R.id.textViewRadius);
+
+
+        sendRequest.setText(R.string.create);
+        chat_type.setText(R.string.chat_type);
+        name.setText(R.string.name);
+
+        public_button.setText(R.string.public_chat);
+        private_button.setText(R.string.private_chat);
+        geo_button.setText(R.string.geofenced_chat);
+
+        location.setText(R.string.set);
+        textViewLocation.setText(R.string.location);
+
+        textViewRadius.setText(R.string.radius);
+    }
+
+    private void setPortuguese() {
+        TextView chat_type = findViewById(R.id.textView4);
+        TextView name = findViewById(R.id.textView3);
+
+        RadioButton public_button = findViewById(R.id.radio_public);
+        RadioButton private_button = findViewById(R.id.radio_private);
+        RadioButton geo_button = findViewById(R.id.radio_geofenced);
+
+        Button location = findViewById(R.id.buttonMyLocation);
+        TextView textViewLocation = findViewById(R.id.textViewLocation);
+
+        TextView textViewRadius = findViewById(R.id.textViewRadius);
+
+        sendRequest.setText(R.string.criar);
+        chat_type.setText(R.string.chat_tipo);
+        name.setText(R.string.nome);
+
+        public_button.setText(R.string.chat_publico);
+        private_button.setText(R.string.chat_privado);
+        geo_button.setText(R.string.chat_limite_geografico);
+
+        location.setText(R.string.definir);
+        textViewLocation.setText(R.string.localizacao);
+
+        textViewRadius.setText(R.string.raio);
     }
 
 }

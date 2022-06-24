@@ -55,4 +55,24 @@
     <string name="_3">3</string>
     <string name="add">Add</string>
     <string name="remove">Remove</string>
+    <string name="start">Start as Guest</string>
+    <string name="iniciar">Iniciar como Convidado</string>
+    <string name="juntar">Juntar</string>
+    <string name="criar">Criar</string>
+    <string name="chat_tipo">Tipo de chat:</string>
+    <string name="nome">Nome:</string>
+    <string name="chat_publico">Público</string>
+    <string name="chat_privado">Privado</string>
+    <string name="chat_limite_geografico">Limitado Geograficamente</string>
+    <string name="definir">Definir</string>
+    <string name="localizacao">Localização:</string>
+    <string name="raio">Raio:</string>
+    <string name="upgrade_account">Upgrade Account</string>
+    <string name="melhorar_conta">Melhorar Conta</string>
+    <string name="add_user">Add_user</string>
+    <string name="adicionar">Adicionar</string>
+    <string name="remover">Remover</string>
+    <string name="adicionar_utilizador">Adicionar Utilizador</string>
+    <string name="upgrade">Upgrade</string>
+    <string name="melhorar">Melhorar</string>
 </resources>

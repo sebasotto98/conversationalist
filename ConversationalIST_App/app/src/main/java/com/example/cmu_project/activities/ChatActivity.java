@@ -60,7 +60,7 @@ public class ChatActivity extends AppCompatActivity {
     private MessageAdapter messageAdapter;
     private String chatroom;
     private List<messageResponse> messageList = new ArrayList<>();
-    Menu menu = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -271,34 +271,20 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_options, menu);
-        this.menu = menu;
-        return true;
-    }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.language) {
-            Intent myIntent = new Intent(ChatActivity.this, LanguageActivity.class);
-            ChatActivity.this.startActivity(myIntent);
-        }
-        return true;
-    }
+    protected void onResume() {
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onResume();
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ChatActivity.this);
-        String current_language = prefs.getString("language", "English");
-        if (current_language.equals("Português")) {
+        String language = prefs.getString("language", "English");
+
+        if (language.equals("Português")) {
             setPortuguese();
-        } else if (current_language.equals("English")) {
+        } else if (language.equals("English")) {
             setEnglish();
         }
-        return super.onPrepareOptionsMenu(menu);
     }
 
     private void setEnglish() {
@@ -310,7 +296,6 @@ public class ChatActivity extends AppCompatActivity {
         sendGeolocationButton.setText(R.string.send_geolocation);
         Button shareLinkButton = findViewById(R.id.share_link_button);
         shareLinkButton.setText(R.string.share_link);
-        (menu.findItem(R.id.language)).setTitle(R.string.language);
     }
 
     private void setPortuguese() {
@@ -322,7 +307,6 @@ public class ChatActivity extends AppCompatActivity {
         sendGeolocationButton.setText(R.string.enviar_geolocalizacao);
         Button shareLinkButton = findViewById(R.id.share_link_button);
         shareLinkButton.setText(R.string.partilhar_hiperligacao);
-        (menu.findItem(R.id.language)).setTitle(R.string.linguagem);
     }
 
 }

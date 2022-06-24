@@ -2,9 +2,13 @@ package com.example.cmu_project.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cmu_project.R;
@@ -39,5 +43,41 @@ public class UpgradeAccountActivity extends AppCompatActivity {
             new UpgradeAccountGrpcTask(this,new_user.getText().toString()).execute(guest_user,password.getText().toString());
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(UpgradeAccountActivity.this);
+        String language = prefs.getString("language", "English");
+
+        if (language.equals("Português")) {
+            setPortuguese();
+        } else if (language.equals("English")) {
+            setEnglish();
+        }
+
+    }
+
+    private void setEnglish() {
+        Button update_button = findViewById(R.id.update_button);
+        EditText user_name_edit_text_guest = findViewById(R.id.user_name_edit_text_guest);
+        EditText password_edit_text_guest = findViewById(R.id.password_edit_text_guest);
+
+        update_button.setText(R.string.upgrade);
+        user_name_edit_text_guest.setHint(R.string.enter_username);
+        password_edit_text_guest.setHint(R.string.password);
+    }
+
+    private void setPortuguese() {
+        Button update_button = findViewById(R.id.update_button);
+        EditText user_name_edit_text_guest = findViewById(R.id.user_name_edit_text_guest);
+        EditText password_edit_text_guest = findViewById(R.id.password_edit_text_guest);
+
+        update_button.setText(R.string.melhorar);
+        user_name_edit_text_guest.setHint(R.string.nome_utilizador);
+        password_edit_text_guest.setHint(R.string.password);
     }
 }

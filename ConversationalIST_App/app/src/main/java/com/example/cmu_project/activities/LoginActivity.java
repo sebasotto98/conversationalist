@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
     LinkHelper linkHelper;
 
-    Button loginButton, registerButton, quitButton;
+    Button loginButton, registerButton, quitButton, startButton;
     EditText userNameEditText, passwordEditText;
 
     TextView attemptsLeftNumberTextView;
@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.login_button);
         userNameEditText = findViewById(R.id.user_name_edit_text);
         passwordEditText = findViewById(R.id.password_edit_text);
+        startButton = findViewById(R.id.login_guest);
 
         registerButton = findViewById(R.id.register_button);
 
@@ -156,34 +157,39 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
         String language = prefs.getString("language", "English");
 
-        if (menu != null) {
-            if (language.equals("Português")) {
-                setPortuguese();
-            } else if (language.equals("English")) {
-                setEnglish();
-            }
+        if (language.equals("Português")) {
+            setPortuguese();
+        } else if (language.equals("English")) {
+            setEnglish();
         }
+
     }
 
     private void setEnglish() {
         TextView titleTextView = findViewById(R.id.activity_title);
         TextView attemptsLeftTextView = findViewById(R.id.attempts_left_text_view);
-        (menu.findItem(R.id.language)).setTitle(R.string.language);
+        if(menu != null) {
+            (menu.findItem(R.id.language)).setTitle(R.string.language);
+        }
         titleTextView.setText(R.string.login_or_register);
         userNameEditText.setHint(R.string.enter_username);
         attemptsLeftTextView.setText(R.string.attempts_left);
         registerButton.setText(R.string.register);
         quitButton.setText(R.string.quit);
+        startButton.setText(R.string.start);
     }
 
     private void setPortuguese() {
         TextView titleTextView = findViewById(R.id.activity_title);
         TextView attemptsLeftTextView = findViewById(R.id.attempts_left_text_view);
-        (menu.findItem(R.id.language)).setTitle(R.string.linguagem);
+        if(menu != null) {
+            (menu.findItem(R.id.language)).setTitle(R.string.linguagem);
+        }
         titleTextView.setText(R.string.login_ou_registar);
         userNameEditText.setHint(R.string.nome_utilizador);
         attemptsLeftTextView.setText(R.string.tentativas);
         registerButton.setText(R.string.registar);
         quitButton.setText(R.string.sair);
+        startButton.setText(R.string.iniciar);
     }
 }
