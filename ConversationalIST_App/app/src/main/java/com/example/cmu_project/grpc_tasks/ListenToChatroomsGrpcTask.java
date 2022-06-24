@@ -3,7 +3,9 @@ package com.example.cmu_project.grpc_tasks;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -44,7 +46,8 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
     @Override
     protected Iterator<messageResponse> doInBackground(Object... params) {
         try {
-
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.get().getApplicationContext());
+            String language = prefs.getString("language", "English");
             ServerGrpc.ServerStub nonBlockingStub
                     = ((GlobalVariableHelper) context.get().getApplicationContext())
                     .getNonBlockingStub();
@@ -107,11 +110,21 @@ public class ListenToChatroomsGrpcTask extends AsyncTask<Object, Void, Iterator<
                             notificationsHelper.pushNotification(message.getChatroom(),
                                     message.getUsername() + ": " + message.getData(), pendingIntent);
                         } else if (message.getType() == MessageType.PHOTO.getValue()) {
-                            notificationsHelper.pushNotification(message.getChatroom(),
-                                    message.getUsername() + " sent a photo", pendingIntent);
+                            if (language.equals("Português")) {
+                                notificationsHelper.pushNotification(message.getChatroom(),
+                                        message.getUsername() + " enviou uma foto", pendingIntent);
+                            } else if (language.equals("English")) {
+                                notificationsHelper.pushNotification(message.getChatroom(),
+                                        message.getUsername() + " sent a photo", pendingIntent);
+                            }
                         } else if (message.getType() == MessageType.GEOLOCATION.getValue()) {
-                            notificationsHelper.pushNotification(message.getChatroom(),
-                                    message.getUsername() + " sent a geolocation", pendingIntent);
+                            if (language.equals("Português")) {
+                                notificationsHelper.pushNotification(message.getChatroom(),
+                                        message.getUsername() + " enviou uma localização", pendingIntent);
+                            } else if (language.equals("English")) {
+                                notificationsHelper.pushNotification(message.getChatroom(),
+                                        message.getUsername() + " sent a geolocation", pendingIntent);
+                            }
                         }
                     }
                 }

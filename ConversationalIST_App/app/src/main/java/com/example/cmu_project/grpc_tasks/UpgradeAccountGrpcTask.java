@@ -82,9 +82,14 @@ public class UpgradeAccountGrpcTask extends AsyncTask<Object,Void, UpgradeAccoun
 
             if(reply.getAck().equals("OK")) {
 
-                System.out.println("aqui");
 
-                Toast.makeText(activity.getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+                String language = prefs.getString("language", "English");
+                if (language.equals("Português")) {
+                    Toast.makeText(activity.getApplicationContext(), "A Redirecionar...", Toast.LENGTH_SHORT).show();
+                } else if (language.equals("English")) {
+                    Toast.makeText(activity.getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
+                }
                 ((GlobalVariableHelper) activity.getApplication()).setUsername(this.new_user);
 
                 //jump to the chatRoom activity

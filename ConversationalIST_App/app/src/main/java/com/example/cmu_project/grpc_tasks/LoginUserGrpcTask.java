@@ -92,8 +92,14 @@ public class LoginUserGrpcTask extends AsyncTask<Object,Void, loginUserReply> {
         } else {
 
             if(reply.getAck().equals("OK")) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+                String language = prefs.getString("language", "English");
+                if (language.equals("Português")) {
+                    Toast.makeText(activity.getApplicationContext(), "A Redirecionar...", Toast.LENGTH_SHORT).show();
+                } else if (language.equals("English")) {
+                    Toast.makeText(activity.getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
+                }
 
-                Toast.makeText(activity.getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
 
                 ((GlobalVariableHelper) activity.getApplication()).setUsername(this.user);
 

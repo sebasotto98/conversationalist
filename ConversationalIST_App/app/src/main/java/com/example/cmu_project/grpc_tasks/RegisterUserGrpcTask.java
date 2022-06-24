@@ -82,7 +82,13 @@ public class RegisterUserGrpcTask extends AsyncTask<Object,Void, registerUserRep
             if(reply.getAck().equals("OK")) {
 
 
-                Toast.makeText(activity.getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+                String language = prefs.getString("language", "English");
+                if (language.equals("Português")) {
+                    Toast.makeText(activity.getApplicationContext(), "A Redirecionar...", Toast.LENGTH_SHORT).show();
+                } else if (language.equals("English")) {
+                    Toast.makeText(activity.getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
+                }
 
                 ((GlobalVariableHelper) activity.getApplication()).setUsername(new_user);
 

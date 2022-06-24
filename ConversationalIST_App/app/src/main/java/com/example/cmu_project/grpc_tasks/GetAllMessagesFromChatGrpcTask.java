@@ -64,6 +64,8 @@ public class GetAllMessagesFromChatGrpcTask extends AsyncTask<Object, Void, Iter
 
     @Override
     protected void onPostExecute(Iterator<messageResponse> messages) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.get().getApplicationContext());
+        String language = prefs.getString("language", "English");
 
         if(messages != null) {
             while (messages.hasNext()) {
@@ -121,18 +123,29 @@ public class GetAllMessagesFromChatGrpcTask extends AsyncTask<Object, Void, Iter
                     if (nextMessage.getType() == MessageType.TEXT.getValue()) {
                         notificationsHelper.pushNotification(nextMessage.getChatroom(),
                                 nextMessage.getUsername() + ": " + nextMessage.getData(), pendingIntent);
+
                     } else if (nextMessage.getType() == MessageType.PHOTO.getValue()) {
-                        notificationsHelper.pushNotification(nextMessage.getChatroom(),
-                                nextMessage.getUsername() + " sent a photo", pendingIntent);
+                        if (language.equals("Português")) {
+                            notificationsHelper.pushNotification(nextMessage.getChatroom(),
+                                    nextMessage.getUsername() + " enviou uma foto", pendingIntent);
+                        } else if (language.equals("English")) {
+                            notificationsHelper.pushNotification(nextMessage.getChatroom(),
+                                    nextMessage.getUsername() + " sent a photo", pendingIntent);
+                        }
+
                     } else if (nextMessage.getType() == MessageType.GEOLOCATION.getValue()) {
-                        notificationsHelper.pushNotification(nextMessage.getChatroom(),
-                                nextMessage.getUsername() + " sent a geolocation", pendingIntent);
+                        if (language.equals("Português")) {
+                            notificationsHelper.pushNotification(nextMessage.getChatroom(),
+                                    nextMessage.getUsername() + " enviou uma localização", pendingIntent);
+                        } else if (language.equals("English")) {
+                            notificationsHelper.pushNotification(nextMessage.getChatroom(),
+                                    nextMessage.getUsername() + " sent a geolocation", pendingIntent);
+                        }
+
                     }
                 }
             }
         } else {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.get().getApplicationContext());
-            String language = prefs.getString("language", "English");
 
             if (language.equals("Português")) {
                 Toast.makeText(context.get().getApplicationContext(), "Erro a contactar o servidor",
