@@ -5,16 +5,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.example.cmu_project.activities.JoinChatActivity;
 import com.example.cmu_project.contexts.MobDataContext;
 import com.example.cmu_project.contexts.WifiContext;
 import com.example.cmu_project.grpc_tasks.GetAllMessagesFromChatGrpcTask;
@@ -162,8 +165,17 @@ public class FetchDataService extends Service {
             }
         } else {
             Log.d("FetchDataService", "No internet Connection");
-            Toast.makeText(getApplicationContext(),
-                    "No connection available. Please connect to the internet.", Toast.LENGTH_SHORT).show();
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(FetchDataService.this);
+            String language = prefs.getString("language", "English");
+
+            if (language.equals("Português")) {
+                Toast.makeText(getApplicationContext(),
+                        "Sem ligação à Internet. Por favor verifica a tua ligação", Toast.LENGTH_SHORT).show();
+            } else if (language.equals("English")) {
+                Toast.makeText(getApplicationContext(),
+                        "No connection available. Please connect to the internet.", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 
