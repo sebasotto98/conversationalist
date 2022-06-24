@@ -146,6 +146,64 @@ public class ConversationalISTServer {
         }
 
         @Override
+        public void loginGuest(empty_message request,StreamObserver<loginGuestReply> responseObserver) {
+
+            String ack;
+            String guest_number;
+
+            //keep the Guest recorded
+            try {
+                guest_number = userFileHelper.getCurGuestNumber();
+                userFileHelper.store_info( "Guest_"+ guest_number +  ",");
+
+                userFileHelper.store("","Guest_"+guest_number);
+
+                ack = "OK";
+
+            } catch (Exception e) {
+                ack = "ERROR";
+                guest_number = "";
+                e.printStackTrace();
+            }
+
+            loginGuestReply response = loginGuestReply.newBuilder().setAck(ack).setGuestNumber(guest_number).build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+
+        }
+
+        @Override
+        public void upgradeAccount(UpgradeAccountRequest request,StreamObserver<UpgradeAccountReply> responseObserver) {
+
+            String guest_user = request.getGuestUser();
+            String new_user = request.getNewUser();
+            String hashed_pass = request.getPassword();
+
+            String ack;
+
+            if (userFileHelper.userExists(new_user)) {
+                ack = "Username already in use";
+            } else {
+
+                //add new user to users_info
+                try {
+                    userFileHelper.add_guest_user(guest_user,new_user,hashed_pass);
+                } catch (IOException e) {
+                    ack = "ERROR";
+                    e.printStackTrace();
+                }
+
+                //rename Guest file to new user
+                userFileHelper.renameGuestFile(guest_user,new_user);
+
+                ack = "OK";
+
+            }
+
+
+        }
+
+        @Override
         public void sendMessage(sendingMessage req, StreamObserver<messageResponse> responseObserver) {
             logger.info("Got request from client: " + req);
 

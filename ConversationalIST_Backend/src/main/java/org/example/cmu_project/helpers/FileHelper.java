@@ -70,6 +70,7 @@ public class FileHelper {
     }
 
     protected void store(String data, String fileId, boolean isSensitive) {
+        System.out.println(data);
         if(!isSensitive) {
             parseFromClient(data);
         }
@@ -98,5 +99,44 @@ public class FileHelper {
         } else {
             return data;
         }
+    }
+
+    public String getCurGuestNumber() {
+
+        String cur_number = "";
+        String next_cur_number = "";
+
+        try {
+            File myObj = new File("app-data-files/guest_number_register" + FILE_FORMAT);
+            Scanner myReader = new Scanner(myObj);
+            String first_line = myReader.nextLine();
+
+            String[] line_splited  = first_line.split(",");
+            cur_number = line_splited[0];
+
+            myReader.close();
+
+            myObj.delete();
+
+
+            //update the value
+            int cur_int_number = Integer.parseInt(cur_number);
+            cur_int_number = cur_int_number + 1;
+            next_cur_number = String.valueOf(cur_int_number);
+
+            BufferedWriter myWriter = new BufferedWriter(new FileWriter("app-data-files/guest_number_register" + FILE_FORMAT, true));
+            myWriter.write(next_cur_number+",");
+            myWriter.close();
+
+
+        } catch (FileNotFoundException e) {
+            logger.warning(e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return cur_number;
+
     }
 }

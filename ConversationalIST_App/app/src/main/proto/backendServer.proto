@@ -11,6 +11,8 @@ package helloworld;
 service Server {
   rpc registerUser(registerUserRequest) returns (registerUserReply) {}
   rpc loginUser(loginUserRequest) returns (loginUserReply) {}
+  rpc loginGuest(empty_message) returns (loginGuestReply) {}
+  rpc upgradeAccount(UpgradeAccountRequest) returns (UpgradeAccountReply) {}
   rpc sendMessage (sendingMessage) returns (messageResponse) {}
   rpc getAllChatMessages (chatMessageRequest) returns (stream messageResponse) {}
   rpc getChatMessagesSincePosition (chatMessageFromPosition) returns (stream messageResponse) {}
@@ -36,6 +38,11 @@ message getMessagePosition {
 	int32 position = 2;
 }
 
+message loginGuestReply {
+ string ack = 1;
+ string guest_number = 2;
+}
+
 message loginUserRequest {
  string user = 1;
  string password_hash = 2;
@@ -52,6 +59,16 @@ message registerUserRequest {
 
 message registerUserReply {
   string ack = 1;
+}
+
+message UpgradeAccountRequest {
+ string guest_user = 1;
+ string new_user = 2;
+ string password = 3;
+}
+
+message UpgradeAccountReply {
+ string ack = 1;
 }
 
 message listenToChatroom {
@@ -180,4 +197,7 @@ message ChatTypeRequest {
 
 message ChatTypeReply {
  string chat_type = 1;
+}
+
+message empty_message {
 }

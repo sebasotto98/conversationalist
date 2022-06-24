@@ -154,4 +154,50 @@ public class UserFileHelper extends FileHelper {
     }
 
 
+    public boolean renameGuestFile(String guest_user, String new_user) {
+
+        // File (or directory) with old name
+        File file = new File(USER_FILES_PATH + guest_user + FILE_FORMAT);
+
+        // File (or directory) with new name
+        File file2 = new File(USER_FILES_PATH + new_user + FILE_FORMAT);
+
+        return file.renameTo(file2);
+
+    }
+
+    public void add_guest_user(String guest_user, String user,String password_hashed) throws IOException {
+
+        this.removeGuest(guest_user);
+        this.store_info(user + "," + password_hashed);
+
+    }
+
+
+    private void removeGuest(String user) throws IOException {
+
+        File inputFile = new File(USER_FILE_INFO + FILE_FORMAT);
+        File tempFile = new File("app-data-files/myTempFile.csv");
+
+        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+        String lineToRemove = user+",";
+        String currentLine;
+
+        while((currentLine = reader.readLine()) != null) {
+            // trim newline when comparing with lineToRemove
+            String trimmedLine = currentLine.trim();
+            if(trimmedLine.equals(lineToRemove)) continue;
+            writer.write(currentLine + System.getProperty("line.separator"));
+        }
+        writer.close();
+        reader.close();
+
+        inputFile.delete();
+
+        tempFile.renameTo(inputFile);
+
+    }
+
 }

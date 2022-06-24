@@ -25,6 +25,7 @@ public class ChatroomActivity extends AppCompatActivity {
     TextView userNameTextView;
     ListView userChatsList;
     String username;
+    boolean isGuest;
     Menu menu = null;
 
     @Override
@@ -34,9 +35,14 @@ public class ChatroomActivity extends AppCompatActivity {
 
         userNameTextView = findViewById(R.id.username);
         username = getIntent().getExtras().getString("username");
+        isGuest = getIntent().getExtras().getBoolean("isGuest");
         String welcomeMessage = "Welcome " + username + "!";
         userNameTextView.setText(welcomeMessage);
         userNameTextView.setVisibility(View.VISIBLE);
+
+        if (!isGuest) {
+            findViewById(R.id.upgrade_account).setVisibility(View.GONE);
+        }
 
         ((GlobalVariableHelper) this.getApplication()).setUsername(username);
 
@@ -61,6 +67,11 @@ public class ChatroomActivity extends AppCompatActivity {
 
     public void join_chatroom(View view) {
         Intent myIntent = new Intent(ChatroomActivity.this, JoinChatActivity.class);
+        ChatroomActivity.this.startActivity(myIntent);
+    }
+
+    public void upgrade_account(View view) {
+        Intent myIntent = new Intent(ChatroomActivity.this, UpgradeAccountActivity.class);
         ChatroomActivity.this.startActivity(myIntent);
     }
 
@@ -124,4 +135,5 @@ public class ChatroomActivity extends AppCompatActivity {
         createNewChatroomButton.setText(R.string.criar_nova_sala_de_conversacao);
         (menu.findItem(R.id.language)).setTitle(R.string.linguagem);
     }
+
 }

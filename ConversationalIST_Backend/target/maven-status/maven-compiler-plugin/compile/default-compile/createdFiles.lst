@@ -1,5 +1,6 @@
 io\grpc\examples\backendserver\JoinableChatsRequestOrBuilder.class
 io\grpc\examples\backendserver\messageResponse$1.class
+io\grpc\examples\backendserver\UpgradeAccountRequest.class
 io\grpc\examples\backendserver\ChatTypeReplyOrBuilder.class
 io\grpc\examples\backendserver\RemoveUserRequestOrBuilder.class
 io\grpc\examples\backendserver\CreateChatRequest$1.class
@@ -8,6 +9,7 @@ io\grpc\examples\backendserver\ServerGrpc$ServerImplBase.class
 io\grpc\examples\backendserver\LeaveChatRequest$1.class
 io\grpc\examples\backendserver\GetChatMembersReply$1.class
 io\grpc\examples\backendserver\messagesBetweenPosition$Builder.class
+io\grpc\examples\backendserver\UpgradeAccountRequest$Builder.class
 io\grpc\examples\backendserver\GetChatMembersReplyOrBuilder.class
 io\grpc\examples\backendserver\registerUserRequest.class
 io\grpc\examples\backendserver\GetChatMembersRequest$1.class
@@ -28,10 +30,14 @@ io\grpc\examples\backendserver\GetChatsReplyOrBuilder.class
 io\grpc\examples\backendserver\ServerGrpc$1.class
 org\example\cmu_project\Message.class
 io\grpc\examples\backendserver\RemoveUserRequest$Builder.class
+io\grpc\examples\backendserver\loginGuestReply$Builder.class
 org\example\cmu_project\helpers\FileHelper.class
 io\grpc\examples\backendserver\LeaveChatRequest$Builder.class
 io\grpc\examples\backendserver\JoinChatRequest$1.class
+io\grpc\examples\backendserver\empty_message$1.class
 io\grpc\examples\backendserver\registerUserReplyOrBuilder.class
+io\grpc\examples\backendserver\loginGuestReply$1.class
+io\grpc\examples\backendserver\loginGuestReply.class
 io\grpc\examples\backendserver\chatMessageRequest.class
 io\grpc\examples\backendserver\RemoveUserRequest.class
 io\grpc\examples\backendserver\chatMessageFromPosition.class
@@ -41,6 +47,7 @@ io\grpc\examples\backendserver\JoinableChatsReplyOrBuilder.class
 io\grpc\examples\backendserver\listenToChatroom.class
 io\grpc\examples\backendserver\BackEndServerProto.class
 io\grpc\examples\backendserver\registerUserRequest$Builder.class
+io\grpc\examples\backendserver\UpgradeAccountReply.class
 io\grpc\examples\backendserver\loginUserRequest$Builder.class
 org\example\cmu_project\helpers\GeneralHelper.class
 io\grpc\examples\backendserver\loginUserReplyOrBuilder.class
@@ -60,6 +67,7 @@ io\grpc\examples\backendserver\GetChatsRequestOrBuilder.class
 io\grpc\examples\backendserver\ServerGrpc$2.class
 io\grpc\examples\backendserver\ServerGrpc$ServerBaseDescriptorSupplier.class
 io\grpc\examples\backendserver\Location$Builder.class
+io\grpc\examples\backendserver\UpgradeAccountReply$Builder.class
 io\grpc\examples\backendserver\getMessagePosition.class
 io\grpc\examples\backendserver\JoinChatReply$Builder.class
 io\grpc\examples\backendserver\LeaveChatReply.class
@@ -77,9 +85,11 @@ io\grpc\examples\backendserver\AddUserToChatRequest$1.class
 io\grpc\examples\backendserver\listenToChatroomOrBuilder.class
 io\grpc\examples\backendserver\JoinChatReply$1.class
 io\grpc\examples\backendserver\messagesBetweenPosition.class
+io\grpc\examples\backendserver\UpgradeAccountReplyOrBuilder.class
 io\grpc\examples\backendserver\Location$1.class
 io\grpc\examples\backendserver\ServerGrpc$3.class
 org\example\cmu_project\ConversationalISTServer$ServerImpl.class
+io\grpc\examples\backendserver\empty_message.class
 io\grpc\examples\backendserver\registerUserReply$Builder.class
 io\grpc\examples\backendserver\Location.class
 io\grpc\examples\backendserver\AddUserToChatReply.class
@@ -93,6 +103,7 @@ io\grpc\examples\backendserver\LeaveChatReply$1.class
 io\grpc\examples\backendserver\LocationOrBuilder.class
 io\grpc\examples\backendserver\AddUserToChatReplyOrBuilder.class
 io\grpc\examples\backendserver\CreateChatRequest.class
+io\grpc\examples\backendserver\UpgradeAccountRequest$1.class
 io\grpc\examples\backendserver\CreateChatRequest$Builder.class
 io\grpc\examples\backendserver\GetChatMembersRequestOrBuilder.class
 io\grpc\examples\backendserver\CreateChatRequestOrBuilder.class
@@ -105,9 +116,11 @@ io\grpc\examples\backendserver\GetChatMembersRequest.class
 io\grpc\examples\backendserver\RemoveUserReply$1.class
 org\example\cmu_project\helpers\ChatroomFileHelper.class
 io\grpc\examples\backendserver\GetChatsRequest$Builder.class
+io\grpc\examples\backendserver\empty_message$Builder.class
 io\grpc\examples\backendserver\chatMessageFromPosition$1.class
 io\grpc\examples\backendserver\JoinChatReplyOrBuilder.class
 io\grpc\examples\backendserver\ServerGrpc$ServerStub.class
+io\grpc\examples\backendserver\loginGuestReplyOrBuilder.class
 io\grpc\examples\backendserver\AddUserToChatRequestOrBuilder.class
 io\grpc\examples\backendserver\GetChatMembersReply.class
 io\grpc\examples\backendserver\JoinChatRequest.class
@@ -127,6 +140,7 @@ io\grpc\examples\backendserver\NMessagesFromChat$Builder.class
 io\grpc\examples\backendserver\LeaveChatRequestOrBuilder.class
 io\grpc\examples\backendserver\NMessagesFromChat$1.class
 org\example\cmu_project\ConversationalISTServer$ServerImpl$listenToChatroomMobileDataObserver.class
+io\grpc\examples\backendserver\empty_messageOrBuilder.class
 io\grpc\examples\backendserver\CreateChatReply.class
 io\grpc\examples\backendserver\getMessagePosition$Builder.class
 io\grpc\examples\backendserver\loginUserRequest$1.class
@@ -139,10 +153,12 @@ io\grpc\examples\backendserver\chatMessageRequestOrBuilder.class
 io\grpc\examples\backendserver\GetChatsReply.class
 io\grpc\examples\backendserver\JoinableChatsReply$1.class
 org\example\cmu_project\ConversationalISTServer$ServerImpl$listenToChatroomObserver.class
+io\grpc\examples\backendserver\UpgradeAccountRequestOrBuilder.class
 io\grpc\examples\backendserver\JoinableChatsRequest$1.class
 io\grpc\examples\backendserver\RemoveUserReplyOrBuilder.class
 io\grpc\examples\backendserver\ServerGrpc$ServerFileDescriptorSupplier.class
 io\grpc\examples\backendserver\AddUserToChatRequest$Builder.class
+io\grpc\examples\backendserver\UpgradeAccountReply$1.class
 io\grpc\examples\backendserver\ChatTypeRequestOrBuilder.class
 io\grpc\examples\backendserver\AddUserToChatRequest.class
 io\grpc\examples\backendserver\messageResponse$Builder.class

@@ -86,6 +86,7 @@ public class RegisterUserGrpcTask extends AsyncTask<Object,Void, registerUserRep
 
                     //jump to the chatRoom activity
                     Intent myIntent = new Intent(activity, ChatroomActivity.class);
+                    myIntent.putExtra("isGuest",false);
                     myIntent.putExtra("username",new_user);
                     activity.startActivity(myIntent);
 

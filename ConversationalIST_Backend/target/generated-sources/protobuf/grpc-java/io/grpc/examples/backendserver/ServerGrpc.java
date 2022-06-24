@@ -80,6 +80,68 @@ public final class ServerGrpc {
     return getLoginUserMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.empty_message,
+      io.grpc.examples.backendserver.loginGuestReply> getLoginGuestMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "loginGuest",
+      requestType = io.grpc.examples.backendserver.empty_message.class,
+      responseType = io.grpc.examples.backendserver.loginGuestReply.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<io.grpc.examples.backendserver.empty_message,
+      io.grpc.examples.backendserver.loginGuestReply> getLoginGuestMethod() {
+    io.grpc.MethodDescriptor<io.grpc.examples.backendserver.empty_message, io.grpc.examples.backendserver.loginGuestReply> getLoginGuestMethod;
+    if ((getLoginGuestMethod = ServerGrpc.getLoginGuestMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getLoginGuestMethod = ServerGrpc.getLoginGuestMethod) == null) {
+          ServerGrpc.getLoginGuestMethod = getLoginGuestMethod =
+              io.grpc.MethodDescriptor.<io.grpc.examples.backendserver.empty_message, io.grpc.examples.backendserver.loginGuestReply>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "loginGuest"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.empty_message.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.loginGuestReply.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("loginGuest"))
+              .build();
+        }
+      }
+    }
+    return getLoginGuestMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.UpgradeAccountRequest,
+      io.grpc.examples.backendserver.UpgradeAccountReply> getUpgradeAccountMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "upgradeAccount",
+      requestType = io.grpc.examples.backendserver.UpgradeAccountRequest.class,
+      responseType = io.grpc.examples.backendserver.UpgradeAccountReply.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<io.grpc.examples.backendserver.UpgradeAccountRequest,
+      io.grpc.examples.backendserver.UpgradeAccountReply> getUpgradeAccountMethod() {
+    io.grpc.MethodDescriptor<io.grpc.examples.backendserver.UpgradeAccountRequest, io.grpc.examples.backendserver.UpgradeAccountReply> getUpgradeAccountMethod;
+    if ((getUpgradeAccountMethod = ServerGrpc.getUpgradeAccountMethod) == null) {
+      synchronized (ServerGrpc.class) {
+        if ((getUpgradeAccountMethod = ServerGrpc.getUpgradeAccountMethod) == null) {
+          ServerGrpc.getUpgradeAccountMethod = getUpgradeAccountMethod =
+              io.grpc.MethodDescriptor.<io.grpc.examples.backendserver.UpgradeAccountRequest, io.grpc.examples.backendserver.UpgradeAccountReply>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "upgradeAccount"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.UpgradeAccountRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  io.grpc.examples.backendserver.UpgradeAccountReply.getDefaultInstance()))
+              .setSchemaDescriptor(new ServerMethodDescriptorSupplier("upgradeAccount"))
+              .build();
+        }
+      }
+    }
+    return getUpgradeAccountMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<io.grpc.examples.backendserver.sendingMessage,
       io.grpc.examples.backendserver.messageResponse> getSendMessageMethod;
 
@@ -705,6 +767,20 @@ public final class ServerGrpc {
 
     /**
      */
+    public void loginGuest(io.grpc.examples.backendserver.empty_message request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.loginGuestReply> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getLoginGuestMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void upgradeAccount(io.grpc.examples.backendserver.UpgradeAccountRequest request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.UpgradeAccountReply> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getUpgradeAccountMethod(), responseObserver);
+    }
+
+    /**
+     */
     public void sendMessage(io.grpc.examples.backendserver.sendingMessage request,
         io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.messageResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getSendMessageMethod(), responseObserver);
@@ -845,6 +921,20 @@ public final class ServerGrpc {
                 io.grpc.examples.backendserver.loginUserRequest,
                 io.grpc.examples.backendserver.loginUserReply>(
                   this, METHODID_LOGIN_USER)))
+          .addMethod(
+            getLoginGuestMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                io.grpc.examples.backendserver.empty_message,
+                io.grpc.examples.backendserver.loginGuestReply>(
+                  this, METHODID_LOGIN_GUEST)))
+          .addMethod(
+            getUpgradeAccountMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                io.grpc.examples.backendserver.UpgradeAccountRequest,
+                io.grpc.examples.backendserver.UpgradeAccountReply>(
+                  this, METHODID_UPGRADE_ACCOUNT)))
           .addMethod(
             getSendMessageMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
@@ -1006,6 +1096,22 @@ public final class ServerGrpc {
         io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.loginUserReply> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getLoginUserMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void loginGuest(io.grpc.examples.backendserver.empty_message request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.loginGuestReply> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getLoginGuestMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void upgradeAccount(io.grpc.examples.backendserver.UpgradeAccountRequest request,
+        io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.UpgradeAccountReply> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getUpgradeAccountMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -1186,6 +1292,20 @@ public final class ServerGrpc {
 
     /**
      */
+    public io.grpc.examples.backendserver.loginGuestReply loginGuest(io.grpc.examples.backendserver.empty_message request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getLoginGuestMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public io.grpc.examples.backendserver.UpgradeAccountReply upgradeAccount(io.grpc.examples.backendserver.UpgradeAccountRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getUpgradeAccountMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
     public io.grpc.examples.backendserver.messageResponse sendMessage(io.grpc.examples.backendserver.sendingMessage request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getSendMessageMethod(), getCallOptions(), request);
@@ -1337,6 +1457,22 @@ public final class ServerGrpc {
 
     /**
      */
+    public com.google.common.util.concurrent.ListenableFuture<io.grpc.examples.backendserver.loginGuestReply> loginGuest(
+        io.grpc.examples.backendserver.empty_message request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getLoginGuestMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<io.grpc.examples.backendserver.UpgradeAccountReply> upgradeAccount(
+        io.grpc.examples.backendserver.UpgradeAccountRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getUpgradeAccountMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
     public com.google.common.util.concurrent.ListenableFuture<io.grpc.examples.backendserver.messageResponse> sendMessage(
         io.grpc.examples.backendserver.sendingMessage request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
@@ -1426,24 +1562,26 @@ public final class ServerGrpc {
 
   private static final int METHODID_REGISTER_USER = 0;
   private static final int METHODID_LOGIN_USER = 1;
-  private static final int METHODID_SEND_MESSAGE = 2;
-  private static final int METHODID_GET_ALL_CHAT_MESSAGES = 3;
-  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION = 4;
-  private static final int METHODID_CREATE_CHAT = 5;
-  private static final int METHODID_LEAVE_CHAT = 6;
-  private static final int METHODID_ADD_USER_TO_CHAT = 7;
-  private static final int METHODID_REMOVE_USER_FROM_CHAT = 8;
-  private static final int METHODID_GET_CHAT_MEMBERS = 9;
-  private static final int METHODID_GET_JOINABLE_CHATS = 10;
-  private static final int METHODID_GET_CHAT_TYPE = 11;
-  private static final int METHODID_GET_ALL_CHATS = 12;
-  private static final int METHODID_JOIN_CHAT = 13;
-  private static final int METHODID_GET_LAST_NMESSAGES_FROM_CHAT = 14;
-  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA = 15;
-  private static final int METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA = 16;
-  private static final int METHODID_GET_MESSAGE_AT_POSITION = 17;
-  private static final int METHODID_LISTEN_TO_CHATROOMS = 18;
-  private static final int METHODID_LISTEN_TO_CHATROOMS_MOBILE_DATA = 19;
+  private static final int METHODID_LOGIN_GUEST = 2;
+  private static final int METHODID_UPGRADE_ACCOUNT = 3;
+  private static final int METHODID_SEND_MESSAGE = 4;
+  private static final int METHODID_GET_ALL_CHAT_MESSAGES = 5;
+  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION = 6;
+  private static final int METHODID_CREATE_CHAT = 7;
+  private static final int METHODID_LEAVE_CHAT = 8;
+  private static final int METHODID_ADD_USER_TO_CHAT = 9;
+  private static final int METHODID_REMOVE_USER_FROM_CHAT = 10;
+  private static final int METHODID_GET_CHAT_MEMBERS = 11;
+  private static final int METHODID_GET_JOINABLE_CHATS = 12;
+  private static final int METHODID_GET_CHAT_TYPE = 13;
+  private static final int METHODID_GET_ALL_CHATS = 14;
+  private static final int METHODID_JOIN_CHAT = 15;
+  private static final int METHODID_GET_LAST_NMESSAGES_FROM_CHAT = 16;
+  private static final int METHODID_GET_CHAT_MESSAGES_SINCE_POSITION_MOBILE_DATA = 17;
+  private static final int METHODID_GET_MESSAGES_BETWEEN_POSITIONS_MOBILE_DATA = 18;
+  private static final int METHODID_GET_MESSAGE_AT_POSITION = 19;
+  private static final int METHODID_LISTEN_TO_CHATROOMS = 20;
+  private static final int METHODID_LISTEN_TO_CHATROOMS_MOBILE_DATA = 21;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -1469,6 +1607,14 @@ public final class ServerGrpc {
         case METHODID_LOGIN_USER:
           serviceImpl.loginUser((io.grpc.examples.backendserver.loginUserRequest) request,
               (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.loginUserReply>) responseObserver);
+          break;
+        case METHODID_LOGIN_GUEST:
+          serviceImpl.loginGuest((io.grpc.examples.backendserver.empty_message) request,
+              (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.loginGuestReply>) responseObserver);
+          break;
+        case METHODID_UPGRADE_ACCOUNT:
+          serviceImpl.upgradeAccount((io.grpc.examples.backendserver.UpgradeAccountRequest) request,
+              (io.grpc.stub.StreamObserver<io.grpc.examples.backendserver.UpgradeAccountReply>) responseObserver);
           break;
         case METHODID_SEND_MESSAGE:
           serviceImpl.sendMessage((io.grpc.examples.backendserver.sendingMessage) request,
@@ -1603,6 +1749,8 @@ public final class ServerGrpc {
               .setSchemaDescriptor(new ServerFileDescriptorSupplier())
               .addMethod(getRegisterUserMethod())
               .addMethod(getLoginUserMethod())
+              .addMethod(getLoginGuestMethod())
+              .addMethod(getUpgradeAccountMethod())
               .addMethod(getSendMessageMethod())
               .addMethod(getGetAllChatMessagesMethod())
               .addMethod(getGetChatMessagesSincePositionMethod())

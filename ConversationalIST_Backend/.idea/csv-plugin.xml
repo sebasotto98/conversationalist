@@ -10,21 +10,7 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\app-data-files\chatrooms\AnotherServiceTest.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\app-data-files\chatrooms\CMU Chat.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\app-data-files\chatrooms\mygeofenc.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -52,14 +38,21 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\app-data-files\sample_chatrooms_info.csv">
+        <entry key="\app-data-files\guest_number_register.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\app-data-files\sample_passwords.csv">
+        <entry key="\app-data-files\users\Guest_1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\users\Guest_2.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -67,6 +60,13 @@
           </value>
         </entry>
         <entry key="\app-data-files\users\sample_user.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\users\testUser1.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -81,6 +81,27 @@
           </value>
         </entry>
         <entry key="\app-data-files\users\testerAndroid.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\users\tfbg10.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\users\tfbg8.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\app-data-files\users\tfbg9.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

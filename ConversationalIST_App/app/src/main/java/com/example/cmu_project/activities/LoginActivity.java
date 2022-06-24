@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cmu_project.R;
+import com.example.cmu_project.grpc_tasks.LoginAsGuestGrpcTask;
 import com.example.cmu_project.grpc_tasks.LoginUserGrpcTask;
 import com.example.cmu_project.grpc_tasks.RegisterUserGrpcTask;
 import com.example.cmu_project.helpers.LinkHelper;
@@ -70,6 +71,12 @@ public class LoginActivity extends AppCompatActivity {
             linkHelper.setFlag(true);
             linkHelper.setChat_to_go(chat_name);
         }
+    }
+
+    public void login_as_guest(View view) {
+
+        new LoginAsGuestGrpcTask(this).execute();
+
     }
 
     public void login(View view) {

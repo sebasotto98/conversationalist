@@ -40,11 +40,20 @@
         android:text="@string/join_new_chatroom" />
 
     <Button
+        android:id="@+id/upgrade_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="113dp"
+        android:onClick="upgrade_account"
+        android:text="upgrade account" />
+
+    <Button
         android:id="@+id/create_new_chatroom_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="create_chatroom"
         android:layout_alignParentBottom="true"
+        android:onClick="create_chatroom"
         android:text="@string/create_new_chatroom" />
 
     <ListView

@@ -100,6 +100,17 @@
         android:text="@string/register" />
 
     <Button
+        android:id="@+id/login_guest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="-110dp"
+        android:layout_marginBottom="80dp"
+        android:layout_toStartOf="@+id/activity_title"
+        android:onClick="login_as_guest"
+        android:text="Start" />
+
+    <Button
         android:id="@+id/quit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
