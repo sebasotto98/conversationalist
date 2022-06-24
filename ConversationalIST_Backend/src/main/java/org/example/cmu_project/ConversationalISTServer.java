@@ -200,6 +200,10 @@ public class ConversationalISTServer {
 
             }
 
+            UpgradeAccountReply response = UpgradeAccountReply.newBuilder().setAck(ack).build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+
 
         }
 

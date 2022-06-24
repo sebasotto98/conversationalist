@@ -44,7 +44,7 @@ public class UpgradeAccountGrpcTask extends AsyncTask<Object,Void, UpgradeAccoun
             String pass_hashed = CryptographyHelper.hashString(password);
 
             UpgradeAccountRequest request = UpgradeAccountRequest.newBuilder().setGuestUser(guest_user).setNewUser(new_user).setPassword(pass_hashed).build();
-            return stub.withDeadlineAfter(5, TimeUnit.SECONDS).upgradeAccount(request);
+            return stub.withDeadlineAfter(10, TimeUnit.SECONDS).upgradeAccount(request);
 
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
@@ -71,6 +71,8 @@ public class UpgradeAccountGrpcTask extends AsyncTask<Object,Void, UpgradeAccoun
         } else {
 
             if(reply.getAck().equals("OK")) {
+
+                System.out.println("aqui");
 
                 Toast.makeText(activity.getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
                 ((GlobalVariableHelper) activity.getApplication()).setUsername(this.new_user);
