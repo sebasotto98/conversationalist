@@ -5,13 +5,17 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
+import android.widget.TextView;
 
+import com.example.cmu_project.activities.LoginActivity;
 import com.example.cmu_project.activities.ManageChatActivity;
 import com.example.cmu_project.grpc_tasks.LeaveChatGrpcTask;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
@@ -27,6 +31,8 @@ public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
     private final Context context;
     public Application application;
     public String user;
+
+    Button callbtn, leavebtn, managebtn;
 
     public UserChatsAdapter(List<String> userChatsList, List<String> userOwnerChats, Context context, Application application, String user) {
         this.userChatsList = userChatsList;
@@ -64,12 +70,18 @@ public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
         }
 
         //Handle buttons and add onClickListeners
-        Button callbtn = (Button) view.findViewById(R.id.btn_item);
-        Button leavebtn = (Button) view.findViewById(R.id.btn_item_leave);
-        Button managebtn = (Button) view.findViewById(R.id.btn_item_manage);
+        callbtn = (Button) view.findViewById(R.id.btn_item);
+        leavebtn = (Button) view.findViewById(R.id.btn_item_leave);
+        managebtn = (Button) view.findViewById(R.id.btn_item_manage);
         callbtn.setText(userChatsList.get(position));
-        leavebtn.setText("Leave");
-        managebtn.setText("Manage");
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String language = prefs.getString("language", "English");
+        if (language.equals("Português")) {
+            setPortuguese();
+        } else if (language.equals("English")) {
+            setEnglish();
+        }
 
         if (!userOwnerChats.contains(userChatsList.get(position))) {
             managebtn.setVisibility(View.GONE);
@@ -96,5 +108,15 @@ public class UserChatsAdapter extends BaseAdapter implements ListAdapter {
         });
 
         return view;
+    }
+
+    private void setEnglish() {
+        leavebtn.setText(R.string.leave);
+        managebtn.setText(R.string.manage);
+    }
+
+    private void setPortuguese() {
+        leavebtn.setText(R.string.sair);
+        managebtn.setText(R.string.gerir);
     }
 }

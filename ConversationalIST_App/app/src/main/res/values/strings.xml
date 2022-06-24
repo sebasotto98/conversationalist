@@ -75,4 +75,7 @@
     <string name="adicionar_utilizador">Adicionar Utilizador</string>
     <string name="upgrade">Upgrade</string>
     <string name="melhorar">Melhorar</string>
+    <string name="leave">Leave</string>
+    <string name="manage">Manage</string>
+    <string name="gerir">Gerir</string>
 </resources>
