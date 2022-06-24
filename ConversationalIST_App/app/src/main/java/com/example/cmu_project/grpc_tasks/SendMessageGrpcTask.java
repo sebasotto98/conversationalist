@@ -1,7 +1,9 @@
 package com.example.cmu_project.grpc_tasks;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
@@ -67,8 +69,16 @@ public class SendMessageGrpcTask extends AsyncTask<Object, Void, messageResponse
         }
 
         if(result == null){
-            Toast.makeText(activityReference.get().getApplicationContext(), "Error contacting the server",
-                    Toast.LENGTH_SHORT).show();
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activityReference.get().getApplicationContext());
+            String language = prefs.getString("language", "English");
+
+            if (language.equals("Português")) {
+                Toast.makeText(activityReference.get().getApplicationContext(), "Erro a contactar o servidor",
+                        Toast.LENGTH_SHORT).show();
+            } else if (language.equals("English")) {
+                Toast.makeText(activityReference.get().getApplicationContext(), "Error contacting the server",
+                        Toast.LENGTH_SHORT).show();
+            }
         }
         Button sendButton = activity.findViewById(R.id.send_button);
         sendButton.setEnabled(true);

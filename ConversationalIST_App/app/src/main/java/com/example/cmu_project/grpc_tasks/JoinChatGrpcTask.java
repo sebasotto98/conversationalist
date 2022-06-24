@@ -2,7 +2,9 @@ package com.example.cmu_project.grpc_tasks;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -63,8 +65,16 @@ public class JoinChatGrpcTask extends AsyncTask<Object,Void, JoinChatReply> {
         }
 
         if(reply == null){
-            Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
-                    Toast.LENGTH_SHORT).show();
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activityReference.get().getApplicationContext());
+            String language = prefs.getString("language", "English");
+
+            if (language.equals("Português")) {
+                Toast.makeText(activityReference.get().getApplicationContext(), "Erro a contactar o servidor",
+                        Toast.LENGTH_SHORT).show();
+            } else if (language.equals("English")) {
+                Toast.makeText(activityReference.get().getApplicationContext(), "Error contacting the server",
+                        Toast.LENGTH_SHORT).show();
+            }
         } else {
 
             //say to the service that we want to listen a new chat

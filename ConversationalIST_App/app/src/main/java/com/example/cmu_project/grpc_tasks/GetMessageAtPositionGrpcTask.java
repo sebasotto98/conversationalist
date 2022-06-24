@@ -1,7 +1,9 @@
 package com.example.cmu_project.grpc_tasks;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,6 +12,7 @@ import com.example.cmu_project.helpers.GlobalVariableHelper;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
 import io.grpc.examples.backendserver.ServerGrpc;
@@ -17,11 +20,11 @@ import io.grpc.examples.backendserver.getMessagePosition;
 import io.grpc.examples.backendserver.messageResponse;
 
 public class GetMessageAtPositionGrpcTask extends AsyncTask<Object, Void, messageResponse> {
-    private final Context context;
+    private final WeakReference<Context> context;
     private final MessageAdapter messageAdapter;
 
     public GetMessageAtPositionGrpcTask(Context context, MessageAdapter messageAdapter){
-        this.context = context;
+        this.context = new WeakReference<>(context);
         this.messageAdapter = messageAdapter;
     }
 
@@ -32,7 +35,7 @@ public class GetMessageAtPositionGrpcTask extends AsyncTask<Object, Void, messag
 
             String chatroom = (String) objects[1];
             ServerGrpc.ServerBlockingStub stub
-                    = ((GlobalVariableHelper) context.getApplicationContext())
+                    = ((GlobalVariableHelper) context.get().getApplicationContext())
                     .getServerBlockingStub();
 
             Log.d("GetMessageAtPositionGrpcTask", String.valueOf(position));
@@ -58,8 +61,16 @@ public class GetMessageAtPositionGrpcTask extends AsyncTask<Object, Void, messag
     protected void onPostExecute(messageResponse result) {
 
         if(result == null){
-            Toast.makeText(context.getApplicationContext(), "Error contacting the server",
-                    Toast.LENGTH_SHORT).show();
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.get().getApplicationContext());
+            String language = prefs.getString("language", "English");
+
+            if (language.equals("Português")) {
+                Toast.makeText(context.get().getApplicationContext(), "Erro a contactar o servidor",
+                        Toast.LENGTH_SHORT).show();
+            } else if (language.equals("English")) {
+                Toast.makeText(context.get().getApplicationContext(), "Error contacting the server",
+                        Toast.LENGTH_SHORT).show();
+            }
         } else {
 
             String data, username, timestamp, type, chatroom;
@@ -71,7 +82,7 @@ public class GetMessageAtPositionGrpcTask extends AsyncTask<Object, Void, messag
             chatroom = result.getChatroom();
             position = result.getPosition();
 
-            boolean r = ((GlobalVariableHelper) context.getApplicationContext()).getDb().updateMessage(
+            boolean r = ((GlobalVariableHelper) context.get().getApplicationContext()).getDb().updateMessage(
                     data,
                     username,
                     timestamp,

@@ -1,10 +1,13 @@
 package com.example.cmu_project.grpc_tasks;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.cmu_project.activities.LoginActivity;
 import com.example.cmu_project.helpers.GlobalVariableHelper;
 
 import java.io.PrintWriter;
@@ -62,19 +65,34 @@ public class AddUserToChatGrpcTask extends AsyncTask<Object,Void, AddUserToChatR
         if (activity == null) {
             return;
         }
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activityReference.get().getApplicationContext());
+        String language = prefs.getString("language", "English");
         if(reply != null) {
 
             if (reply.getAck().equals("OK")) {
-                Toast.makeText(activity.getApplicationContext(), "User added with sucess",
-                        Toast.LENGTH_SHORT).show();
+
+                if (language.equals("Português")) {
+                    Toast.makeText(activity.getApplicationContext(), "Utilizador adicionado com sucesso",
+                            Toast.LENGTH_SHORT).show();
+                } else if (language.equals("English")) {
+                    Toast.makeText(activity.getApplicationContext(), "User added with sucess",
+                            Toast.LENGTH_SHORT).show();
+                }
+
             } else {
                 Toast.makeText(activity.getApplicationContext(), reply.getAck(),
                         Toast.LENGTH_SHORT).show();
             }
 
         } else {
-            Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
-                    Toast.LENGTH_SHORT).show();
+            if (language.equals("Português")) {
+                Toast.makeText(activity.getApplicationContext(), "Erro a contactar o servidor",
+                        Toast.LENGTH_SHORT).show();
+            } else if (language.equals("English")) {
+                Toast.makeText(activity.getApplicationContext(), "Error contacting the server",
+                        Toast.LENGTH_SHORT).show();
+            }
+
         }
 
     }
